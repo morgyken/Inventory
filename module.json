@@ -1,0 +1,20 @@
+{
+    "name": "Inventory",
+    "alias": "inventory",
+    "description": "The main inventory and shopfront",
+    "keywords": [],
+    "active": 1,
+    "order": 11,
+    "providers": [
+        "Ignite\\Inventory\\Providers\\InventoryServiceProvider",
+        "Ignite\\Inventory\\Providers\\EventServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "core": 0,
+    "version": "v1.0",
+    "author": "Samuel Okoth",
+    "email": "sodhiambo@collabmed.com"
+}
