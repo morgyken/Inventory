@@ -12,6 +12,8 @@
 
 namespace Ignite\Inventory\Entities;
 
+use Ignite\Settings\Entities\Schemes;
+use Ignite\Users\Entities\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -84,7 +86,7 @@ class InventoryPayments extends Model {
     }
 
     public function users() {
-        return $this->belongsTo(\Ignite\Core\Entities\User::class, 'user');
+        return $this->belongsTo(User::class, 'user');
     }
 
     public function getModesAttribute() {
@@ -103,7 +105,7 @@ class InventoryPayments extends Model {
     }
 
     public function schemes() {
-        return $this->belongsTo(\Ignite\Setup\Entities\Schemes::class, 'scheme');
+        return $this->belongsTo(Schemes::class, 'scheme');
     }
 
 }

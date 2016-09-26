@@ -59,7 +59,7 @@ class InventoryBatchPurchases extends Model {
         return $this->belongsTo(InventoryProducts::class, 'product', 'id');
     }
 
-    public function creitors() {
+    public function creditors() {
         return $this->belongsTo(InventorySupplier::class, 'product', 'id');
     }
 

@@ -12,6 +12,7 @@
 
 namespace Ignite\Inventory\Entities;
 
+use Ignite\Users\Entities\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -61,7 +62,7 @@ class InventoryBatch extends Model {
     }
 
     public function users() {
-        return $this->belongsTo(\Ignite\Users\Entities\User::class, 'user');
+        return $this->belongsTo(User::class, 'user');
     }
 
 }

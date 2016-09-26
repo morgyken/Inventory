@@ -12,6 +12,7 @@
 
 namespace Ignite\Inventory\Entities;
 
+use Ignite\Users\Entities\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -49,7 +50,7 @@ class InventoryBatchProductSales extends Model {
     }
 
     public function users() {
-        return $this->belongsTo(\Ignite\Core\Entities\User::class, 'user');
+        return $this->belongsTo(User::class, 'user');
     }
 
     public function amountpaid() {
