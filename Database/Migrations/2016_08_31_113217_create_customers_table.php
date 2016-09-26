@@ -11,7 +11,7 @@ class CreateCustomersTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('inventory_customers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
@@ -27,7 +27,7 @@ class CreateCustomersTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('customers');
+        Schema::drop('inventory_customers');
     }
 
 }

@@ -42,10 +42,7 @@ class InventoryController extends AdminBaseController  {
      */
     protected $request;
 
-    /**
-     * @var array The application featured data
-     */
-    protected $data = [];
+
 
     public function __construct(Request $request) {
         $this->request = $request;

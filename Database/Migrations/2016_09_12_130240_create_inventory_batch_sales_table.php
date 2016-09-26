@@ -24,7 +24,7 @@ class CreateInventoryBatchSalesTable extends Migration {
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
-            $table->foreign('customer')->references('id')->on('customers')
+            $table->foreign('customer')->references('id')->on('inventory_customers')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
         });

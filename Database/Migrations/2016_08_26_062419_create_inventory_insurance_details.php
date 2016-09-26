@@ -20,7 +20,7 @@ class CreateInventoryInsuranceDetails extends Migration {
             $column->smallInteger('relationship');
             $column->timestamps();
 
-            $column->foreign('scheme')->references('id')->on('schemes')
+            $column->foreign('scheme')->references('id')->on('settings_schemes')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
         });

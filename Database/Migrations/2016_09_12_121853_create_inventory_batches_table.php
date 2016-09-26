@@ -32,7 +32,7 @@ class CreateInventoryBatchesTable extends Migration {
             $table->foreign('order')->references('id')->on('inventory_purchase_orders')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
-            $table->foreign('in_order')->references('id')->on('internal_orders')
+            $table->foreign('in_order')->references('id')->on('inventory_internal_orders')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
         });

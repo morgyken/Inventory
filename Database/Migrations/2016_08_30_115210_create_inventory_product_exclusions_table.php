@@ -16,7 +16,7 @@ class CreateInventoryProductExclusionsTable extends Migration {
             $table->integer('product')->unsigned();
             $table->integer('scheme')->unsigned();
 
-            $table->foreign('scheme')->references('id')->on('schemes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('scheme')->references('id')->on('settings_schemes')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->unique(['product', 'scheme']);
         });

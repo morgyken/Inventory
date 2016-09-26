@@ -11,7 +11,7 @@ class InternalOrders extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('internal_orders', function(Blueprint $table) {
+        Schema::create('inventory_internal_orders', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('author')->unsigned();
             $table->integer('dispatching_store')->unsigned();
@@ -22,11 +22,11 @@ class InternalOrders extends Migration {
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('dispatching_store')->references('id')->on('clinics')
+            $table->foreign('dispatching_store')->references('id')->on('settings_clinics')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
 
-            $table->foreign('requesting_store')->references('id')->on('clinics')
+            $table->foreign('requesting_store')->references('id')->on('settings_clinics')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
 
@@ -42,7 +42,7 @@ class InternalOrders extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('internal_orders');
+        Schema::drop('inventory_internal_orders');
     }
 
 }

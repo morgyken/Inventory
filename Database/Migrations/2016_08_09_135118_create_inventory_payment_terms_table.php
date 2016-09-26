@@ -14,7 +14,7 @@ class CreateInventoryPaymentTermsTable extends Migration {
         Schema::create('inventory_payment_terms', function(Blueprint $table) {
             $table->increments('id');
             $table->string('terms');
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }
