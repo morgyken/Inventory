@@ -1,5 +1,5 @@
 {
-    "name": "collabmed/inventory",
+    "name": "collabmed/inventory-module",
     "description": "The main inventory and shopfront",
     "license": "proprietary",
     "type": "asgard-module",
