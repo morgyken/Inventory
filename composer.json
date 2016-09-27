@@ -2,7 +2,7 @@
     "name": "collabmed/inventory",
     "description": "The main inventory and shopfront",
     "license": "proprietary",
-    "type": "dervis-module",
+    "type": "asgard-module",
     "homepage": "http://www.collabmed.com",
     "authors": [
         {
@@ -24,8 +24,5 @@
         "psr-4": {
             "Ignite\\Inventory\\": ""
         }
-    },
-    "extra": {
-        "installer-name": "Inventory"
     }
 }
