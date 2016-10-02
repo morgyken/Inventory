@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $batch
  * @property integer $product
  * @property integer $quantity
+ * @property integer $qty_sold
+ * @property boolean $active
  * @property integer $bonus
  * @property float $discount
  * @property float $unit_cost
@@ -30,13 +32,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $updated_at
  * @property-read \Ignite\Inventory\Entities\InventoryPurchaseOrders $lpo
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $products
- * @property-read \Ignite\Inventory\Entities\InventorySupplier $creitors
+ * @property-read \Ignite\Inventory\Entities\InventorySupplier $creditors
  * @property-read \Ignite\Inventory\Entities\InventorySupplier $suppliers
  * @property-read mixed $total
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchPurchases whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchPurchases whereBatch($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchPurchases whereProduct($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchPurchases whereQuantity($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchPurchases whereQtySold($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchPurchases whereActive($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchPurchases whereBonus($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchPurchases whereDiscount($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchPurchases whereUnitCost($value)

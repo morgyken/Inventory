@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $number
  * @property integer $creditor
  * @property integer $gl_account
- * @property integer $batch
  * @property float $amount
  * @property string $date
  * @property string $due_date
@@ -35,7 +34,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryInvoice whereNumber($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryInvoice whereCreditor($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryInvoice whereGlAccount($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryInvoice whereBatch($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryInvoice whereAmount($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryInvoice whereDate($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryInvoice whereDueDate($value)

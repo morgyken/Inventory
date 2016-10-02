@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property integer $id
  * @property integer $product
+ * @property integer $batch
  * @property float $price
  * @property float $selling
  * @property \Carbon\Carbon $created_at
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $products
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductPrice whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductPrice whereProduct($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductPrice whereBatch($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductPrice wherePrice($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductPrice whereSelling($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductPrice whereCreatedAt($value)

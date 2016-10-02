@@ -46,9 +46,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read mixed $total
- * @property-read \Ignite\Core\Entities\User $users
+ * @property-read \Ignite\Users\Entities\User $users
  * @property-read mixed $modes
- * @property-read \Ignite\Setup\Entities\Schemes $schemes
+ * @property-read \Ignite\Settings\Entities\Schemes $schemes
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPayments whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPayments whereReceipt($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPayments whereScheme($value)

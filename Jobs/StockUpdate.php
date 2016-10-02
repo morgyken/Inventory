@@ -12,7 +12,6 @@
 
 namespace Ignite\Inventory\Jobs;
 
-use Dervis\Jobs\Job;
 use Ignite\Inventory\Entities\InventoryBatch;
 use Ignite\Inventory\Entities\InventoryPurchaseOrders;
 use Ignite\Inventory\Library\InventoryFunctions;
@@ -20,7 +19,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class StockUpdate extends Job implements ShouldQueue {
+class StockUpdate  implements ShouldQueue {
 
     use InteractsWithQueue,
         SerializesModels;
@@ -47,7 +46,7 @@ class StockUpdate extends Job implements ShouldQueue {
      * @return void
      */
     public function handle() {
-        return InventoryFunctions::update_stock_from_lpo($this->batch, $this->direct);
+      InventoryFunctions::update_stock_from_lpo($this->batch, $this->direct);
     }
 
 }

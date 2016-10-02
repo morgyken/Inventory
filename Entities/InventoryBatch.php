@@ -25,13 +25,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $store
  * @property integer $order
  * @property integer $in_order
+ * @property integer $payment_status
  * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Ignite\Inventory\Entities\InventoryPurchaseOrders $lpo
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryBatchPurchases[] $products
  * @property-read \Ignite\Inventory\Entities\InventorySupplier $suppliers
- * @property-read \Ignite\Core\Entities\User $users
+ * @property-read \Ignite\Users\Entities\User $users
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch whereSupplier($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch whereAmount($value)
@@ -39,6 +40,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch whereStore($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch whereOrder($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch whereInOrder($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch wherePaymentStatus($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatch whereUpdatedAt($value)

@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryDispensing[] $goodies
- * @property-read \Ignite\Core\Entities\User $users
+ * @property-read \Ignite\Users\Entities\User $users
  * @property-read \Ignite\Inventory\Entities\InventoryPayments $amountpaid
  * @property-read \Ignite\Inventory\Entities\Customer $customers
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereId($value)

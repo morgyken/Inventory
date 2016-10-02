@@ -24,15 +24,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $method
  * @property string $type
  * @property string $reason
+ * @property string $approved
  * @property integer $user
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Ignite\Inventory\Entities\InventoryProducts $products
+ * @property-read \Ignite\Users\Entities\User $users
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereProduct($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereQuantity($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereMethod($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereType($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereReason($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereApproved($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereUser($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereCreatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryStockAdjustment whereUpdatedAt($value)
