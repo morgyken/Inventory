@@ -24,6 +24,12 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                 $item->icon('fa fa-cart-arrow-down');
                 $item->route('inventory.shopfront');
             });
+            $group->item('Finance', function (Item $item) {
+                $item->item('Payments Overview', function (Item $item) {
+                    $item->icon('fa fa fa-files-o');
+                    $item->route('inventory.sales.receipts');
+                });
+            });
             $group->item('Inventory', function (Item $item) {
                 $item->weight(3);
                 $item->icon('fa fa-barcode');
