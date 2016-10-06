@@ -7,11 +7,12 @@
     "order": 11,
     "providers": [
         "Ignite\\Inventory\\Providers\\InventoryServiceProvider",
-        "Ignite\\Inventory\\Providers\\EventServiceProvider"
+        "Ignite\\Inventory\\Providers\\EventServiceProvider",
+        "Ignite\\Inventory\\Providers\\RouteServiceProvider"
     ],
     "aliases": {},
     "files": [
-        "start.php"
+        "helpers.php"
     ],
     "core": 0,
     "version": "v1.0",
