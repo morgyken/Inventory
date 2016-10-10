@@ -59,7 +59,7 @@
                 font-weight: normal;
                 text-align: center;
                 margin: 0 0 20px 0;
-                background: url("{!! Module::asset('inventory:img/dimension.png') !!}");
+                background: url("{!! m_asset('inventory:img/dimension.png') !!}");
             }
 
             #project {

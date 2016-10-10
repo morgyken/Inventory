@@ -111,5 +111,5 @@
     {!! Form::close() !!}
 </div>
 <script type="text/javascript">var PRODUCTS_URL = "{{route('inventory.ajax.get_products')}}";</script>
-<script src="{!! Module::asset('inventory:js/direct_stock.js') !!}"></script>
+<script src="{!! m_asset('inventory:js/direct_stock.js') !!}"></script>
 @endsection

@@ -3,14 +3,14 @@
     "alias": "inventory",
     "description": "The main inventory and shopfront",
     "keywords": [],
-    "active": 1,
+    "active": 0,
     "order": 11,
     "providers": [
         "Ignite\\Inventory\\Providers\\InventoryServiceProvider",
         "Ignite\\Inventory\\Providers\\EventServiceProvider",
         "Ignite\\Inventory\\Providers\\RouteServiceProvider"
     ],
-    "aliases": {},
+    "aliases": [],
     "files": [
         "helpers.php"
     ],

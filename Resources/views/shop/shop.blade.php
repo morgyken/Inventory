@@ -169,5 +169,5 @@
     var PHONE_URL = "{{route('inventory.ajax.cust.get')}}";
     var CREDIT_URL = "{{route('inventory.ajax.credit.rate')}}";
 </script>
-<script src="{!! Module::asset('inventory:js/shopfront.js') !!}"></script>
+<script src="{!! m_asset('inventory:js/shopfront.js') !!}"></script>
 @endsection

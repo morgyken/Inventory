@@ -96,5 +96,5 @@ $count = 0;
     });
     }
 </script>
-<script src="{!! Module::asset('inventory:js/receive_goods.js') !!}"></script>
+<script src="{!! m_asset('inventory:js/receive_goods.js') !!}"></script>
 @endsection

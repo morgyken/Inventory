@@ -108,5 +108,5 @@ $lpo = $data['lpo'];
 <script type="text/javascript">
     var PRODUCTS_URL = "{{route('inventory.ajax.get_products')}}";
 </script>
-<script src="{!! Module::asset('inventory:js/lpo_stub.min.js') !!}"></script>
+<script src="{!! m_asset('inventory:js/lpo_stub.min.js') !!}"></script>
 @endsection
