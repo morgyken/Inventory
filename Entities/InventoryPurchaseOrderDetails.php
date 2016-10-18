@@ -18,24 +18,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * Ignite\Inventory\Entities\InventoryPurchaseOrderDetails
  *
- * @property integer $id
- * @property integer $order
- * @property integer $product
- * @property integer $quantity
- * @property float $price
- * @property string $deleted_at
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $products
  * @property-read mixed $total
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPurchaseOrderDetails whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPurchaseOrderDetails whereOrder($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPurchaseOrderDetails whereProduct($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPurchaseOrderDetails whereQuantity($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPurchaseOrderDetails wherePrice($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPurchaseOrderDetails whereDeletedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPurchaseOrderDetails whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryPurchaseOrderDetails whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class InventoryPurchaseOrderDetails extends Model {

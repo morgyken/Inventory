@@ -18,26 +18,10 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\InventoryBatchProductSales
  *
- * @property integer $id
- * @property string $receipt
- * @property string $payment_mode
- * @property boolean $paid
- * @property integer $user
- * @property integer $customer
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryDispensing[] $goodies
  * @property-read \Ignite\Users\Entities\User $users
  * @property-read \Ignite\Inventory\Entities\InventoryPayments $amountpaid
  * @property-read \Ignite\Inventory\Entities\Customer $customers
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereReceipt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales wherePaymentMode($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales wherePaid($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereUser($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCustomer($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class InventoryBatchProductSales extends Model {
