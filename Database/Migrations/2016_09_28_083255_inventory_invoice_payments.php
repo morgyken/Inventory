@@ -20,18 +20,18 @@ class InventoryInvoicePayments extends Migration {
             $table->integer('grn')->unsigned()->nullable();
             $table->integer('invoice')->unsigned()->nullable();
             $table->timestamps();
-            $table->foreign('account')->references('id')->on('finance_bank_accounts')
-                    ->onDelete('cascade')
-                    ->onUpdate('cascade');
+            /*  $table->foreign('account')->references('id')->on('finance_bank_accounts')
+              ->onDelete('cascade')
+              ->onUpdate('cascade'); */
             $table->foreign('user')->references('id')->on('users')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
             $table->foreign('grn')->references('id')->on('inventory_batches')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
-            $table->foreign('invoice')->references('id')->on('finance_invoices')
-                    ->onDelete('cascade')
-                    ->onUpdate('cascade');
+            /*   $table->foreign('invoice')->references('id')->on('finance_invoices')
+              ->onDelete('cascade')
+              ->onUpdate('cascade'); */
         });
     }
 
@@ -41,7 +41,7 @@ class InventoryInvoicePayments extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('finance_invoice_payments');
+        Schema::dropIfExists('finance_invoice_payments');
     }
 
 }

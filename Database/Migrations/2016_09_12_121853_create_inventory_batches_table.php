@@ -44,7 +44,7 @@ class CreateInventoryBatchesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_batches');
+        Schema::dropIfExists('inventory_batches');
     }
 
 }

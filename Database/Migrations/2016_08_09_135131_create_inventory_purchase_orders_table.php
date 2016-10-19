@@ -40,7 +40,7 @@ class CreateInventoryPurchaseOrdersTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_purchase_orders');
+        Schema::dropIfExists('inventory_purchase_orders');
     }
 
 }

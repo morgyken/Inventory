@@ -14,7 +14,7 @@ class CreateInventoryPaymentTermsTable extends Migration {
         Schema::create('inventory_payment_terms', function(Blueprint $table) {
             $table->increments('id');
             $table->string('terms');
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,7 +25,7 @@ class CreateInventoryPaymentTermsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_payment_terms');
+        Schema::dropIfExists('inventory_payment_terms');
     }
 
 }

@@ -32,7 +32,7 @@ class CreateInventoryInsuranceDetails extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_insurance_payment_details');
+        Schema::dropIfExists('inventory_insurance_payment_details');
     }
 
 }

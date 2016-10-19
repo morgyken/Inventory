@@ -28,7 +28,7 @@ class CreateInventoryStocksTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_stocks');
+        Schema::dropIfExists('inventory_stocks');
     }
 
 }

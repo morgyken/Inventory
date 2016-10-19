@@ -34,7 +34,7 @@ class CreateInventoryPurchaseOrderDetailsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_purchase_order_details');
+        Schema::dropIfExists('inventory_purchase_order_details');
     }
 
 }

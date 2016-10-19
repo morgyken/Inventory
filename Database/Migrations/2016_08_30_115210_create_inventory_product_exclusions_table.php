@@ -28,7 +28,7 @@ class CreateInventoryProductExclusionsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_product_exclusions');
+        Schema::dropIfExists('inventory_product_exclusions');
     }
 
 }

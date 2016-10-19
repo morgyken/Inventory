@@ -20,6 +20,7 @@ class CreateInventoryBatchPurchasesTable extends Migration {
             $table->boolean('active')->default(false);
             $table->integer('bonus')->default(0);
             $table->float('discount', 10, 2);
+            $table->float('tax', 10, 2); //->after('discount')
             $table->decimal('unit_cost', 10, 2);
             $table->date('expiry_date')->nullable();
             $table->integer('package_size')->default(1);
@@ -40,7 +41,7 @@ class CreateInventoryBatchPurchasesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_batch_purchases');
+        Schema::dropIfExists('inventory_batch_purchases');
     }
 
 }

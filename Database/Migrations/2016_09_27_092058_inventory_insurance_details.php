@@ -22,15 +22,15 @@ class InventoryInsuranceDetails extends Migration {
             $table->string('relation');
             $table->timestamps();
 
-            $table->foreign('customer')->references('id')->on('customers')
+            $table->foreign('customer')->references('id')->on('inventory_customers')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
-            $table->foreign('insurance_company')->references('id')->on('insurance')
+            $table->foreign('insurance_company')->references('id')->on('settings_insurance')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
-            $table->foreign('credit_scheme')->references('id')->on('schemes')
+            $table->foreign('credit_scheme')->references('id')->on('settings_schemes')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
         });
@@ -42,7 +42,7 @@ class InventoryInsuranceDetails extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_insurance_details');
+        Schema::dropIfExists('inventory_insurance_details');
     }
 
 }
