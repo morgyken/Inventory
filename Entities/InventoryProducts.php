@@ -1,15 +1,5 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Entities;
 
 use Illuminate\Database\Eloquent\Model;
@@ -20,15 +10,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Ignite\Inventory\Entities\InventoryCategories $categories
  * @property-read \Ignite\Inventory\Entities\InventoryUnits $units
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductPrice[] $prices
+ * @property-read \Ignite\Inventory\Entities\InventoryTaxCategory $taxgroups
  * @property-read \Ignite\Inventory\Entities\InventoryProductDiscount $discounts
  * @property-read mixed $product_code
  * @property-read \Ignite\Inventory\Entities\InventoryStock $stocks
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductExclusion[] $exclusions
+ * @property-read mixed $count_active_batch
  * @mixin \Eloquent
  */
 class InventoryProducts extends Model {
 
-    protected $fillable = [];
+    protected $fillable = ['name', 'description', 'category', 'unit', 'tax_category', 'strength', 'label_type', 'formulation'];
     public $table = 'inventory_products';
 
     public function categories() {
@@ -41,6 +33,10 @@ class InventoryProducts extends Model {
 
     public function prices() {
         return $this->hasMany(InventoryProductPrice::class, 'product');
+    }
+
+    public function taxgroups() {
+        return $this->belongsTo(InventoryTaxCategory::class, 'tax_category');
     }
 
     public function discounts() {
@@ -57,6 +53,11 @@ class InventoryProducts extends Model {
 
     public function exclusions() {
         return $this->hasMany(InventoryProductExclusion::class, 'product');
+    }
+
+    public function getCountActiveBatchAttribute() {
+        $active = InventoryBatchPurchases::where('product', '=', $this->id)->count();
+        return $active;
     }
 
 }

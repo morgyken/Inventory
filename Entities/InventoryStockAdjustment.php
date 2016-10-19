@@ -1,15 +1,5 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Entities;
 
 use Ignite\Users\Entities\User;
@@ -20,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $products
  * @property-read \Ignite\Users\Entities\User $users
+ * @property-read mixed $closing
  * @mixin \Eloquent
  */
 class InventoryStockAdjustment extends Model {
@@ -33,6 +24,13 @@ class InventoryStockAdjustment extends Model {
 
     public function users() {
         return $this->belongsTo(User::class, 'user');
+    }
+
+    public function getClosingAttribute() {
+        if ($this->method == '+') {
+            return $this->opening_qty + $this->quantity;
+        }
+        return $this->opening_qty - $this->quantity;
     }
 
 }

@@ -1,17 +1,8 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Entities;
 
+use Ignite\Finance\Entities\FinanceGlAccounts;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -19,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property-read \Ignite\Inventory\Entities\InventorySupplier $creditors
  * @property-read \Ignite\Finance\Entities\FinanceGlAccounts $gls
+ * @property-read \Ignite\Inventory\Entities\InventoryBatch $grns
  * @mixin \Eloquent
  */
 class InventoryInvoice extends Model {
@@ -31,7 +23,11 @@ class InventoryInvoice extends Model {
     }
 
     public function gls() {
-        return $this->belongsTo(\Ignite\Finance\Entities\FinanceGlAccounts::class, 'gl_account');
+        return $this->belongsTo(FinanceGlAccounts::class, 'gl_account');
+    }
+
+    public function grns() {
+        return $this->belongsTo(InventoryBatch::class, 'grn');
     }
 
 }

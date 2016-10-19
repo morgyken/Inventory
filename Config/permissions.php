@@ -11,13 +11,20 @@
  */
 
 return [
-    'Point of Sale' => [
+    'inventory' => [
+        'Access Inventory',
+    ],
+    'inventory.Point of Sale' => [
         'Make Sales',
     ],
-    'Products' => [
+    'inventory.Products' => [
+        'Access Products Menu',
+        'Manage Product Categories',
         'Add Product',
-        'View Product',
+        'View Products',
         'View Products in Store',
+        'Adjust Product Price',
+        'Stock Adjustments',
         'Delete Products',
         'Update Products',
         'Set product price',
@@ -25,5 +32,36 @@ return [
         'Set category price',
         'Set tax categories',
         'Manage units of measure'
+    ],
+    'inventory.Purchases' => [
+        'Access Purchases',
+        'Create LPO',
+        'View LPOs',
+        'Approve LPO',
+        'Receive Goods',
+        'View GRNs',
+        'Manage Payment Terms'
+    ],
+    'inventory.Sales' => [
+        'Access Sales Menu',
+        'Point of Sale',
+        'Sales Return'
+    ],
+    'inventory.Reports' => [
+        'Access Reports',
+        'View Sales Reports',
+        'View Product Sales Report',
+        'View Stock Report',
+        'View Item Expiry Report',
+        'View Stock Movement Report'
+    ],
+    'inventory.Suppliers' => [
+        'Access Suppliers Menu',
+        'Add Supplier',
+        'View Suppliers',
+        'Receive Invoice'
+    ],
+    'inventory.Clients' => [
+        'Manage Clients',
     ]
 ];

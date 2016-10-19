@@ -10,7 +10,7 @@
  * =============================================================================
  */
 
-namespace Ignite\Inventory\Library;
+namespace Ignite\Inventory\Repositories;
 
 use Ignite\Inventory\Entities\InventoryBatch;
 use Ignite\Inventory\Entities\InventoryBatchProductSales;
@@ -32,19 +32,19 @@ use Ignite\Inventory\Entities\InventorySupplier;
 use Ignite\Inventory\Entities\InventoryTaxCategory;
 use Ignite\Inventory\Entities\InventoryUnits;
 use Ignite\Inventory\Entities\InventoryProductDiscount;
-use Ignite\Inventory\Entities\InventoryCategoryPrice;
 use Ignite\Inventory\Events\MarkupWasAdjusted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Ignite\Inventory\Entities\InventorySalesReturn;
 use Ignite\Inventory\Entities\InventoryInsuranceDetails;
+use Ignite\Finance\Entities\InsuranceInvoice;
 
 /**
  * Description of InventoryFunctions
  *
  * @author Samuel Dervis <samueldervis@gmail.com>
  */
-class InventoryFunctions {
+class InventoryFunctions implements InventoryRepository {
 
     /**
      * Add a supplier to the database
@@ -52,7 +52,7 @@ class InventoryFunctions {
      * @param int|null $id
      * @return bool
      */
-    public static function add_supplier(Request $request, $id = null) {
+    public function add_supplier(Request $request, $id = null) {
         $supplier = InventorySupplier::findOrNew($id);
         $supplier->name = ucfirst($request->name);
         $supplier->address = $request->address;
@@ -72,7 +72,7 @@ class InventoryFunctions {
      * @param int|null $id
      * @return bool
      */
-    public static function add_product_category(Request $request, $id = null) {
+    public function add_product_category(Request $request, $id = null) {
         $category = InventoryCategories::findOrNew($id);
         $category->name = ucfirst($request->name);
         $category->parent = $request->parent_category;
@@ -88,7 +88,7 @@ class InventoryFunctions {
      * @param int|null $id
      * @return mixed
      */
-    public static function add_tax_category(Request $request, $id = null) {
+    public function add_tax_category(Request $request, $id = null) {
         $category = InventoryTaxCategory::findOrNew($id);
         $category->name = ucfirst($request->name);
         $category->rate = $request->rate;
@@ -101,7 +101,7 @@ class InventoryFunctions {
      * @param int|null $id
      * @return mixed
      */
-    public static function add_unit_of_measure(Request $request, $id = null) {
+    public function add_unit_of_measure(Request $request, $id = null) {
         $unit = InventoryUnits::findOrNew($id);
         $unit->name = ucfirst($request->name);
         $unit->description = $request->description;
@@ -113,21 +113,22 @@ class InventoryFunctions {
      * @param int|null $id
      * @return bool
      */
-    public static function add_product(Request $request, $id = null) {
+    public function add_product(Request $request, $id = null) {
         DB::transaction(function () use ($request, $id) {
-            $product = InventoryProducts::findOrNew($id);
+            $product = InventoryProducts::firstOrNew(['id' => $id]);
             $product->name = ucfirst($request->name);
             $product->description = $request->description;
             $product->category = $request->category;
             $product->unit = $request->unit;
+            $product->tax_category = $request->tax;
             $product->formulation = $request->formulation;
             $product->label_type = $request->label_type;
             $product->strength = $request->strength;
             $product->save();
-            //$price = InventoryProductPrice::firstOrNew(['product' => $product->id]);
-            //$price->price = $request->unit_cost;
-            //$price->selling = $request->selling_price;
-            //$price->save();
+//$price = InventoryProductPrice::firstOrNew(['product' => $product->id]);
+//$price->price = $request->unit_cost;
+//$price->selling = $request->selling_price;
+//$price->save();
         });
         return true;
     }
@@ -138,7 +139,7 @@ class InventoryFunctions {
      * @param int|null $id
      * @return bool
      */
-    public static function add_payment_term(Request $request, $id = null) {
+    public function add_payment_term(Request $request, $id = null) {
         $term = InventoryPaymentTerms::findOrNew($id);
         $term->terms = $request->terms;
         $term->description = $request->description;
@@ -151,7 +152,7 @@ class InventoryFunctions {
      * @param int|null $id
      * @return bool
      */
-    public static function add_new_order(Request $request, $id = null) {
+    public function add_new_order(Request $request, $id = null) {
         DB::transaction(function () use ($request, $id) {
             $order = new InventoryPurchaseOrders();
             $order->supplier = $request->supplier;
@@ -185,7 +186,7 @@ class InventoryFunctions {
      * @param $keys
      * @return array
      */
-    private static function order_item_stack($keys) {
+    private function order_item_stack($keys) {
         $stack = [];
         foreach ($keys as $one) {
             if (substr($one, 0, 4) == 'item') {
@@ -199,17 +200,17 @@ class InventoryFunctions {
      * @param Request $request
      * @return bool
      */
-    public static function saveProdPrice(Request $request) {
+    public function saveProdPrice(Request $request) {
         foreach ($request->products as $index => $product_id) {
             $product_price = InventoryProductPrice::firstOrNew(['product' => $product_id]);
             $product_price->product = $request->products[$index];
-            $product_price->selling = $request->prices[$index];
+            $product_price->price = $request->prices[$index];
             $product_price->save();
         }
         return 'saved';
     }
 
-    public static function updateProdPrice(Request $request) {
+    public function updateProdPrice(Request $request) {
         foreach ($request->id as $index => $id) {
             $price = InventoryProductPrice::find($id);
             $price->price = $request->price[$index];
@@ -222,7 +223,7 @@ class InventoryFunctions {
      * @param Request $request
      * @return bool
      */
-    public static function saveProdDiscount(Request $request) {
+    public function saveProdDiscount(Request $request) {
         foreach ($request->products as $index => $product_id) {
             $product_discount = InventoryProductDiscount::firstOrNew(['product' => $product_id]);
             $product_discount->product = $request->products[$index];
@@ -237,7 +238,7 @@ class InventoryFunctions {
      * @param Request $request
      * @return bool
      */
-    public static function markup(Request $request) {
+    public function markup(Request $request) {
         foreach ($request->product as $index => $product_id) {
             $markup = InventoryProductMarkup::firstOrNew(['product' => $product_id]);
             $markup->product = $request->product[$index];
@@ -251,7 +252,7 @@ class InventoryFunctions {
      * @param Request $request
      * @return bool
      */
-    public static function saveCatPrice(Request $request) {
+    public function saveCatPrice(Request $request) {
         foreach ($request->cats as $index => $cat_id) {
             $cat_price = InventoryCategoryPrice::firstOrNew(['category' => $cat_id]);
             $cat_price->category = $request->cats[$index];
@@ -265,7 +266,7 @@ class InventoryFunctions {
      * @param $id
      * @return bool
      */
-    public static function approveLPO($id) {
+    public function approveLPO($id) {
         $this_LPO = InventoryPurchaseOrders::find($id);
         $this_LPO->status = 1;
         return $this_LPO->save();
@@ -277,7 +278,7 @@ class InventoryFunctions {
      * @param int|null $id
      * @return bool
      */
-    public static function record_sales(Request $request, $id = null) {
+    public function record_sales(Request $request, $id = null) {
         DB::beginTransaction();
         try {
             $receipt = config('system.receipt_prefix') . mt_rand(1000, 9000) . '-' . date('d/m/y');
@@ -313,7 +314,7 @@ class InventoryFunctions {
                     $sale->price = $request->$price;
                     $sale->quantity = $request->$quantity;
                     $sale->discount = $request->$discount;
-                    //move items in queue
+//move items in queue
                     $stock = InventoryStock::where('product', '=', $request->$item)->first();
                     if ($stock->quantity < $request->$quantity) {
                         DB::rollback();
@@ -343,21 +344,21 @@ class InventoryFunctions {
      * @param $payment_mode
      * @return bool
      */
-    private static function record_payments(Request $request, $receipt, $payment_mode) {
+    private function record_payments(Request $request, $receipt, $payment_mode) {
         $pay = new InventoryPayments;
         $pay->receipt = strtoupper($receipt); //$receipt;
-        //user and patient
+//user and patient
         $pay->user = $request->user()->id;
 
         if ($payment_mode == 'cash') {
-            //cash
+//cash
             $pay->CashAmount = $request->amount;
         } elseif ($payment_mode == 'mpesa') {
-            //mpesa
+//mpesa
             $pay->MpesaAmount = $request->amount;
             $pay->MpesaReference = strtoupper($request->MpesaRef);
         } elseif ($payment_mode == 'cheque') {
-            //cheque
+//cheque
             $pay->ChequeName = strtoupper($request->Ac_holder_name);
             $pay->ChequeDate = $request->ChequeDate;
             $pay->ChequeAmount = $request->amount;
@@ -365,7 +366,7 @@ class InventoryFunctions {
             $pay->ChequeBank = $request->Bank;
             $pay->ChequeBankBranch = $request->Branch;
         } elseif ($payment_mode == 'card') {
-            //card
+//card
             $pay->CardName = $request->CardNames;
             $pay->CardType = $request->CardType;
             $pay->CardAmount = $request->amount;
@@ -373,28 +374,24 @@ class InventoryFunctions {
             $pay->CardExpiry = $request->expiry_month + "/" + $request->expiry_year;
             $pay->CardNumber = $request->CardNumber;
         } elseif ($payment_mode == 'insurance') {
-            //insurance
-            $pay->scheme = $request->InsuranceScheme;
-            $pay->InsuranceAmount = $request->amount;
-            //Save Client
-            $customer = Customer::firstOrNew(['phone' => $request->phone]);
-            $customer->first_name = $request->first_name_ins;
-            $customer->last_name = $request->last_name_ins;
-            $customer->email = $request->email_ins;
-            $customer->phone = $request->phone_ins;
-            $customer->save();
-            //Save Credit Details
-            $details = new InventoryInsuranceDetails;
-            $details->customer = $customer->id;
-            $details->insurance_company = $request->company;
-            $details->credit_scheme = $request->scheme;
-            $details->policy_no = $request->policy_number;
-            $details->principal = $request->principal;
-            $details->date_of_birth = new \Date($request->principal_dob);
-            $details->relation = $request->principal_relationship;
-            $details->save();
+            try {//payment
+                $pay->scheme = $request->InsuranceScheme;
+                $pay->InsuranceAmount = $request->amount;
+                $customer = $request->customer_id; //Client
+                $details = InventoryInsuranceDetails::where('customer', '=', $customer)
+                        ->where('policy_no', '=', $request->policy)
+                        ->first(); //Credit Details
+                $sale = InventoryBatchProductSales::query()->where('receipt', '=', $receipt)->first(); //update sale
+                $sale->customer = $customer;
+                $sale->insurance = $details->id;
+                $sale->save();
+                self::save_insurance_invoice($sale->id, $sale->receipt, $sale->created_at);
+            } catch (\Exception $e) {
+                flash()->info('There was a problem processing your request... kindly try again');
+                redirect()->back();
+            }
         } else {
-            //
+//
         }
 
         return $pay->save();
@@ -403,7 +400,19 @@ class InventoryFunctions {
     /**
      * @param InventoryBatchProductSales $sale
      */
-    private static function take_products(InventoryBatchProductSales $sale) {
+    private function save_insurance_invoice($id, $receipt, $date) {
+        $inv = new InsuranceInvoice();
+        $inv->invoice_no = $receipt;
+        $inv->receipt = $id;
+        $inv->status = 'billed';
+        $inv->invoice_date = new \Date($date);
+        $inv->save();
+    }
+
+    /**
+     * @param InventoryBatchProductSales $sale
+     */
+    private function take_products(InventoryBatchProductSales $sale) {
         foreach ($sale->goodies as $vending) {
             $adj = new InventoryStockAdjustment;
             $adj->quantity = $vending->quantity;
@@ -411,6 +420,7 @@ class InventoryFunctions {
             $adj->method = '-';
             $adj->user = \Auth::user()->id;
             $adj->product = $vending->product;
+            $adj->opening_qty = self::openingStock($vending->product);
             $adj->reason = 'Product sales Receipt #' . $vending->receipt_no;
             $adj->save();
             self::adjust_stock($adj);
@@ -422,7 +432,7 @@ class InventoryFunctions {
      * @param InventoryBatch $incoming
      * @return bool
      */
-    public static function apply_markup(InventoryBatch $incoming) {
+    public function apply_markup(InventoryBatch $incoming) {
         DB::transaction(function () use ($incoming) {
             foreach ($incoming->products as $item) {
                 $markup = $item->products->categories->cash_markup;
@@ -438,7 +448,7 @@ class InventoryFunctions {
         return true;
     }
 
-    public static function enQueueProductBatch($batch, $product) {
+    public function enQueueProductBatch($batch, $product) {
         $in_q = InventoryBatchPurchases::query()
                 ->where('product', '=', $product)
                 ->where('active', '=', TRUE)
@@ -459,7 +469,7 @@ class InventoryFunctions {
         return $q->save();
     }
 
-    public static function deQueueProductBatch($batch, $product) {
+    public function deQueueProductBatch($batch, $product) {
         $q = InventoryBatchPurchases::query()
                 ->where('product', '=', $product)
                 ->where('batch', '=', $batch)
@@ -468,7 +478,7 @@ class InventoryFunctions {
         return $q->save();
     }
 
-    public static function activateQueue($batch, $product) {
+    public function activateQueue($batch, $product) {
         $q = InventoryBatchPurchases::query()
                 ->where('product', '=', $product)
                 ->where('batch', '=', $batch)
@@ -477,7 +487,7 @@ class InventoryFunctions {
         return $q->save();
     }
 
-    public static function update_queue($product, $batch, $qty) {
+    public function update_queue($product, $batch, $qty) {
         $b_purchase = InventoryBatchPurchases::where('product', '=', $product)
                 ->where('batch', '=', $batch)
                 ->first();
@@ -485,7 +495,7 @@ class InventoryFunctions {
         $qty_sold = $b_purchase->qty_sold;
         $batch_items_remaining = $batch_qty - $qty_sold;
         if ($qty > $batch_items_remaining) {
-            //Sell surplus in nextbatch
+//Sell surplus in nextbatch
             $surplus = $qty - $batch_items_remaining;
 
             $next = InventoryBatchPurchases::whereProduct($b_purchase->product)
@@ -509,7 +519,7 @@ class InventoryFunctions {
      * @param Request $request
      * @return bool
      */
-    public static function receive_goods_direct(Request $request) {
+    public function receive_goods_direct(Request $request) {
         DB::transaction(function () use ($request) {
             $stack = self::order_item_stack(array_keys($request->all()));
             $order = new InventoryBatch;
@@ -522,6 +532,7 @@ class InventoryFunctions {
                 $quantity = 'qty' . $index;
                 $bonus = 'bonus' . $index;
                 $discount = 'dis' . $index;
+                $tax = 'tax' . $index;
                 $expiry = 'expiry' . $index;
                 $package = 'package' . $index;
                 if ($request->has($item) && $request->has($price) && $request->has($quantity)) {
@@ -536,13 +547,14 @@ class InventoryFunctions {
                     }
                     $details->quantity = $request->$quantity;
                     $details->discount = $request->$discount;
+                    $details->tax = $request->$tax;
                     $details->expiry_date = $request->$expiry;
                     $details->package_size = $request->$package;
                     $details->save();
                 }
             }
-            //$job = (new StockUpdate($order, true))->onQueue('stock');
-            //dispatch($job);
+//$job = (new StockUpdate($order, true))->onQueue('stock');
+//dispatch($job);
             self::update_stock_from_lpo($order, true);
             $request->session()->put('last_receive', $order->id);
         });
@@ -555,7 +567,7 @@ class InventoryFunctions {
      * @param Request $request
      * @return bool
      */
-    public static function receive_from_lpo(Request $request) {
+    public function receive_from_lpo(Request $request) {
         DB::transaction(function () use ($request) {
             $stack = self::order_item_stack(array_keys($request->all()));
             $order = new InventoryBatch;
@@ -569,6 +581,7 @@ class InventoryFunctions {
                 $quantity = 'qty' . $index;
                 $bonus = 'bonus' . $index;
                 $discount = 'dis' . $index;
+                $tax = 'tax' . $index;
                 $expiry = 'expiry' . $index;
                 $package = 'package' . $index;
                 if ($request->has($item) && $request->has($price) && $request->has($quantity)) {
@@ -579,6 +592,7 @@ class InventoryFunctions {
                     $details->unit_cost = $request->$price / $request->$package;
                     $details->quantity = $request->$quantity;
                     $details->discount = $request->$discount;
+                    $details->tax = $request->$tax;
                     $details->expiry_date = $request->$expiry;
                     $details->package_size = $request->$package;
                     $details->save();
@@ -601,7 +615,7 @@ class InventoryFunctions {
      * @param bool $direct
      * @return bool
      */
-    public static function update_stock_from_lpo(InventoryBatch $batch, $direct = false) {
+    public function update_stock_from_lpo(InventoryBatch $batch, $direct = false) {
         DB::transaction(function () use ($batch, $direct) {
             foreach ($batch->products as $product) {
                 $to_add = $product->package_size * $product->quantity + $product->bonus;
@@ -616,6 +630,7 @@ class InventoryFunctions {
                     $adj->reason = "Received goods from LPO #" . $batch->lpo->id . ' Supplier - ' . $batch->lpo->suppliers->name;
                 }
                 $adj->product = $product->product;
+                $adj->opening_qty = self::openingStock($product->product);
                 $adj->save();
                 self::adjust_stock($adj);
             }
@@ -628,7 +643,7 @@ class InventoryFunctions {
      * @param InventoryStockAdjustment $adj
      * @return bool
      */
-    private static function adjust_stock(InventoryStockAdjustment $adj) {
+    private function adjust_stock(InventoryStockAdjustment $adj) {
         $stock = InventoryStock::firstOrNew(['product' => $adj->product]);
         $curr = $stock->quantity;
         if (empty($stock->quantity)) {
@@ -643,7 +658,7 @@ class InventoryFunctions {
      * @param $id
      * @return bool
      */
-    public static function set_stock_value(Request $request, $id) {
+    public function set_stock_value(Request $request, $id) {
         DB::transaction(function () use ($request, $id) {
             $curr = InventoryStock::firstOrNew(['product' => $id])->quantity;
             if (empty($curr)) {
@@ -651,6 +666,7 @@ class InventoryFunctions {
             }
             $adj = new InventoryStockAdjustment;
             $adj->product = $id;
+            $adj->opening_qty = self::openingStock($id);
             $adj->quantity = abs($request->quantity - $curr);
             $adj->user = $request->user()->id;
             $adj->method = ($request->quantity >= $curr) ? '+' : '-';
@@ -663,53 +679,110 @@ class InventoryFunctions {
         return true;
     }
 
+    public function openingStock($item) {
+        $stock = InventoryStock::where('product', '=', $item)->first();
+        if ($stock) {
+            return $stock->quantity;
+        } else {
+            return 0;
+        }
+    }
+
     /**
      * @param Request $request
      * @return bool
      */
-    public static function sales_return(Request $request) {
-        DB::transaction(function () use ($request) {
-
+    public function sales_return(Request $request) {
+        DB::beginTransaction();
+        try {
             $sreturn = new InventorySalesReturn;
             $sreturn->product = $request->product;
             $sreturn->receipt_no = $request->rcpt;
             $sreturn->quantity = $request->qty;
+            if (!isset($request->trash)) {
+                $sreturn->stocked = true;
+            }
             $sreturn->reason = $request->reason;
-            $sreturn->save();
-
-            //update stock
+            $sreturn->save(); //update stock
             $curr = InventoryStock::firstOrNew(['product' => $request->product])->quantity;
             if (empty($curr)) {
                 $curr = 0;
             }
 
-            $adj = new InventoryStockAdjustment;
-            $adj->product = $request->product;
-            $adj->quantity = $request->qty;
-            $adj->user = $request->user()->id;
-            $adj->method = '+';
-            $adj->reason = 'Sales Return';
-            $adj->type = 'sales';
-            $adj->save();
-            self::adjust_stock($adj);
-        });
-        return true;
+            if (!isset($request->trash)) {
+                $adj = new InventoryStockAdjustment;
+                $adj->product = $request->product;
+                $adj->opening_qty = self::openingStock($request->product);
+                $adj->quantity = $request->qty;
+                $adj->user = $request->user()->id;
+                $adj->method = '+';
+                $adj->reason = 'sales seturn';
+                $adj->type = 'return';
+                $adj->save();
+                self::adjust_stock($adj);
+            }
+
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollback();
+            flash()->info('Something went wrong, please try again');
+            return redirect()->back();
+        }
     }
 
     /**
      * @param Request $request
      */
-    public static function supplier_invoice(Request $request) {
+    public function supplier_invoice(Request $request) {
         $inv = new InventoryInvoice;
         $inv->creditor = $request->creditor;
         $inv->amount = $request->amount;
-        $inv->gl_account = $request->gl_account;
+        $inv->grn = $request->grn;
         $inv->date = $request->date;
         $inv->due_date = $request->due_date;
         $inv->status = $request->status;
         $inv->description = $request->description;
         $inv->number = $request->number;
         $inv->save();
+    }
+
+    public function save_client(Request $request) {
+        try {
+//Client information
+            $client = new Customer();
+            $client->first_name = $request->first_name_ins;
+            $client->last_name = $request->last_name_ins;
+            $client->date_of_birth = new \Date($request->dob_user);
+            $client->email = $request->email_ins;
+            $client->phone = $request->phone_ins;
+            $client->save();
+//Credit Details
+            $details = new InventoryInsuranceDetails;
+            $details->customer = $client->id;
+            $details->insurance_company = $request->company;
+            $details->credit_scheme = $request->scheme;
+            $details->policy_no = $request->policy_number;
+            $details->principal = $request->principal;
+            $details->date_of_birth = new \Date($request->principal_dob);
+            $details->relation = $request->principal_relationship;
+            $details->save();
+            return true;
+        } catch (\Exception $exc) {
+            flash('A problem occured while saving the data.. kindly try again');
+            return redirect()->back();
+        }
+    }
+
+    public function purge_client($id) {
+        try {
+            $client = Customer::find($id);
+            $client->delete();
+            return true;
+        } catch (\Exception $e) {
+            flash('A problem occured while executing your request.. kindly try again', 'success');
+            return redirect()->back();
+        }
     }
 
 }

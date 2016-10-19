@@ -10,13 +10,13 @@
  * =============================================================================
  */
 
-use Ignite\Inventory\Entities\InventoryCategories;
-use Ignite\Inventory\Entities\InventoryPaymentTerms;
-use Ignite\Inventory\Entities\InventoryProducts;
-use Ignite\Inventory\Entities\InventoryPurchaseOrders;
-use Ignite\Inventory\Entities\InventorySupplier;
-use Ignite\Inventory\Entities\InventoryTaxCategory;
-use Ignite\Inventory\Entities\InventoryUnits;
+use Dervis\Modules\Inventory\Entities\InventoryCategories;
+use Dervis\Modules\Inventory\Entities\InventoryPaymentTerms;
+use Dervis\Modules\Inventory\Entities\InventoryProducts;
+use Dervis\Modules\Inventory\Entities\InventoryPurchaseOrders;
+use Dervis\Modules\Inventory\Entities\InventorySupplier;
+use Dervis\Modules\Inventory\Entities\InventoryTaxCategory;
+use Dervis\Modules\Inventory\Entities\InventoryUnits;
 
 if (!function_exists('get_product_categories')) {
 

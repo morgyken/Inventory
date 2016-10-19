@@ -15,7 +15,7 @@ class CreateInventoryUnitsTable extends Migration {
             $table->increments('id');
             $table->string('name');
             $table->string('symbol')->nullable();
-            $table->text('description')->nullable();
+            $table->text('description');
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ class CreateInventoryProductsTable extends Migration {
         Schema::create('inventory_products', function(Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->longText('description')->nullable();
+            $table->longText('description');
             $table->integer('category')->unsigned();
             $table->integer('unit')->unsigned();
             $table->integer('tax_category')->unsigned()->nullable();

@@ -17,6 +17,9 @@ $product = $data['product'];
 
 @section('content')
 {!! Form::open(['class'=>'form-horizontal','route'=>'inventory.add_product']) !!}
+@if($data['product']->id)
+<input type="hidden" name="id" value="{{$data['product']->id}}" >
+@endif
 <div class="box box-info">
     <div class="box-header with-border">
         <h3 class="box-title">Add/Edit product</h3>
@@ -65,14 +68,14 @@ $product = $data['product'];
                 <div class="form-group {{ $errors->has('formulation') ? ' has-error' : '' }} req">
                     <label class="control-label col-md-4">Formulation</label>
                     <div class="col-md-8">
-                        {!! Form::select('formulation',mconfig('inventory.inventory.formulation'),old('formulation',$product->formulation),['class'=>'form-control']) !!}
+                        {!! Form::select('formulation',config('inventory.formulation'),old('formulation',$product->formulation),['class'=>'form-control']) !!}
                         {!! $errors->first('formulation', '<span class="help-block">:message</span>') !!}
                     </div>
                 </div>
                 <div class="form-group {{ $errors->has('label_type') ? ' has-error' : '' }} req">
                     <label class="control-label col-md-4">Label Type</label>
                     <div class="col-md-8">
-                        {!! Form::select('label_type',mconfig('inventory.inventory.label_type'),old('label_type',$product->label_type),['class'=>'form-control']) !!}
+                        {!! Form::select('label_type',config('inventory.label_type'),old('label_type',$product->label_type),['class'=>'form-control']) !!}
                         {!! $errors->first('label_type', '<span class="help-block">:message</span>') !!}
                     </div>
                 </div>
@@ -80,7 +83,7 @@ $product = $data['product'];
             <div class="form-group {{ $errors->has('description') ? ' has-error' : '' }}">
                 <label class="control-label col-md-4">Description</label>
                 <div class="col-md-8">
-                    {!! Form::textarea('description',old('description',$product->selling_price),['class'=>'form-control','rows'=>4]) !!}
+                    {!! Form::textarea('description',old('description',$product->description),['class'=>'form-control','rows'=>4]) !!}
                     {!! $errors->first('description', '<span class="help-block">:message</span>') !!}
                 </div>
             </div>

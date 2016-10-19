@@ -1,24 +1,16 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Http\Controllers;
 
 use Ignite\Core\Http\Controllers\AdminBaseController;
 use Ignite\Inventory\Entities\InventoryBatchProductSales;
 use Ignite\Inventory\Library\InventoryFunctions;
+use Ignite\Settings\Entities\Schemes;
 use Illuminate\Http\Request;
 use Ignite\Inventory\Entities\InventorySalesReturn;
 use Ignite\Inventory\Entities\InventoryDispensing;
-use Ignite\Settings\Entities\Schemes;
+use Ignite\Inventory\Entities\InventoryInsuranceDetails;
+use Ignite\Inventory\Entities\Customer;
 
 class SalesController extends AdminBaseController {
 
@@ -39,6 +31,59 @@ class SalesController extends AdminBaseController {
         }
         $this->data['schemes'] = Schemes::all();
         return view('inventory::shop.shop')->with('data', $this->data);
+    }
+
+    public function shopfront_credit($id = null) {
+        if ($this->request->isMethod('post')) {
+            if (InventoryFunctions::record_sales($this->request, $id)) {
+                $receipt = \Session::get('receipt_id');
+                flash('Bill placed successfully');
+                return redirect()->route('inventory.receipt', $receipt);
+            }
+        }
+        return view('inventory::shop.credit')->with('data', $this->data);
+    }
+
+    /**
+     * @todo Record the sales details
+     * @param type $id
+     * @return type
+     */
+    public function clients($id = null) {
+        if ($this->request->isMethod('post')) {
+            if (InventoryFunctions::save_client($this->request, $id)) {
+                flash('Client Saved.. thank you');
+                return redirect()->route('inventory.clients.credit', null);
+            }
+        }
+        if ($this->request->id > 0) {
+            $this->data['ins'] = InventoryInsuranceDetails::find($this->request->id);
+        }
+        return view('inventory::shop.credit_user')->with('data', $this->data);
+    }
+
+    /**
+     * @todo Record the sales details
+     * @param type $id
+     * @return type
+     */
+    public function show_clients($id = null) {
+        if ($this->request->isMethod('post')) {
+            if (InventoryFunctions::save_client($this->request, $id)) {
+                flash('Client Saved.. thank you');
+                return redirect()->route('inventory.clients.credit', null);
+            }
+        }
+        $this->data['ins'] = InventoryInsuranceDetails::all();
+        return view('inventory::clients')->with('data', $this->data);
+    }
+
+    public function purge_client($id = null) {
+        if (InventoryFunctions::purge_client($id)) {
+            flash('client information deleted.. thank you');
+            return redirect()->route('inventory.clients.credit', null);
+        }
+        return redirect()->back();
     }
 
     /**

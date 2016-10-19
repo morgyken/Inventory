@@ -4,12 +4,18 @@ $router->get('/', ['uses' => 'InventoryController@index', 'as' => 'index']);
 
 //sales
 $router->match(['post', 'get'], 'shopfront', ['uses' => 'SalesController@shopfront', 'as' => 'shopfront']);
+$router->match(['post', 'get'], 'shopfront/credit', ['uses' => 'SalesController@shopfront_credit', 'as' => 'shopfront.credit']);
+$router->match(['post', 'get'], 'clients/credit/{id}', ['uses' => 'SalesController@clients', 'as' => 'clients.credit']);
+$router->match(['post', 'get'], 'clients/{id}', ['uses' => 'SalesController@show_clients', 'as' => 'clients.all']);
+$router->get('client/purge/{id}', ['uses' => 'SalesController@purge_client', 'as' => 'clients.credit.purge']);
+
 $router->get('sales/receipt/{id}', ['uses' => 'SalesController@receipt', 'as' => 'receipt']);
 $router->get('sales/receipts', ['uses' => 'SalesController@receipts', 'as' => 'sales.receipts']);
 
 $router->match(['post', 'get'], 'sales/return', ['uses' => 'SalesController@return_goods', 'as' => 'sales.return']);
 $router->get('sales/return/fillform', ['uses' => 'ApiController@fill_return_form', 'as' => 'sales.fillreturnform']);
 $router->get('sales/return/fetchqtysold', ['uses' => 'ApiController@qty_sold', 'as' => 'sales.qtysold']);
+$router->get('sales/creditnote/{id}', ['uses' => 'ReportController@creditnote', 'as' => 'sales.cnote']);
 //products
 $router->match(['post', 'get'], 'categories/products/{id?}', ['uses' => 'InventoryController@product_categories', 'as' => 'product_categories']);
 $router->match(['post', 'get'], 'categories/tax/{id?}', ['uses' => 'InventoryController@tax_categories', 'as' => 'tax_categories']);
@@ -61,12 +67,28 @@ $router->get('direct/dnote/{id}', ['uses' => 'ReportController@dnote', 'as' => '
 $router->get('lpo/dnote/{id}', ['uses' => 'ReportController@dnote_lpo', 'as' => 'dnote_lpo']);
 $router->get('sales/receipt/print/{id}', ['uses' => 'ReportController@receipt', 'as' => 'sale.receipt.print']);
 $router->get('sales/receipt/invoice/print/{id}', ['uses' => 'ReportController@invoice', 'as' => 'sale.invoice.print']);
+$router->get('print/sales/{start}/{end}', ['uses' => 'ReportController@PrintSalesSummary', 'as' => 'inv.sales.print']);
+$router->get('print/sales/', ['uses' => 'ReportController@PrintSalesSummary', 'as' => 'inv.sales.all.print']);
+
+$router->get('print/item/sales/{start}/{end}', ['uses' => 'ReportController@PrintItemSales', 'as' => 'inv.item.sales.print']);
+$router->get('print/item/sales/', ['uses' => 'ReportController@PrintItemSales', 'as' => 'inv.item.sales.all.print']);
+
+$router->get('print/stock/movement/', ['uses' => 'ReportController@printStockMvmnt', 'as' => 'stock.movement.print']);
+$router->get('stock/expiry/{type}/{scope}', ['uses' => 'ReportController@expiryPrint', 'as' => 'stock.expiry.print']);
+$router->get('stock/report/print', ['uses' => 'ReportController@printStockReport', 'as' => 'stock.report.print']);
+//Excel
+$router->get('excel/stock/movement/', ['uses' => 'ReportController@excelStockMvmnt', 'as' => 'stock.movement.worksheet']);
+$router->get('expiry/{type}/{scope}/{start}/{end}', ['uses' => 'ReportController@expiry', 'as' => 'stock.expiry.worksheet']);
 //Approve LPO
 $router->get('lpo/approve/{id}', ['uses' => 'InventoryController@approveLPO', 'as' => 'approveLPO']);
 
 //reports
-$router->match(['post', 'get'], 'reports/sales', ['uses' => 'ReportController@timePeriodSales', 'as' => 'reports.sales']);
-$router->match(['post', 'get'], 'reports/stocks', ['uses' => 'ReportController@lowStocks', 'as' => 'reports.stocks']);
+$router->match(['post', 'get'], 'sales/report', ['uses' => 'ReportController@timePeriodSales', 'as' => 'reports.sales']);
+$router->match(['post', 'get'], 'product/sales/report', ['uses' => 'ReportController@itemSales', 'as' => 'reports.sales.product']);
+$router->match(['post', 'get'], 'reports/stocks', ['uses' => 'ReportController@stocks', 'as' => 'reports.stocks']);
+$router->match(['post', 'get'], 'reports/stock/movement', ['uses' => 'ReportController@stockMovement', 'as' => 'reports.stocks.movement']);
+$router->match(['post', 'get'], 'reports/stock/expiry', ['uses' => 'ReportController@expiry', 'as' => 'reports.stocks.expiry']);
 //Fetchers
 
 $router->get('suggest/items', ['uses' => 'ApiController@pullProductSuggestions', 'as' => 'prod.tulus']);
+

@@ -3,7 +3,7 @@
     "alias": "inventory",
     "description": "The main inventory and shopfront",
     "keywords": [],
-    "active": 0,
+    "active": 1,
     "order": 11,
     "providers": [
         "Ignite\\Inventory\\Providers\\InventoryServiceProvider",

@@ -18,13 +18,10 @@ $end = Illuminate\Support\Facades\Input::get('end');
     <div class="box-header">
         <div class="pull-right">
             {!! Form::open()!!}
-            Start Date: <input type="text" id="date1" name="start" value="{{$start}}"/>
-            End Date: <input type="text" id="date2" name="end" value="{{$end}}"/>
-            <button  type="submit" id="clearBtn" class="btn btn-primary btn-xs"><i class="fa fa-filter"></i> Filter</button>
-            <a class="btn btn-xs btn-success" href="{{route('reports.cashier',['start'=>$start,'end'=>$end])}}"
-               target="_blank"><i class="fa fa-file-pdf-o"></i> pdf</a>
+            From: <input type="text" id="date1" name="start" value="{{$start}}"/>
+            To: <input type="text" id="date2" name="end" value="{{$end}}"/>
+            <button  type="submit" id="clearBtn" class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
             {!! Form::close()!!}
-
         </div>
     </div>
     <div class="box-body">
@@ -50,32 +47,31 @@ $end = Illuminate\Support\Facades\Input::get('end');
                     <td>{{$record->receipt}}</td>
                     <td>{{$record->users->profile->full_name}}</td>
 
+
                     @if($record->payment_mode=='cash')
                     <td>{{$record->amountpaid->CashAmount}}</td>
+                    <?php $cash_amnt +=$record->amountpaid->CashAmount ?>
 
                     @elseif($record->payment_mode=='mpesa')
                     <td>{{$record->amountpaid->MpesaAmount}}</td>
+                    <?php $mpesa_amnt +=$record->amountpaid->MpesaAmount ?>
 
                     @elseif($record->payment_mode=='cheque')
                     <td>{{$record->amountpaid->ChequeAmount}}</td>
+                    <?php $cheq_amnt +=$record->amountpaid->ChequeAmount ?>
 
                     @elseif($record->payment_mode=='card')
                     <td>{{$record->amountpaid->CardAmount}}</td>
+                    <?php $card_amnt +=$record->amountpaid->CardAmount ?>
 
                     @elseif($record->payment_mode=='insurance')
                     <td>{{$record->amountpaid->InsuranceAmount}}</td>
+                    <?php $insurance +=$record->amountpaid->InsuranceAmount ?>
                     @endif
 
                     <td>{{$record->payment_mode}}</td>
                     <td>{{(new Date($record->created_at))->format('jS M Y')}}</td>
                 </tr>
-                <?php
-                $cash_amnt += $record->amountpaid->CashAmount;
-                $mpesa_amnt += $record->amountpaid->MpesaAmount;
-                $cheq_amnt += $record->amountpaid->ChequeAmount;
-                $card_amnt += $record->amountpaid->CardAmount;
-                $insurance += $record->amountpaid->InsuranceAmount;
-                ?>
                 @endforeach
             </tbody>
         </table>
@@ -98,9 +94,17 @@ $end = Illuminate\Support\Facades\Input::get('end');
                 $("#date2").datepicker('option', 'minDate', date);
             }});
         $("#date2").datepicker({dateFormat: 'yy-mm-dd'});
-        $('#cashier').DataTable();
+
+        $('#cashier').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+
     });
 </script>
+
 @endsection
 
 

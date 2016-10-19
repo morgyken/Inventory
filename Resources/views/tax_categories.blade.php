@@ -30,7 +30,7 @@
                         <tr id="category{{$category->id}}">
                             <td>{{$category->id}}</td>
                             <td>{{$category->name}}</td>
-                            <td>{{$category->rates}}</td>
+                            <td>{{$category->rate}}</td>
                             <td>
                                 <a href="{{route('inventory.tax_categories',$category->id)}}"
                                    class="btn btn-primary btn-xs">

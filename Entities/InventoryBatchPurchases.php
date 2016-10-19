@@ -1,15 +1,5 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Entities;
 
 use Illuminate\Database\Eloquent\Model;
@@ -19,9 +9,10 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property-read \Ignite\Inventory\Entities\InventoryPurchaseOrders $lpo
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $products
- * @property-read \Ignite\Inventory\Entities\InventorySupplier $creditors
+ * @property-read \Ignite\Inventory\Entities\InventorySupplier $creitors
  * @property-read \Ignite\Inventory\Entities\InventorySupplier $suppliers
  * @property-read mixed $total
+ * @property-read mixed $remaining
  * @mixin \Eloquent
  */
 class InventoryBatchPurchases extends Model {
@@ -37,7 +28,7 @@ class InventoryBatchPurchases extends Model {
         return $this->belongsTo(InventoryProducts::class, 'product', 'id');
     }
 
-    public function creditors() {
+    public function creitors() {
         return $this->belongsTo(InventorySupplier::class, 'product', 'id');
     }
 
@@ -47,7 +38,13 @@ class InventoryBatchPurchases extends Model {
 
     public function getTotalAttribute() {
         $total = $this->unit_cost * $this->quantity * $this->package_size;
-        return $total - ($total * $this->discount / 100);
+        $taxable = ($this->tax / 100) * $total;
+        return ($total + $taxable) - ($total * $this->discount / 100);
+    }
+
+    public function getRemainingAttribute() {
+        $r = ($this->package_size * $this->quantity) - $this->qty_sold;
+        return $r + $this->bonus;
     }
 
 }

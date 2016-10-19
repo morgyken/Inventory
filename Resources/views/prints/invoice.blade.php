@@ -10,14 +10,11 @@
             }
 
             a {
-                color: #5D6975;
                 text-decoration: underline;
             }
 
             body {
                 position: relative;
-                width: 21cm;
-                height: 29.7cm;
                 margin: 0 auto;
                 color: #001028;
                 background: #FFFFFF;
@@ -43,8 +40,7 @@
             h1 {
                 border-top: 1px solid  #5D6975;
                 border-bottom: 1px solid  #5D6975;
-                color: #5D6975;
-                font-size: 1.2em;
+                font-size: 2.4em;
                 line-height: 1.4em;
                 font-weight: normal;
                 text-align: center;
@@ -58,7 +54,7 @@
 
             #project span {
                 color: #5D6975;
-                text-align: right;
+                text-align: left;
                 width: 52px;
                 margin-right: 10px;
                 display: inline-block;
@@ -93,10 +89,9 @@
 
             table th {
                 padding: 5px 20px;
-                color: #5D6975;
                 border-bottom: 1px solid #C1CED9;
                 white-space: nowrap;
-                font-weight: normal;
+                font-weight: bold;
             }
 
             table .service,
@@ -105,7 +100,11 @@
             }
 
             table td {
-                padding: 5px;
+                padding: 10px;
+                text-align: center;
+            }
+            table .sums{
+                padding: 10px;
                 text-align: right;
             }
 
@@ -125,12 +124,10 @@
             }
 
             #notices .notice {
-                color: #5D6975;
                 font-size: 1.2em;
             }
 
             footer {
-                color: #5D6975;
                 width: 100%;
                 height: 30px;
                 position: absolute;
@@ -148,7 +145,7 @@
                 <img src="logo.png">
             </div>
             -->
-            <h1>Sale Insurance Invoice ({{$data['sales']->id}})</h1>
+            <h1>Invoice#{{$data['sales']->id}}</h1>
             <div id="company" class="clearfix">
                 <div>{{config('practice.name')}}</div>
                 <div>{{config('practice.building')}},<br /> {{config('practice.street')}}, {{config('practice.town')}}</div>

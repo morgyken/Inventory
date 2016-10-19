@@ -1,15 +1,5 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Http\Controllers;
 
 use Ignite\Core\Http\Controllers\AdminBaseController;
@@ -19,6 +9,7 @@ use Ignite\Inventory\Entities\InventoryProducts;
 use Ignite\Inventory\Entities\InventoryInvoice;
 use Ignite\Finance\Entities\BankAccount;
 use Ignite\Finance\Entities\FinanceGlAccounts;
+use Ignite\Finance\Entities\FinanceInvoicePayment;
 use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\InventoryProductMarkup;
 use Ignite\Inventory\Entities\InventoryPurchaseOrders;
@@ -34,6 +25,7 @@ use Illuminate\Http\Request;
 use Ignite\Inventory\Library\Validation;
 use Ignite\Inventory\Library\InventoryFunctions;
 use Ignite\Inventory\Entities\InventoryBatchPurchases;
+use Ignite\Inventory\Entities\InventoryPurchaseOrderDetails;
 
 class InventoryController extends AdminBaseController  {
 
@@ -45,6 +37,7 @@ class InventoryController extends AdminBaseController  {
 
 
     public function __construct(Request $request) {
+        parent::__construct();
         $this->request = $request;
     }
 
@@ -93,8 +86,17 @@ class InventoryController extends AdminBaseController  {
     public function supplier_invoice_details($id) {
         $this->data['accounts'] = BankAccount::all();
         $this->data['inv'] = InventoryInvoice::find($id);
-        $this->data['batch'] = InventoryPurchaseOrders::find($this->data['inv']->batch);
-        $bp = InventoryBatchPurchases::query();
+        $this->data['batch'] = InventoryBatch::where('id', '=', $this->data['inv']->grn)->first();
+        // Received Items
+        $purchases = InventoryBatchPurchases::query();
+        $this->data['items'] = $purchases->where('batch', '=', $this->data['inv']->grn)->get();
+        //Prior payments for this invoice
+        $this->data['payments'] = FinanceInvoicePayment::where('invoice', '=', $id)->get();
+        $paid_amount = 0;
+        foreach ($this->data['payments'] as $p) {
+            $paid_amount+=$p->amount;
+        }
+        $this->data['amount_paid'] = $paid_amount;
         return view('inventory::supplier_invoice_details')->with('data', $this->data);
     }
 
@@ -140,7 +142,7 @@ class InventoryController extends AdminBaseController  {
     public function add_product($id = null) {
         if ($this->request->isMethod('post')) {
             $this->validate($this->request, Validation::add_product());
-            if (InventoryFunctions::add_product($this->request, $id)) {
+            if (InventoryFunctions::add_product($this->request, $this->request->id)) {
                 flash('Product Saved');
                 return redirect()->route('inventory.products');
             }

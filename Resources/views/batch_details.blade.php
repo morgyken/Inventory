@@ -108,7 +108,26 @@ $item = $data['items'];
                                 </span>
                                 <span class="label label-info">
                                     <i class="fa fa-money" aria-hidden="true"></i>
-                                    <a href="#" id="payment_toggle" data-toggle="collapse" data-target="#payment" style="color: whitesmoke">Add <i class="fa fa-rub"></i>ayment</a></span>
+                                    <a href="#" id="payment_toggle" data-toggle="collapse" data-target="#payment" style="color: whitesmoke">
+                                        Add <i class="fa fa-rub"></i>ayment</a>
+                                </span>
+                                @elseif($del->payment_status==2)
+                                <span class="label label-warning">
+                                    <i class="fa fa-hourglass fa-spin"></i>
+                                    Partially Paid
+                                </span>
+                                <span class="label label-info">
+                                    <i class="fa fa-money" aria-hidden="true"></i>
+                                    <a href="#" id="payment_toggle" data-toggle="collapse" data-target="#payment" style="color: whitesmoke">
+                                        Add <i class="fa fa-rub"></i>ayment</a>
+                                </span>
+                                @else
+                                <span class="label label-success">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                    Paid
+                                </span>
+                                @endif
+
 
                                 <div id="payment" class="collapse">
                                     <form method="post" action="{{route('finance.gl.save.payment')}}">
@@ -133,7 +152,7 @@ $item = $data['items'];
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <input type="text" id="amount" autocomplete="off" class="form-control" name="amount" value="{{$t}}">
+                                                        <input type="text" id="amount" readonly="" autocomplete="off" class="form-control" name="amount" value="{{ceil($t)}}">
                                                         <div id="response"></div>
                                                         <input type="hidden" name="grn_id" value="{{$del->id}}">
                                                     </td>
@@ -149,7 +168,7 @@ $item = $data['items'];
                                                 <tr>
                                                     <th>Payment Mode</th>
                                                     <th>Amount</th>
-                                                    <th>Payment To</th>
+                                                    <th>Payment was made To</th>
                                                     <th></th>
                                                     <th></th>
                                                 </tr>
@@ -157,17 +176,9 @@ $item = $data['items'];
                                         </table>
                                     </form>
                                 </div>
-                                @else
-                                <span class="label label-success">
-                                    <i class="fa fa-check" aria-hidden="true"></i>
-                                    Paid
-                                </span>
-                                @endif
                             </td>
                         </tr>
                     </tfoot>
-
-
                 </table>
             </div>
         </div>

@@ -1,15 +1,5 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Entities;
 
 use Ignite\Users\Entities\User;
@@ -22,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Ignite\Users\Entities\User $users
  * @property-read \Ignite\Inventory\Entities\InventoryPayments $amountpaid
  * @property-read \Ignite\Inventory\Entities\Customer $customers
+ * @property-read \Ignite\Inventory\Entities\InventoryInsuranceDetails $insuranceses
  * @mixin \Eloquent
  */
 class InventoryBatchProductSales extends Model {
@@ -43,6 +34,10 @@ class InventoryBatchProductSales extends Model {
 
     public function customers() {
         return $this->belongsTo(Customer::class, 'customer');
+    }
+
+    public function insuranceses() {
+        return $this->belongsTo(InventoryInsuranceDetails::class, 'insurance');
     }
 
 }

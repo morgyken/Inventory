@@ -36,7 +36,7 @@
                     <div class="form-group row">
                         <label class="col-xs-4 col-form-label" >Creditor(Supplier)</label>
                         <div class="col-xs-8">
-                            <select name = "creditor" class="form-control input-medium" required title = "Select Creditor">
+                            <select name = "creditor" id="supplier" class="form-control input-medium" required title = "Select Creditor">
                                 <option></option>
                                 @foreach($data['suppliers'] as $s)
                                 <option value="{{$s->id}}">{{$s->name}}</option>
@@ -46,20 +46,17 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">Date of Invoice</label>
+                        <label class="col-xs-4 col-form-label">Date on Invoice</label>
                         <div class="col-xs-8">
                             <input type="text" name="date" value="" id="date1" class="form-control"  data-date-format="dd-M-yyyy" required readonly>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-xs-4 col-form-label">GL Account</label>
+                        <label class="col-xs-4 col-form-label">GRN</label>
                         <div class="col-xs-8">
-                            <select name ="gl_account" class="form-control" required title = "Select GL Account">
+                            <select name ="grn" id="grn" class="form-control" required title = "Select GRN">
                                 <option></option>
-                                @foreach($data['gl_accounts'] as $gl)
-                                <option value="{{$gl->id}}">{{$gl->name}}</option>
-                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -138,11 +135,16 @@
                             <td></td>
                             <td>{{$inv->number}}</td>
                             <td>{{$inv->creditors->name}}</td>
-                            <td>{{$inv->amount}}</td>
+                            <td>{{number_format($inv->amount,2)}}</td>
                             <td>
                                 @if($inv->status=='unpaid')
                                 <span class="label label-danger">
                                     <i class="fa fa-cog fa-spin" aria-hidden="true"></i>
+                                    {{$inv->status}}
+                                </span>
+                                @elseif($inv->status=='partially paid')
+                                <span class="label label-warning">
+                                    <i class="fa fa-hourglass" aria-hidden="true"></i>
                                     {{$inv->status}}
                                 </span>
                                 @else
@@ -187,6 +189,19 @@
             }});
         $("#date2").datepicker({dateFormat: 'yy-mm-dd'});
         $('#dtable').dataTable();
+
+        $("#supplier").change(function () {
+            var supplier = this.value;
+            $.ajax({
+                url: "{{route('inventory.ajax.supplier.batch')}}",
+                data: {'supplier': supplier},
+                success: function (data) {
+                    $("#grn").html(data);
+                }});
+        });
+
     });
+
+
 </script>
 @endsection

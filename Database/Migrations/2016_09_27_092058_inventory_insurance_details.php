@@ -22,15 +22,15 @@ class InventoryInsuranceDetails extends Migration {
             $table->string('relation');
             $table->timestamps();
 
-            $table->foreign('customer')->references('id')->on('inventory_customers')
+            $table->foreign('customer')->references('id')->on('customers')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
-            $table->foreign('insurance_company')->references('id')->on('settings_insurance')
+            $table->foreign('insurance_company')->references('id')->on('insurance')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
-            $table->foreign('credit_scheme')->references('id')->on('settings_schemes')
+            $table->foreign('credit_scheme')->references('id')->on('schemes')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
         });
