@@ -29,7 +29,7 @@ class SalesController extends AdminBaseController {
             }
         }
         $this->data['schemes'] = Schemes::all();
-        return view('inventory::shop.shop')->with('data', $this->data);
+        return view('inventory::shop.shop', ['data' => $this->data]);
     }
 
     public function shopfront_credit($id = null) {
@@ -40,7 +40,7 @@ class SalesController extends AdminBaseController {
                 return redirect()->route('inventory.receipt', $receipt);
             }
         }
-        return view('inventory::shop.credit')->with('data', $this->data);
+        return view('inventory::shop.credit', ['data' => $this->data]);
     }
 
     /**
@@ -58,7 +58,7 @@ class SalesController extends AdminBaseController {
         if ($this->request->id > 0) {
             $this->data['ins'] = InventoryInsuranceDetails::find($this->request->id);
         }
-        return view('inventory::shop.credit_user')->with('data', $this->data);
+        return view('inventory::shop.credit_user', ['data' => $this->data]);
     }
 
     /**
@@ -74,7 +74,7 @@ class SalesController extends AdminBaseController {
             }
         }
         $this->data['ins'] = InventoryInsuranceDetails::all();
-        return view('inventory::clients')->with('data', $this->data);
+        return view('inventory::clients', ['data' => $this->data]);
     }
 
     public function purge_client($id = null) {
@@ -92,12 +92,12 @@ class SalesController extends AdminBaseController {
      */
     public function receipt($id) {
         $this->data['sales'] = InventoryBatchProductSales::find($id);
-        return view('inventory::shop.receipt_preview')->with('data', $this->data);
+        return view('inventory::shop.receipt_preview', ['data' => $this->data]);
     }
 
     public function receipts() {
         $this->data['records'] = InventoryBatchProductSales::all();
-        return view('inventory::sales_receipts')->with('data', $this->data);
+        return view('inventory::sales_receipts', ['data' => $this->data]);
     }
 
     public function return_goods() {
@@ -109,7 +109,7 @@ class SalesController extends AdminBaseController {
         $this->data['batch_sales'] = InventoryBatchProductSales::all();
         $this->data['dispenses'] = InventoryDispensing::groupBy('product')->get();
         $this->data['returns'] = InventorySalesReturn::all();
-        return view('inventory::shop.goods_return')->with('data', $this->data);
+        return view('inventory::shop.goods_return', ['data' => $this->data]);
     }
 
 }

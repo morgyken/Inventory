@@ -14,7 +14,7 @@ use Ignite\Inventory\Entities\InventorySalesReturn;
 use Ignite\Inventory\Entities\InventoryDispensing;
 use Carbon\Carbon;
 
-class ReportController extends AdminBaseController  {
+class ReportController extends AdminBaseController {
 
     public function print_lpo($id) {
         $lpo = InventoryPurchaseOrders::findOrFail($id);
@@ -132,7 +132,7 @@ class ReportController extends AdminBaseController  {
         } else {
             $this->data['records'] = InventoryBatchProductSales::all();
         }
-        return view('inventory::reports.salesreport')->with('data', $this->data);
+        return view('inventory::reports.salesreport', ['data' => $this->data]);
     }
 
     //Item Sales Reports
@@ -152,7 +152,7 @@ class ReportController extends AdminBaseController  {
         } else {
             $this->data['records'] = InventoryDispensing::all();
         }
-        return view('inventory::reports.item_sales')->with('data', $this->data);
+        return view('inventory::reports.item_sales', ['data' => $this->data]);
     }
 
     //Reports
@@ -192,7 +192,7 @@ class ReportController extends AdminBaseController  {
             $this->data['filter']['to'] = (new \Date())->format('jS M Y');
         }
         $this->data['records'] = $batch_purchase->get();
-        return view('inventory::reports.expiry')->with('data', $this->data);
+        return view('inventory::reports.expiry', ['data' => $this->data]);
     }
 
     public function expiryPrint(Request $request) {
@@ -215,7 +215,7 @@ class ReportController extends AdminBaseController  {
 
     public function stocks() {
         $this->data['stocks'] = InventoryStock::orderBy('quantity', 'asc')->get();
-        return view('inventory::reports.stock')->with('data', $this->data);
+        return view('inventory::reports.stock', ['data' => $this->data]);
     }
 
     public function printStockReport() {
@@ -244,7 +244,7 @@ class ReportController extends AdminBaseController  {
 
     public function stockMovement() {
         $this->data['adjustments'] = InventoryStockAdjustment::all();
-        return view('inventory::reports.stock_movement')->with('data', $this->data);
+        return view('inventory::reports.stock_movement', ['data' => $this->data]);
     }
 
 }
