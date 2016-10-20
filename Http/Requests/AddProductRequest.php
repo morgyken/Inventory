@@ -4,21 +4,21 @@ namespace Ignite\Inventory\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddSupplierRequest extends FormRequest
-{
+class AddProductRequest extends FormRequest {
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             'name' => 'required',
-            'address' => 'required',
-            'telephone' => 'required',
-            'email' => 'bail|email|required',
-            'town' => 'required',
+            //  'description' => '',
+            'category' => 'required',
+            'unit' => 'required',
+                //'tax' => '',
+                // 'unit_cost'=>'require'
         ];
     }
 
@@ -27,8 +27,8 @@ class AddSupplierRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
-    {
+    public function authorize() {
         return true;
     }
+
 }

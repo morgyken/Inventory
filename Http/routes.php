@@ -17,7 +17,8 @@ $router->get('sales/return/fillform', ['uses' => 'ApiController@fill_return_form
 $router->get('sales/return/fetchqtysold', ['uses' => 'ApiController@qty_sold', 'as' => 'sales.qtysold']);
 $router->get('sales/creditnote/{id}', ['uses' => 'ReportController@creditnote', 'as' => 'sales.cnote']);
 //products
-$router->match(['post', 'get'], 'categories/products/{id?}', ['uses' => 'InventoryController@product_categories', 'as' => 'product_categories']);
+$router->match(['post', 'get'], 'categories/products/{id?}', ['uses' => 'InventoryController@product_cat', 'as' => 'product_cat']);
+$router->post('categories/save', ['as' => 'product_cat.save', 'uses' => 'InventoryController@product_cat_save']);
 $router->match(['post', 'get'], 'categories/tax/{id?}', ['uses' => 'InventoryController@tax_categories', 'as' => 'tax_categories']);
 $router->match(['post', 'get'], 'categories/measurement/{id?}', ['uses' => 'InventoryController@units_of_measurement', 'as' => 'units_of_measurement']);
 $router->get('products/{id?}', ['uses' => 'InventoryController@products', 'as' => 'products']);

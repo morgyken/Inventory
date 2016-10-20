@@ -45,6 +45,19 @@ use Ignite\Finance\Entities\InsuranceInvoice;
  * @author Samuel Dervis <samueldervis@gmail.com>
  */
 class InventoryFunctions implements InventoryRepository {
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * InventoryFunctions constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        $this->request=$request;
+    }
 
     /**
      * Add a supplier to the database

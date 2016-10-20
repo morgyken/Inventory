@@ -42,7 +42,7 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                     $item->authorize($this->auth->hasAccess('inventory.Products.Access Products Menu'));
                     $item->item('Product Categories', function (Item $item) {
                         $item->icon('fa fa-sitemap');
-                        $item->route('inventory.product_categories');
+                        $item->route('inventory.product_cat');
                         $item->authorize($this->auth->hasAccess('inventory.Products.Manage Product Categories'));
                     });
                     $item->item('Add Product', function(Item $item) {

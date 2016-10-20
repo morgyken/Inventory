@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Ignite\Inventory\Entities\InventorySalesReturn;
 use Ignite\Inventory\Entities\InventoryDispensing;
 use Ignite\Inventory\Entities\InventoryInsuranceDetails;
-use Ignite\Inventory\Entities\Customer;
 
 class SalesController extends AdminBaseController {
 
@@ -23,7 +22,7 @@ class SalesController extends AdminBaseController {
 
     public function shopfront($id = null) {
         if ($this->request->isMethod('post')) {
-            if (InventoryFunctions::record_sales($this->request, $id)) {
+            if ($this->inventoryRepository->record_sales($this->request, $id)) {
                 $receipt = \Session::get('receipt_id');
                 flash('Transaction completed');
                 return redirect()->route('inventory.receipt', $receipt);
@@ -35,7 +34,7 @@ class SalesController extends AdminBaseController {
 
     public function shopfront_credit($id = null) {
         if ($this->request->isMethod('post')) {
-            if (InventoryFunctions::record_sales($this->request, $id)) {
+            if ($this->inventoryRepository->record_sales($this->request, $id)) {
                 $receipt = \Session::get('receipt_id');
                 flash('Bill placed successfully');
                 return redirect()->route('inventory.receipt', $receipt);
@@ -51,7 +50,7 @@ class SalesController extends AdminBaseController {
      */
     public function clients($id = null) {
         if ($this->request->isMethod('post')) {
-            if (InventoryFunctions::save_client($this->request, $id)) {
+            if ($this->inventoryRepository->save_client($this->request, $id)) {
                 flash('Client Saved.. thank you');
                 return redirect()->route('inventory.clients.credit', null);
             }
@@ -69,7 +68,7 @@ class SalesController extends AdminBaseController {
      */
     public function show_clients($id = null) {
         if ($this->request->isMethod('post')) {
-            if (InventoryFunctions::save_client($this->request, $id)) {
+            if ($this->inventoryRepository->save_client($this->request, $id)) {
                 flash('Client Saved.. thank you');
                 return redirect()->route('inventory.clients.credit', null);
             }
@@ -79,7 +78,7 @@ class SalesController extends AdminBaseController {
     }
 
     public function purge_client($id = null) {
-        if (InventoryFunctions::purge_client($id)) {
+        if ($this->inventoryRepository->purge_client($id)) {
             flash('client information deleted.. thank you');
             return redirect()->route('inventory.clients.credit', null);
         }
@@ -103,7 +102,7 @@ class SalesController extends AdminBaseController {
 
     public function return_goods() {
         if ($this->request->isMethod('post')) {
-            if (InventoryFunctions::sales_return($this->request)) {
+            if ($this->inventoryRepository->sales_return($this->request)) {
                 return redirect()->back()->with('success', 'Transaction Successful');
             }
         }
