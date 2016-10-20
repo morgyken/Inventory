@@ -4,7 +4,8 @@
  * Project: iClinic
  *  Author: KIPTOO BRAVO <bkiptoo@collabmed.com>
  */
-$records = $data['records'];
+extract($data);
+
 if (Illuminate\Support\Facades\Input::get('scope')) {
     $scope = Illuminate\Support\Facades\Input::get('scope');
 } else {

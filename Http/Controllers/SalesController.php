@@ -107,7 +107,7 @@ class SalesController extends AdminBaseController {
             }
         }
         $this->data['batch_sales'] = InventoryBatchProductSales::all();
-        $this->data['dispenses'] = InventoryDispensing::select('*')->groupby('product')->get();
+        $this->data['dispenses'] = InventoryDispensing::groupBy('product')->get();
         $this->data['returns'] = InventorySalesReturn::all();
         return view('inventory::shop.goods_return')->with('data', $this->data);
     }

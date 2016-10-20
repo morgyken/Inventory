@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class InventoryInvoice extends Model {
 
     protected $fillable = [];
-    public $table = 'finance_invoices';
+    public $table = 'inventory_finance_invoices';
 
     public function creditors() {
         return $this->belongsTo(InventorySupplier::class, 'creditor');

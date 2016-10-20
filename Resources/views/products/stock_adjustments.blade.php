@@ -77,7 +77,7 @@
         }
     });
 
-    var APPROVE_URL = "{{route('inventory.ajax.adj_approve')}}";
+    var APPROVE_URL = "{{route('api.inventory.adj_approve')}}";
     function approveAdj(id) {
         $.ajax({
             type: "get",

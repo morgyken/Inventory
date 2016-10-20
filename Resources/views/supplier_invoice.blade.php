@@ -193,7 +193,7 @@
         $("#supplier").change(function () {
             var supplier = this.value;
             $.ajax({
-                url: "{{route('inventory.ajax.supplier.batch')}}",
+                url: "{{route('api.inventory.supplier.batch')}}",
                 data: {'supplier': supplier},
                 success: function (data) {
                     $("#grn").html(data);

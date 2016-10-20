@@ -76,7 +76,7 @@
             $('.theader').show();
             var client = this.value;
             $.ajax({
-                url: "{{route('inventory.ajax.clients')}}",
+                url: "{{route('api.inventory.clients')}}",
                 data: {'client': client},
                 success: function (data) {
                     $("#clients").html(data);
@@ -90,7 +90,7 @@
             var scheme = $('.scheme').val();
             var client = $('.clientID').val();
             $.ajax({
-                url: "{{route('inventory.ajax.client.pln')}}",
+                url: "{{route('api.inventory.client.pln')}}",
                 data: {'policy': policy, 'firm': firm, 'scheme': scheme, 'client': client},
                 success: function (data) {
                     $("#plns").html(data);

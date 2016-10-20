@@ -120,7 +120,7 @@
             var q = this.value;
             $.ajax({
                 type: 'get',
-                url: "{{route('inventory.ajax.sales.sale.details')}}",
+                url: "{{route('api.inventory.sales.sale.details')}}",
                 data: {'key': q},
                 dataType: 'html',
                 success: function (response) {

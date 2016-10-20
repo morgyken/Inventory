@@ -58,27 +58,27 @@ class InventoryController extends AdminBaseController {
 
     public function add_edit_suppliers($id = null) {
         $this->data['supplier'] = InventorySupplier::findOrNew($id);
-        return view('inventory::add_supplier')->with('data', $this->data);
+        return view('inventory::add_supplier', ['data' => $this->data]);
     }
 
     public function suppliers($id = null) {
         $this->data['supplier'] = InventorySupplier::findOrNew($id);
         $this->data['suppliers'] = InventorySupplier::all();
-        return view('inventory::suppliers')->with('data', $this->data);
+        return view('inventory::suppliers', ['data' => $this->data]);
     }
 
     public function supplier_invoice($id = null) {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->supplier_invoice($this->request)) {
                 flash('Invoice Saved');
-                return \Redirect::back();
+                return back();
             }
         }
         $this->data['inv'] = InventoryInvoice::all();
         $this->data['batch'] = InventoryBatch::all();
         $this->data['gl_accounts'] = FinanceGlAccounts::all();
         $this->data['suppliers'] = InventorySupplier::all();
-        return view('inventory::supplier_invoice')->with('data', $this->data);
+        return view('inventory::supplier_invoice', ['data' => $this->data]);
     }
 
     public function supplier_invoice_details($id) {
@@ -95,7 +95,7 @@ class InventoryController extends AdminBaseController {
             $paid_amount += $p->amount;
         }
         $this->data['amount_paid'] = $paid_amount;
-        return view('inventory::supplier_invoice_details')->with('data', $this->data);
+        return view('inventory::supplier_invoice_details', ['data' => $this->data]);
     }
 
     public function product_cat($id = null) {
@@ -108,7 +108,7 @@ class InventoryController extends AdminBaseController {
         }
         $this->data['category'] = InventoryCategories::findOrNew($id);
         $this->data['product_categories'] = InventoryCategories::all();
-        return view('inventory::products.product_categories')->with('data', $this->data);
+        return view('inventory::products.product_categories', ['data' => $this->data]);
     }
 
     public function tax_categories($id = null) {
@@ -121,7 +121,7 @@ class InventoryController extends AdminBaseController {
         }
         $this->data['category'] = InventoryTaxCategory::findOrNew($id);
         $this->data['tax_categories'] = InventoryTaxCategory::all();
-        return view('inventory::tax_categories')->with('data', $this->data);
+        return view('inventory::tax_categories', ['data' => $this->data]);
     }
 
     public function units_of_measurement($id = null) {
@@ -134,7 +134,7 @@ class InventoryController extends AdminBaseController {
         }
         $this->data['unit'] = InventoryUnits::findOrNew($id);
         $this->data['units_of_measure'] = InventoryUnits::all();
-        return view('inventory::units_of_measure')->with('data', $this->data);
+        return view('inventory::units_of_measure', ['data' => $this->data]);
     }
 
     public function add_product($id = null) {
@@ -146,17 +146,17 @@ class InventoryController extends AdminBaseController {
             }
         }
         $this->data['product'] = InventoryProducts::findOrNew($id);
-        return view('inventory::add_product')->with('data', $this->data);
+        return view('inventory::products.add_product', ['data' => $this->data]);
     }
 
     public function products($id = null) {
         $this->data['products'] = InventoryProducts::all();
-        return view('inventory::products')->with('data', $this->data);
+        return view('inventory::products', ['data' => $this->data]);
     }
 
     public function view_stock() {
         $this->data['products'] = InventoryProducts::all();
-        return view('inventory::products.view_stocks')->with('data', $this->data);
+        return view('inventory::products.view_stocks', ['data' => $this->data]);
     }
 
     public function adjust_stock($id) {
@@ -169,12 +169,12 @@ class InventoryController extends AdminBaseController {
         }
         $this->data['product'] = InventoryProducts::find($id);
         $this->data['adjustments'] = InventoryStockAdjustment::all();
-        return view('inventory::products.adjust_stock')->with('data', $this->data);
+        return view('inventory::products.adjust_stock', ['data' => $this->data]);
     }
 
     public function stock_adjustments() {
         $this->data['adjustments'] = InventoryStockAdjustment::all();
-        return view('inventory::products.stock_adjustments')->with('data', $this->data);
+        return view('inventory::products.stock_adjustments', ['data' => $this->data]);
     }
 
     public function payment_terms($id = null) {
@@ -186,7 +186,7 @@ class InventoryController extends AdminBaseController {
         }
         $this->data['terms'] = InventoryPaymentTerms::findOrNew($id);
         $this->data['payment_terms'] = InventoryPaymentTerms::all();
-        return view('inventory::payment_terms')->with('data', $this->data);
+        return view('inventory::payment_terms', ['data' => $this->data]);
     }
 
     public function add_lpo($id = null) {
@@ -198,29 +198,29 @@ class InventoryController extends AdminBaseController {
             }
         }
         $this->data['lpo'] = InventoryPurchaseOrders::findOrNew($id);
-        return view('inventory::new_purchase_order')->with('data', $this->data);
+        return view('inventory::new_purchase_order', ['data' => $this->data]);
     }
 
     public function purchase_orders() {
         $this->data['orders'] = InventoryPurchaseOrders::all();
         $this->data['suppliers'] = InventoryPurchaseOrders::all();
-        return view('inventory::product_orders')->with('data', $this->data);
+        return view('inventory::product_orders', ['data' => $this->data]);
     }
 
     public function internal_orders() {
         $this->data['orders'] = InternalOrder::all();
-        return view('inventory::internalorders')->with('data', $this->data);
+        return view('inventory::internalorders', ['data' => $this->data]);
     }
 
     public function order_details($id) {
         $this->data['order'] = InventoryPurchaseOrders::findOrFail($id);
-        return view('inventory::order_details')->with('data', $this->data);
+        return view('inventory::order_details', ['data' => $this->data]);
     }
 
     public function setProductDiscount() {
         $this->data['products'] = InventoryProducts::all();
         $this->data['discount'] = InventoryProductDiscount::all();
-        return view('inventory::set_product_discount')->with('data', $this->data);
+        return view('inventory::set_product_discount', ['data' => $this->data]);
     }
 
     public function delProductDiscount() {
@@ -230,7 +230,7 @@ class InventoryController extends AdminBaseController {
 
         $this->data['products'] = InventoryProducts::all();
         $this->data['discount'] = InventoryProductDiscount::all();
-        return view('inventory::set_product_discount')->with('data', $this->data);
+        return view('inventory::set_product_discount', ['data' => $this->data]);
     }
 
     public function markup() {
@@ -242,14 +242,14 @@ class InventoryController extends AdminBaseController {
                 return redirect()->route('inventory.product.markup');
             }
         }
-        return view('inventory::set_product_markup')->with('data', $this->data);
+        return view('inventory::set_product_markup', ['data' => $this->data]);
     }
 
     public function delMarkup() {
         InventoryProductMarkup::find($this->request->id)->delete();
         $this->data['products'] = InventoryProducts::all();
         $this->data['markup'] = InventoryProductMarkup::all();
-        return redirect()->route('inventory.product.markup')->with('data', $this->data);
+        return redirect()->route('inventory.product.markup', ['data' => $this->data]);
     }
 
     public function saveProductDiscount() {
@@ -262,14 +262,14 @@ class InventoryController extends AdminBaseController {
             }
         } else {
             flash()->error('Product Discount(s) Could not be Saved');
-            return redirect()->route('inventory.product.discount')->with('data', $this->data);
+            return redirect()->route('inventory.product.discount', ['data' => $this->data]);
         }
     }
 
     public function setProductPrice() {
         $this->data['price'] = InventoryProductPrice::all();
         $this->data['products'] = InventoryProducts::all();
-        return view('inventory::products.set_product_price')->with('data', $this->data);
+        return view('inventory::products.set_product_price', ['data' => $this->data]);
     }
 
     public function delProductPrice() {
@@ -277,18 +277,18 @@ class InventoryController extends AdminBaseController {
         $this->data['products'] = InventoryProducts::all();
         $this->data['price'] = InventoryProductPrice::all();
         flash('Item price deleted successfully');
-        return redirect()->route('inventory.product.price')->with('data', $this->data);
+        return redirect()->route('inventory.product.price', ['data' => $this->data]);
     }
 
     public function editProductPrice() {
         if ($this->inventoryRepository->updateProdPrice($this->request)) {
             flash('Item price(s) updated successfully');
-            return redirect()->route('inventory.product.price')->with('data', $this->data);
+            return redirect()->route('inventory.product.price', ['data' => $this->data]);
         }
         $this->data['products'] = InventoryProducts::all();
         $this->data['price'] = InventoryProductPrice::all();
         flash()->warning('Something went wrong, please try again');
-        return redirect()->route('inventory.product.price')->with('data', $this->data);
+        return redirect()->route('inventory.product.price', ['data' => $this->data]);
     }
 
     public function saveItemPrices() {
@@ -301,14 +301,14 @@ class InventoryController extends AdminBaseController {
             }
         } else {
             flash()->error('Product Price(s) Could not be Saved');
-            return redirect()->route('inventory.product.price')->with('data', $this->data);
+            return redirect()->route('inventory.product.price', ['data' => $this->data]);
         }
     }
 
     public function setCategoryPrice() {
         $this->data['price'] = InventoryCategoryPrice::all();
         $this->data['product_categories'] = InventoryCategories::all();
-        return view('inventory::set_category_prices')->with('data', $this->data);
+        return view('inventory::set_category_prices', ['data' => $this->data]);
     }
 
     public function delCategoryPrice() {
@@ -330,7 +330,7 @@ class InventoryController extends AdminBaseController {
             }
         } else {
             flash()->error('Category Price(s) Could not be Saved');
-            return redirect()->route('inventory.category.price')->with('data', $this->data);
+            return redirect()->route('inventory.category.price', ['data' => $this->data]);
         }
     }
 
@@ -348,12 +348,12 @@ class InventoryController extends AdminBaseController {
     public function receive_goods() {
         $this->data['lpos'] = InventoryPurchaseOrders::approved()->get();
         $this->data['deliveries'] = InventoryBatch::all();
-        return view('inventory::receive_goods')->with('data', $this->data);
+        return view('inventory::receive_goods', ['data' => $this->data]);
     }
 
     public function grns() {
         $this->data['deliveries'] = InventoryBatch::all();
-        return view('inventory::grns')->with('data', $this->data);
+        return view('inventory::grns', ['data' => $this->data]);
     }
 
     public function receive_lpo($id) {
@@ -366,7 +366,7 @@ class InventoryController extends AdminBaseController {
         }
         $this->data['deliveries'] = InventoryBatch::all();
         $this->data['order'] = InventoryPurchaseOrders::findOrFail($id);
-        return view('inventory::receive_lpo_goods')->with('data', $this->data);
+        return view('inventory::receive_lpo_goods', ['data' => $this->data]);
     }
 
     public function purchase_details(InventoryBatch $batch) {
@@ -384,7 +384,7 @@ class InventoryController extends AdminBaseController {
             }
         }
         $this->data['supplier'] = InventorySupplier::find($this->request->supplier);
-        return view('inventory::receive_direct_goods')->with('data', $this->data);
+        return view('inventory::receive_direct_goods', ['data' => $this->data]);
     }
 
     public function batch_details($id) {
@@ -392,7 +392,7 @@ class InventoryController extends AdminBaseController {
         $this->data['accounts'] = BankAccount::all();
         $purchases = InventoryBatchPurchases::query();
         $this->data['items'] = $purchases->where('batch', '=', $id)->get();
-        return view('inventory::batch_details')->with('data', $this->data);
+        return view('inventory::batch_details', ['data' => $this->data]);
     }
 
 }

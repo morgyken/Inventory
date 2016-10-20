@@ -182,11 +182,11 @@
         });
     });
     var INSURANCE = false;
-    var STOCK_URL = "{{route('inventory.ajax.getstock')}}";
-    var PRODUCTS_URL = "{{route('inventory.ajax.get.products')}}";
-    var SCHEMES_URL = "{{route('ajax.get_schemes')}}";
-    var PHONE_URL = "{{route('inventory.ajax.cust.get')}}";
-    var CREDIT_URL = "{{route('inventory.ajax.credit.rate')}}";
+    var STOCK_URL = "{{route('api.inventory.getstock')}}";
+    var PRODUCTS_URL = "{{route('api.inventory.get.products')}}";
+    var SCHEMES_URL = "{{route('api.settings.get_schemes')}}";
+    var PHONE_URL = "{{route('api.inventory.cust.get')}}";
+    var CREDIT_URL = "{{route('api.inventory.credit.rate')}}";
 </script>
 <script src="{!! m_asset('inventory:js/shopfront.js') !!}"></script>
 @endsection

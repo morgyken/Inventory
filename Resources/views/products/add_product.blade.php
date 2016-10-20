@@ -68,14 +68,14 @@ extract($data);
                     <div class="form-group {{ $errors->has('formulation') ? ' has-error' : '' }} req">
                         <label class="control-label col-md-4">Formulation</label>
                         <div class="col-md-8">
-                            {!! Form::select('formulation',config('inventory.formulation'),old('formulation',$product->formulation),['class'=>'form-control']) !!}
+                            {!! Form::select('formulation',mconfig('inventory.options.formulation'),old('formulation',$product->formulation),['class'=>'form-control']) !!}
                             {!! $errors->first('formulation', '<span class="help-block">:message</span>') !!}
                         </div>
                     </div>
                     <div class="form-group {{ $errors->has('label_type') ? ' has-error' : '' }} req">
                         <label class="control-label col-md-4">Label Type</label>
                         <div class="col-md-8">
-                            {!! Form::select('label_type',mconfig('inventory.label_type'),old('label_type',$product->label_type),['class'=>'form-control']) !!}
+                            {!! Form::select('label_type',mconfig('inventory.options.label_type'),old('label_type',$product->label_type),['class'=>'form-control']) !!}
                             {!! $errors->first('label_type', '<span class="help-block">:message</span>') !!}
                         </div>
                     </div>

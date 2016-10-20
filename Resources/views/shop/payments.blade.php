@@ -18,7 +18,7 @@
                 <td>
                     <div class="form-group {{ $errors->has('payment_mode') ? ' has-error' : '' }} req">
                         <div>
-                            {!! Form::select('payment_mode',config('inventory.payment_modes'),null,['class'=>'form-control payment', 'required','id'=>'payment_mode']) !!}
+                            {!! Form::select('payment_mode',mconfig('inventory.options.payment_modes'),null,['class'=>'form-control payment', 'required','id'=>'payment_mode']) !!}
                             {!! $errors->first('payment_mode', '<span class="help-block">:message</span>') !!}
                         </div>
                     </div>

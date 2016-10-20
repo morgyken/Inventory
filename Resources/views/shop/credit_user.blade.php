@@ -96,7 +96,7 @@ if (isset($data['ins'])) {
                                             <div class="form-group {{ $errors->has('principal_relationship') ? ' has-error' : '' }}">
                                                 {!! Form::label('principal_relationship', 'Relationship',['class'=>'control-label col-md-4']) !!}
                                                 <div class="col-md-8">
-                                                    {!! Form::select('principal_relationship',config('system.relationship'), $ins['relation'], ['class' => 'form-control', 'placeholder' => 'Choose...']) !!}
+                                                    {!! Form::select('principal_relationship',mconfig('reception.options.relationship'), $ins['relation'], ['class' => 'form-control', 'placeholder' => 'Choose...']) !!}
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -169,11 +169,11 @@ if (isset($data['ins'])) {
         });
     });
     var INSURANCE = true;
-    var STOCK_URL = "{{route('inventory.ajax.getstock')}}";
-    var PRODUCTS_URL = "{{route('inventory.ajax.get.products')}}";
-    var SCHEMES_URL = "{{route('ajax.get_schemes')}}";
-    var PHONE_URL = "{{route('inventory.ajax.cust.get')}}";
-    var CREDIT_URL = "{{route('inventory.ajax.credit.rate')}}";
+    var STOCK_URL = "{{route('api.inventory.getstock')}}";
+    var PRODUCTS_URL = "{{route('api.inventory.get.products')}}";
+    var SCHEMES_URL = "{{route('api.settings.get_schemes')}}";
+    var PHONE_URL = "{{route('api.inventory.cust.get')}}";
+    var CREDIT_URL = "{{route('api.inventory.credit.rate')}}";
 </script>
 <script src="{!! m_asset('inventory:js/shopfront.js') !!}"></script>
 @endsection
