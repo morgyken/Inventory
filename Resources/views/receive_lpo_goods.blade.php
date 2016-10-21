@@ -14,7 +14,7 @@ $count = 0;
 
 
 @extends('layouts.app')
-@section('content_title','Receive Goods from LPO')
+@section('content_title','Receive Goods from LPO.')
 @section('content_description','Receive goods from LPO')
 
 @section('content')
@@ -49,6 +49,7 @@ $count = 0;
                             <th>Expiry Date</th>
                             <th>Unit cost (Kshs)</th>
                             <th>Discount (%)</th>
+                            <th>Tax(%)</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -66,6 +67,7 @@ $count = 0;
                                        value="{{$line->price}}"/></td>
                             <td><input type="text" name='dis{{$count}}' placeholder='eg. 2'
                                        value="0" size="2"/></td>
+                            <td><input type='text' onchange="calculate_total()" name='tax{{$count}}' placeholder='' value='{{$line->products->taxgroups?$line->products->taxgroups->rate:0}}' size='3'/></td>
                             <td><span id="total{{$count}}">{{$line->total}}</span></td>
                         </tr>
                         <?php $count++; ?>
@@ -75,7 +77,7 @@ $count = 0;
                         <tr>
                             <th></th>
                             <th></th>
-                            <th colspan="5">Grand Total</th>
+                            <th colspan="6">Grand Total</th>
                             <th><strong id="net">0.00</strong></th>
                         </tr>
                     </tfoot>

@@ -72,8 +72,9 @@
                     {!! Form::token() !!}
                     <table class="table table-striped" id="datatable">
                         <thead>
-                        <th>Product Code</th>
-                        <th>Product</th>
+                        <th>Item Code</th>
+                        <th>Batch</th>
+                        <th>Item</th>
                         <th style="text-align: center">Price</th>
                         <th style="text-align: center">Edit</th>
                         <th style="text-align: center">Delete</th>
@@ -82,7 +83,8 @@
                         @if(!empty($m->products))
                         <tr>
                             <td>{{$m->products->product_code}}</td>
-                            <td>{{$m->products->name}}</td>
+                            <td>{{$m->batch?$m->batch:''}}</td>
+                            <td>{{$m->products->name}}{{$m->products->strength?'('.$m->products->strength.$m->products->units->name.')':'-'}}</td>
                             <td><center><?php echo ceil($m->price) ?></center></td>
                         <td style="text-align: center">
                             <a href="#demo{{$m->id}}" data-toggle="collapse"><i class="fa fa-pencil"></i></a>

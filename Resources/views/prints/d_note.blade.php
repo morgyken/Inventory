@@ -16,8 +16,6 @@
 
             body {
                 position: relative;
-                width: 21cm;
-                height: 29.7cm;
                 margin: 0 auto;
                 color: #001028;
                 background: #FFFFFF;
@@ -48,7 +46,7 @@
                 font-weight: normal;
                 text-align: center;
                 margin: 0 0 20px 0;
-                background: url(dimension.png);
+                background-color: #eee;
             }
 
             #project {
@@ -57,7 +55,7 @@
 
             #project span {
                 color: #5D6975;
-                text-align: right;
+                text-align: left;
                 width: 52px;
                 margin-right: 10px;
                 display: inline-block;
@@ -75,10 +73,10 @@
             }
 
             table {
-                width: 100%;
                 border-collapse: collapse;
                 border-spacing: 0;
                 margin-bottom: 20px;
+                width:100%;
             }
 
             table tr:nth-child(2n-1) td {
@@ -103,11 +101,11 @@
             }
 
             table td {
-                padding: 20px;
+                padding: 10px;
                 text-align: center;
             }
             table .sums{
-                padding: 20px;
+                padding: 10px;
                 text-align: right;
             }
 
@@ -173,31 +171,22 @@
                 </thead>
                 <tbody>
                     <?php
-                    $total = 0;
                     $count = 0;
                     ?>
                     @foreach($delivery->products as $item)
-                    <?php $count+=1; ?>
                     <tr class="products">
-                        <td>{{$count}}</td>
+                        <td>{{$count+=1}}</td>
                         <td style="text-align: left;">{{$item->products->name}}</td>
                         <td>{{$item->quantity}}</td>
                         <td>{{$item->package_size}}</td>
                         <td>{{number_format($item->unit_cost,2)}}</td>
                         <td>{{$item->discount}}</td>
-                        <td>
-                            <?php
-                            $t = ($item->quantity * $item->package_size * $item->unit_cost);
-                            $discount = ($item->discount / 100) * $t;
-                            $total+= $t - $discount;
-                            ?>
-                            {{number_format($total,2)}}
-                        </td>
+                        <td>{{number_format($item->total,2)}}</td>
                     </tr>
                     @endforeach
                     <tr>
                         <td style="text-align: right;" colspan="6" class="grand total">GRAND TOTAL</td>
-                        <td class="grand total">{{ number_format($total,2) }}</td>
+                        <td class="grand total">{{number_format($delivery->products->sum('total'),2 )}}</td>
                     </tr>
                 </tbody>
             </table>

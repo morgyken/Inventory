@@ -15,10 +15,12 @@ return [
     'name' => 'Inventory',
     'payment_modes' => [
         'cash' => 'Cash',
-        'cheque' => 'Cheque',
-        'card' => 'Credit Card',
+        'bank' => 'Bank Deposit',
+        'credit' => 'Credit',
         'mpesa' => 'MPESA',
+        'airtel' => 'Airtel Money',
         'insurance' => 'Insurance',
+        'card' => 'Credit Card', 'cheque' => 'Cheque',
     ],
     'label_type' => [
         1 => 'External',

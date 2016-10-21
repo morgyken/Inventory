@@ -17,6 +17,7 @@ class CreateInventorySalesReturnsTable extends Migration {
             $table->string('receipt_no');
             $table->integer('quantity');
             $table->longText('reason');
+            $table->boolean('stocked')->default(false);
             $table->timestamps();
             $table->foreign('product')->references('id')->on('inventory_products')
                     ->onDelete('cascade')
@@ -30,7 +31,7 @@ class CreateInventorySalesReturnsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_sales_returns');
+        Schema::dropIfExists('inventory_sales_returns');
     }
 
 }

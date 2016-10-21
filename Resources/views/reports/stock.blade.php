@@ -17,44 +17,56 @@
 @section('content')
 <div class="box box-info">
     <div class="box-header with-border">
-
+        <h3 class="box-title">Item Stock Report</h3>
     </div>
     <div class="box-body">
         <div class="row">
             <div class="col-md-12">
                 @if(!$data['stocks']->isEmpty())
                 <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Item Code</th>
+                            <th>Item</th>
+                            <th>Cost</th>
+                            <th>Remaining Stock Items</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
                     <tbody>
+                        <?php
+                        $n = 0;
+                        $total_value = 0;
+                        $sell_value = 0;
+                        ?>
                         @foreach($data['stocks'] as $s)
+                        <?php
+                        $price = $s->products->prices->max('price');
+                        $value = $price * $s->quantity;
+                        $total_value+=$value;
+                        ?>
                         <tr id="category{{$s->id}}">
-                            <td>{{$s->id}}</td>
+                            <td>{{$n+=1}}</td>
+                            <td>{{$s->products->id}}</td>
                             <td>{{$s->products->name}}</td>
-                            <td>{{$s->products->categories->name}}</td>
-                            <td>{{$s->products->units->name}}</td>
+                            <td>{{number_format($price,2)}}</td>
                             @if($s->quantity<20)
                             <td style="color:red">{{$s->quantity ?$s->quantity :'0'}}</td>
                             @else
                             <td>{{$s->quantity ?$s->quantity: '0'}}</td>
                             @endif
-                            <td>
-                                <a href="{{route('inventory.adjust_stock',$s->products->id)}}"
-                                   class="btn btn-primary btn-xs">
-                                    <i class="fa fa-adjust"></i> Adjust
-                                </a>
-                            </td>
+                            <td>{{number_format($value,2)}}</td>
                         </tr>
                         @endforeach
                     </tbody>
-                    <thead>
+                    <tfoot>
                         <tr>
-                            <th>Code</th>
-                            <th>Name</th>
-                            <th>Category</th>
-                            <th>Unit</th>
-                            <th>Quantity</th>
-                            <th></th>
+                            <th colspan="4"></th>
+                            <th style="text-align: right">Total Stock Value:</th>
+                            <th>{{number_format($total_value,2)}}</th>
                         </tr>
-                    </thead>
+                    </tfoot>
                 </table>
                 @else
                 <div class="alert alert-info">
@@ -68,7 +80,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
         try {
-            $('table').dataTable();
+            $('table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv', 'excel', 'pdf', 'print'
+                ]
+            });
         } catch (e) {
         }
     });

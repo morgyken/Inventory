@@ -28,7 +28,7 @@ class CreateInventoryCategoriesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_categories');
+        Schema::dropIfExists('inventory_categories');
     }
 
 }

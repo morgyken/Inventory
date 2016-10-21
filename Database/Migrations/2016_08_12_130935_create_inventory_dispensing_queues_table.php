@@ -33,7 +33,7 @@ class CreateInventoryDispensingQueuesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_dispensing_queues');
+        Schema::dropIfExists('inventory_dispensing_queues');
     }
 
 }

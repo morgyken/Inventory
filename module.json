@@ -3,8 +3,8 @@
     "alias": "inventory",
     "description": "The main inventory and shopfront",
     "keywords": [],
-    "active": 0,
-    "order": 11,
+    "active": 1,
+    "order": 4,
     "providers": [
         "Ignite\\Inventory\\Providers\\InventoryServiceProvider",
         "Ignite\\Inventory\\Providers\\EventServiceProvider",
@@ -14,8 +14,7 @@
     "files": [
         "helpers.php"
     ],
-    "core": 0,
-    "version": "v1.0",
+    "version": "v1.0.0",
     "author": [
         {
             "name": "Samuel Odhiambo",

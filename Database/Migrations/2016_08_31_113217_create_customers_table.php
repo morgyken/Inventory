@@ -15,6 +15,7 @@ class CreateCustomersTable extends Migration {
             $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
+            $table->date('date_of_birth')->nullable();
             $table->string('email')->uniqie();
             $table->string('phone')->uniqie();
             $table->timestamps();
@@ -27,7 +28,7 @@ class CreateCustomersTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_customers');
+        Schema::dropIfExists('inventory_customers');
     }
 
 }

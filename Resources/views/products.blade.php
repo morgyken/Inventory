@@ -30,11 +30,11 @@
                         @foreach($data['products'] as $product)
                         <tr id="category{{$product->id}}">
                             <td>{{$product->product_code}}</td>
-                            <td>{{$product->name}}</td>
+                            <td>{{$product->name}}{{$product->strength?'('.$product->strength.$product->units->name.')':''}}</td>
                             <td>{{$product->categories?$product->categories->name:'-'}}</td>
-                            <td>{{$product->units?$product->units->name:'-'}}</td>
+                            <td>{{$product->strength?$product->strength.$product->units->name:'-'}}</td>
                             <td>
-                                <a href="{{route('inventory.products',$product->id)}}"
+                                <a href="{{route('inventory.add_product',$product->id)}}"
                                    class="btn btn-primary btn-xs">
                                     <i class="fa fa-edit"></i> Edit</a> <!--|
                                 <button class="btn btn-danger btn-xs delete" value="{{$product->id}}">
@@ -49,7 +49,7 @@
                             <th>Code</th>
                             <th>Name</th>
                             <th>Category</th>
-                            <th>Unit</th>
+                            <th>Strength</th>
                             <th></th>
                         </tr>
                     </thead>

@@ -1,7 +1,18 @@
-<?php ?>
+<!DOCTYPE html>
 <html lang="en">
+    <?php
+    /*
+     * Collabmed Solutions Ltd
+     * Project: iClinic
+     *  Author: KIPTOO BRAVO <bkiptoo@collabmed.com>
+     */
+    $records = $data['records'];
+    $start = Illuminate\Support\Facades\Input::get('start');
+    $end = Illuminate\Support\Facades\Input::get('end');
+    ?>
     <head>
-        <title>Sale Receipt {{$data['sales']->id}} </title>
+        <title>Sales Summary Report</title>
+        <link rel="stylesheet" href="style.css" media="all" />
         <style>
             .clearfix:after {
                 content: "";
@@ -10,14 +21,11 @@
             }
 
             a {
-                color: #5D6975;
                 text-decoration: underline;
             }
 
             body {
                 position: relative;
-                width: 21cm;
-                height: 29.7cm;
                 margin: 0 auto;
                 color: #001028;
                 background: #FFFFFF;
@@ -43,8 +51,7 @@
             h1 {
                 border-top: 1px solid  #5D6975;
                 border-bottom: 1px solid  #5D6975;
-                color: #5D6975;
-                font-size: 1.2em;
+                font-size: 2.4em;
                 line-height: 1.4em;
                 font-weight: normal;
                 text-align: center;
@@ -58,7 +65,7 @@
 
             #project span {
                 color: #5D6975;
-                text-align: right;
+                text-align: left;
                 width: 52px;
                 margin-right: 10px;
                 display: inline-block;
@@ -95,7 +102,7 @@
                 padding: 5px 20px;
                 border-bottom: 1px solid #C1CED9;
                 white-space: nowrap;
-                font-weight: normal;
+                font-weight: bold;
             }
 
             table .service,
@@ -104,7 +111,11 @@
             }
 
             table td {
-                padding: 5px;
+                padding: 10px;
+                text-align: center;
+            }
+            table .sums{
+                padding: 20px;
                 text-align: right;
             }
 
@@ -124,7 +135,6 @@
             }
 
             #notices .notice {
-                color: #5D6975;
                 font-size: 1.2em;
             }
 
@@ -141,77 +151,80 @@
     </head>
     <body>
         <header class="clearfix">
-            <!--
             <div id="logo">
-                <img src="logo.png">
             </div>
-            -->
-            <h1>Sale Receipt ({{$data['sales']->id}})</h1>
+            <h1>Sales Summary:{{filter_description($data['filter'])}}</h1><br>
             <div id="company" class="clearfix">
                 <div>{{config('practice.name')}}</div>
                 <div>{{config('practice.building')}},<br /> {{config('practice.street')}}, {{config('practice.town')}}</div>
                 <div>Telephone:{{config('practice.telephone')}}</div>
                 <div>Email:<a href="mailto:{{config('practice.email')}}">{{config('practice.email')}}</a></div>
             </div>
-            <br><br>
-            <div id="project">
-                <div><span>RECEIPT #:</span> {{$data['sales']->receipt}}</div>
-                <div><span>DATE</span> {{ smart_date($data['sales']->created_at) }}</div>
-                <div><span>TIME</span>{{smart_time($data['sales']->created_at)}} </div>
-                <?php
-                if (isset($data['sales']->customer) && $data['sales']->customer !== NULL) {
-                    ?>
-                    <div><span>Customer</span>{{$data['sales']->customers->first_name.' '.$data['sales']->customers->last_name}} </div>
-
-                <?php } ?>
-            </div>
         </header>
-        <br><br><br>
         <main>
-            <table>
+            <br><br><br><br>
+
+            <table style="width:100%" id="cashier" class="table table-borderless">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th class="service"><b>ITEM</b></th>
-                        <th><b>QTY</b></th>
-                        <th><b>DISCOUNT(%)</b></th>
-                        <th><b>UNIT COST</b></th>
-                        <th><b>TOTAL</b></th>
+                        <th>#</th>
+                        <th>Receipt No.</th>
+                        <th>Cashier</th>
+                        <th>Amount</th>
+                        <th>Mode</th>
+                        <th>Date</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($data['sales']->goodies as $item)
+                    <?php
+                    $n = 0;
+                    $cash_amnt = $cheq_amnt = $mpesa_amnt = $card_amnt = $insurance = 0;
+                    ?>
+                    @foreach($records as $record)
                     <tr>
-                        <td></td>
-                        <td class="service">{{$item->products->name}}</td>
-                        <td class="desc"><center>{{$item->quantity}}</center></td>
-                <td class="unit"><center>{{$item->discount}}</center></td>
-                <td class="unit"><center>{{number_format($item->unit_cost,2)}}</center></td>
-                <td class="total"><center><b>{{number_format($item->total,2)}}</b></center></td>
-                </tr>
-                @endforeach
-                <!--
-                                <tr>
-                                    <td colspan="4">SUBTOTAL</td>
-                                    <td class="total">{{number_format($data['sales']->goodies->sum('total'),2)}}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">TAX</td>
-                                    <td class="total">_</td>
-                                </tr>-->
-                <tr>
-                    <td colspan="5" class="grand total">TOTAL</td>
-                    <td class="grand total"><center><b><u>{{number_format($data['sales']->goodies->sum('total'),2)}}</u></b></center></td>
-                </tr>
-                </tbody>
-            </table>
-            <div id="notices">
-                <div class="notice">Service by: <strong>{{$data['sales']->users->profile->full_name}}</strong><br>
-                </div>
-            </div>
+                        <td>{{$n+=1}}</td>
+                        <td>{{$record->receipt}}</td>
+                        <td>{{$record->users->profile->full_name}}</td>
 
+
+                        @if($record->payment_mode=='cash')
+                        <td>{{$record->amountpaid->CashAmount}}</td>
+                        <?php $cash_amnt +=$record->amountpaid->CashAmount ?>
+
+                        @elseif($record->payment_mode=='mpesa')
+                        <td>{{$record->amountpaid->MpesaAmount}}</td>
+                        <?php $mpesa_amnt +=$record->amountpaid->MpesaAmount ?>
+
+                        @elseif($record->payment_mode=='cheque')
+                        <td>{{$record->amountpaid->ChequeAmount}}</td>
+                        <?php $cheq_amnt +=$record->amountpaid->ChequeAmount ?>
+
+                        @elseif($record->payment_mode=='card')
+                        <td>{{$record->amountpaid->CardAmount}}</td>
+                        <?php $card_amnt +=$record->amountpaid->CardAmount ?>
+
+                        @elseif($record->payment_mode=='insurance')
+                        <td>{{$record->amountpaid->InsuranceAmount}}</td>
+                        <?php $insurance +=$record->amountpaid->InsuranceAmount ?>
+                        @endif
+
+                        <td>{{$record->payment_mode}}</td>
+                        <td>{{(new Date($record->created_at))->format('jS M Y')}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr><td><h4>Sales Summary</h4></td><td colspan="6"></td></tr>
+                    <tr><td>Cash:</td><td colspan="5">{{number_format($cash_amnt,2)}}</td></tr>
+                    <tr><td>MPESA:</td><td colspan="5">{{number_format($mpesa_amnt,2)}}</td></tr>
+                    <tr><td>Cheque:</td><td colspan="5">{{number_format($cheq_amnt,2)}}</td></tr>
+                    <tr><td>Card:</td><td colspan="5">{{number_format($card_amnt,2)}}</td></tr>
+                    <tr><td>Total Sales:</td><td colspan="5">{{number_format($card_amnt+$cheq_amnt+$mpesa_amnt+$cash_amnt,2)}}</td></tr>
+                </tfoot>
+            </table>
         </main>
         <footer>
+            <!-- This note was created on a computer and is valid without the signature and seal. -->
         </footer>
     </body>
 </html>

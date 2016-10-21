@@ -35,7 +35,7 @@ class CreateInventoryProductPriceTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_product_price');
+        Schema::dropIfExists('inventory_product_price');
     }
 
 }

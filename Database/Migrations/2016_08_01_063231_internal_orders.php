@@ -42,7 +42,7 @@ class InternalOrders extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_internal_orders');
+        Schema::dropIfExists('inventory_internal_orders');
     }
 
 }

@@ -1,15 +1,5 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Jobs;
 
 use Ignite\Inventory\Entities\InventoryBatch;
@@ -46,7 +36,7 @@ class StockUpdate  implements ShouldQueue {
      * @return void
      */
     public function handle() {
-      InventoryFunctions::update_stock_from_lpo($this->batch, $this->direct);
+        return InventoryFunctions::update_stock_from_lpo($this->batch, $this->direct);
     }
 
 }

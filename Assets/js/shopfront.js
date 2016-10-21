@@ -9,7 +9,7 @@
 /* global PRODUCTS_URL, SCHEMES_URL, PHONE_URL, STOCK_URL, CREDIT_URL, INSURANCE */
 
 $('table').hide();
-$('#insurance, #card, #cheque, #mpesa').hide();
+$('#card, #cheque, #mpesa').hide();
 $(document).ready(function () {
     var i = 3;
     $("#add_row").click(function () {
@@ -95,6 +95,7 @@ $(document).ready(function () {
             if (INSURANCE) {
                 price = selected.data().data.credit_price;
             }
+
             $('#fb' + i).attr('available', in_stock);
             $('input[name=price' + i + ']').val(price);
             $('input[name=batch' + i + ']').val(batch);
@@ -115,7 +116,7 @@ $(document).ready(function () {
     map_select2(0);
     map_select2(1);
     map_select2(2);
-    $('select[name=payment_mode]').change(function () {
+    $('select[name=payment_mode]').click(function () {
         show_form($(this).val());
     });
     $('#phone1, #phone').keyup(function () {

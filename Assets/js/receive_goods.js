@@ -29,6 +29,7 @@ $(document).ready(function () {
             var price = row.find('input[name=price' + i + ']').val();
             var dis = row.find('input[name=dis' + i + ']').val();
             var p_size = row.find('input[name=package' + i + ']').val();
+            var tax = parseFloat(row.find('input[name=tax' + i + ']').val());
             var total = qty * price;
             var discounts = (dis * price) / 100;
             if (!total) {
@@ -37,10 +38,12 @@ $(document).ready(function () {
             if (!discounts) {
                 discounts = 0;
             }
-            SUM += total;
             var the_discount = (discounts * qty);
-            var at_price = total - the_discount;
+            var t = (tax / 100);
+            var taxable = parseFloat((t * price).toFixed(2));
+            var at_price = (total + taxable) - the_discount;
             $("#total" + i).html(at_price.toFixed(2));
+            SUM += at_price;
             DISCOUNT += the_discount;
         });
         $('#total').html(SUM.toFixed(2));

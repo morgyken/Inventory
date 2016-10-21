@@ -1,18 +1,10 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Console;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
 class UpdateStock extends Command {
 

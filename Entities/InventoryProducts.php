@@ -1,15 +1,5 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Entities;
 
 use Illuminate\Database\Eloquent\Model;
@@ -17,18 +7,42 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\InventoryProducts
  *
+ * @property integer $id
+ * @property string $name
+ * @property string $description
+ * @property integer $category
+ * @property integer $unit
+ * @property integer $tax_category
+ * @property string $strength
+ * @property string $label_type
+ * @property string $formulation
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  * @property-read \Ignite\Inventory\Entities\InventoryCategories $categories
  * @property-read \Ignite\Inventory\Entities\InventoryUnits $units
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductPrice[] $prices
+ * @property-read \Ignite\Inventory\Entities\InventoryTaxCategory $taxgroups
  * @property-read \Ignite\Inventory\Entities\InventoryProductDiscount $discounts
  * @property-read mixed $product_code
  * @property-read \Ignite\Inventory\Entities\InventoryStock $stocks
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductExclusion[] $exclusions
+ * @property-read mixed $count_active_batch
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereCategory($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereUnit($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereTaxCategory($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereStrength($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereLabelType($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereFormulation($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class InventoryProducts extends Model {
 
-    protected $fillable = [];
+    protected $fillable = ['name', 'description', 'category', 'unit', 'tax_category', 'strength', 'label_type', 'formulation'];
     public $table = 'inventory_products';
 
     public function categories() {
@@ -41,6 +55,10 @@ class InventoryProducts extends Model {
 
     public function prices() {
         return $this->hasMany(InventoryProductPrice::class, 'product');
+    }
+
+    public function taxgroups() {
+        return $this->belongsTo(InventoryTaxCategory::class, 'tax_category');
     }
 
     public function discounts() {
@@ -57,6 +75,11 @@ class InventoryProducts extends Model {
 
     public function exclusions() {
         return $this->hasMany(InventoryProductExclusion::class, 'product');
+    }
+
+    public function getCountActiveBatchAttribute() {
+        $active = InventoryBatchPurchases::where('product', '=', $this->id)->count();
+        return $active;
     }
 
 }

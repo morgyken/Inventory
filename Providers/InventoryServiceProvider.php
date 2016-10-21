@@ -1,17 +1,10 @@
 <?php
 
-/*
- * =============================================================================
- *
- * Collabmed Solutions Ltd
- * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
- *
- * =============================================================================
- */
-
 namespace Ignite\Inventory\Providers;
 
+use Ignite\Inventory\Console\UpdateStock;
+use Ignite\Inventory\Repositories\InventoryFunctions;
+use Ignite\Inventory\Repositories\InventoryRepository;
 use Illuminate\Support\ServiceProvider;
 
 class InventoryServiceProvider extends ServiceProvider {
@@ -33,8 +26,9 @@ class InventoryServiceProvider extends ServiceProvider {
         $this->registerConfig();
         $this->registerViews();
         $this->commands([
-            \Ignite\Inventory\Console\UpdateStock::class,
+            UpdateStock::class,
         ]);
+        $this->bindClasses();
     }
 
     /**
@@ -101,6 +95,11 @@ class InventoryServiceProvider extends ServiceProvider {
      */
     public function provides() {
         return array();
+    }
+
+    private function bindClasses()
+    {
+        $this->app->bind(InventoryRepository::class,InventoryFunctions::class);
     }
 
 }

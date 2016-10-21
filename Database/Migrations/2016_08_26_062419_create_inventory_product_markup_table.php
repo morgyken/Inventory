@@ -29,7 +29,7 @@ class CreateInventoryProductMarkupTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_product_markup');
+        Schema::dropIfExists('inventory_product_markup');
     }
 
 }

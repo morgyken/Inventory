@@ -16,8 +16,6 @@
 
             body {
                 position: relative;
-                width: 21cm;
-                height: 29.7cm;
                 margin: 0 auto;
                 color: #001028;
                 background: #FFFFFF;
@@ -48,7 +46,7 @@
                 font-weight: normal;
                 text-align: center;
                 margin: 0 0 20px 0;
-                background: url(dimension.png);
+                background-color:#eee;
             }
 
             #project {
@@ -103,11 +101,11 @@
             }
 
             table td {
-                padding: 20px;
+                padding: 10px;
                 text-align: center;
             }
             table .sums{
-                padding: 20px;
+                padding: 10px;
                 text-align: right;
             }
 
@@ -145,7 +143,7 @@
         <header class="clearfix">
             <div id="logo">
             </div>
-            <h1>Delivery {{ $order['id'] }}</h1><br>
+            <h1>Delivery#{{ $order['id'] }}</h1><br>
             <div id="company" class="clearfix">
                 <div>{{config('practice.name')}}</div>
                 <div>{{config('practice.building')}},<br /> {{config('practice.street')}}, {{config('practice.town')}}</div>
@@ -160,50 +158,37 @@
         </header>
         <main>
             <br><br><br><br>
-            <table>
+            <table class="table table-responsive table-striped" >
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th style="text-align: left;">Item</th>
+                        <th>Item</th>
                         <th>Quantity</th>
                         <th>Package Size</th>
-                        <th>Price</th>
-                        <th>Discount(%)</th>
+                        <th>Unit Cost</th>
+                        <th>Discount</th>
+                        <th>Tax</th>
                         <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $total = 0;
-                    $count = 0;
-                    ?>
                     @foreach($batch->products as $item)
-                    <?php $count+=1; ?>
-                    <tr class="products">
-                        <td>{{$count}}</td>
-                        <td style="text-align: left;">{{$item->products->name}}</td>
+                    <tr>
+                        <td>{{$item->products->name}}</td>
                         <td>{{$item->quantity}}</td>
                         <td>{{$item->package_size}}</td>
                         <td>{{number_format($item->unit_cost,2)}}</td>
-                        <td>{{$item->discount}}</td>
-                        <td>
-                            <b><u>
-                                    <?php
-                                    $t = ($item->quantity * $item->package_size * $item->unit_cost);
-                                    $discount = ($item->discount / 100) * $t;
-                                    $total+= $t - $discount;
-                                    ?>
-                                    {{number_format($total,2)}}
-                                </u>
-                            </b>
-                        </td>
+                        <td>{{number_format($item->discount,2)}}%</td>
+                        <td>{{number_format($item->tax,2)}}%</td>
+                        <td>{{number_format($item->total,2)}}</td>
                     </tr>
                     @endforeach
-                    <tr>
-                        <td style="text-align: right;" colspan="6" class="grand total">GRAND TOTAL</td>
-                        <td class="grand total"><b><u>{{ number_format($total,2) }}</u></b></td>
-                    </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="6" style="text-align: right">Total</th>
+                        <th>{{number_format($batch->products->sum('total'),2 )}}</th>
+                    </tr>
+                </tfoot>
             </table>
         </main>
         <footer>

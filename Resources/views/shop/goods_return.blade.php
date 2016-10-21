@@ -16,53 +16,32 @@
 
 
 @section('content')
+<style>
+    label{
+        text-align: right;
+    }
+</style>
 <div class="box box-info">
     <form class="form-horizontal" method="post" action="{{ route('inventory.sales.return')}}">
         {!! Form::open(['class'=>'form-horizontal']) !!}
         <div class="box-header with-border">
-            <h3 class="box-title">Return Items</h3>
+            <h3 class="box-title">Select a receipt number to continue</h3>
         </div>
         <div class="box-body">
 
             <div class="row">
                 <div class="col-md-12">
-                    <table class="items table table-condensed" id="tab_logic">
-                        <thead>
-                            <tr>
-                                <th>Receipt Number</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <select name="rcpt" id="rcpt" class=" form-control" onclick="fillForm(this.value)">
-                                        @foreach($data['batch_sales'] as $b)
-                                        <option value="{{ $b->receipt }}">{{ $b->receipt }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="items table table-condensed" id="tab_logic">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Reason</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr id="result"></tr>
-                        </tbody>
-                    </table>
 
+                    <div class="form-group row">
+                        <label class="col-xs-2 col-form-label">Receipt Number:</label>
+                        <div class="col-xs-6">
+                            <input type="text" id="sale" class="form-control">
+                            <div id="data"></div>
+                        </div>
+                    </div>
+                    <div id="result"></div>
                 </div>
             </div>
-
-
         </div>
         <div class="box-footer">
             <div class="pull-right">
@@ -73,7 +52,7 @@
         </div>
     </form>
 
-
+    @if(!$data['returns']->isEmpty())
     <div class="box-header with-border">
         <h3 class="box-title">Previous Item Returns</h3>
     </div>
@@ -82,13 +61,13 @@
         <div class="row">
             <div class="col-md-12">
                 <table class="items table  table-striped table-condensed" id="tab_logic">
-                    @if(!$data['returns']->isEmpty())
                     <thead>
                         <tr>
                             <th>Receipt Number</th>
                             <th>Product</th>
-                            <th>Quantity</th>
+                            <th style="text-align:center">Quantity</th>
                             <th>Reason</th>
+                            <th style="text-align:center">Credit Note</th>
                             <th>Date</th>
                         </tr>
                     </thead>
@@ -97,21 +76,21 @@
                         <tr>
                             <td>{{$r->receipt_no}}</td>
                             <td>{{$r->products->name}}</td>
-                            <td>{{$r->quantity}}</td>
+                            <td style="text-align:center">{{$r->quantity}}</td>
                             <td>{{$r->reason}}</td>
+                            <td style="text-align:center">
+                                <a target="blank" href="{{route('inventory.sales.cnote', $r->id)}}">
+                                    <i class="fa fa-sticky-note" aria-hidden="true"></i>
+                                </a>
+                            </td>
                             <th>{{$r->created_at}}</th>
                         </tr>
                         @endforeach
                     </tbody>
-                    @else
-                    No Items have been returned so far....
-                    @endif
                 </table>
-
             </div>
         </div>
-
-
+        @endif
     </div>
 </div>
 
@@ -130,20 +109,27 @@
         });
     }
 
-    function fetchQtySold(product) {
-        $(document).ready(function () {
-            var receipt = $("#rcpt").val();
-            //var receipt = rcpt.options[rcpt.selectedIndex].value;
+    function scoop(rcpt) {
+        $('#sale').val(rcpt);
+        $('#data').hide();
+        fillForm(rcpt);
+    }
+
+    $(document).ready(function () {
+        $('#sale').keyup(function () {
+            var q = this.value;
             $.ajax({
-                type: "get",
-                url: "{{route('inventory.sales.qtysold')}}",
-                data: {'product_id': product, 'rcpt': receipt},
-                //dataType: "html", //expect html to be returned
+                type: 'get',
+                url: "{{route('api.inventory.sales.sale.details')}}",
+                data: {'key': q},
+                dataType: 'html',
                 success: function (response) {
-                    $("#response").html(response);
+                    $('#data').html(response);
                 }
             });
         });
-    }
+    });
+
+
 </script>
 @endsection

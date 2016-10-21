@@ -67,6 +67,7 @@
                             <th>Expiry Date</th>
                             <th>Unit cost (Kshs)</th>
                             <th>Discount (%)</th>
+                            <th>Tax(%)</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -79,6 +80,7 @@
                             <td><input type="text" name='expiry0' placeholder='Expiry Date' class="datepicker"/></td>
                             <td><input type="text" name='price0' placeholder='Price' size="4" value=""/></td>
                             <td><input type="text" name='dis0' placeholder='eg. 2' value="0" size="2"/></td>
+                            <td><input type="text" name='tax0' placeholder='' value="0" size="3"/></td>
                             <td><span id="total0">0</span></td>
                         </tr>
                         <tr id='addr1'></tr>
@@ -87,12 +89,7 @@
                         <tr>
                             <td><a id="add_row" class="btn btn-primary btn-sm pull-left"><i class="fa fa-plus"></i> Add</a>
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td colspan="7"></td>
                             <td><strong id="total">0.00</strong></td>
                         </tr>
                     </tfoot>

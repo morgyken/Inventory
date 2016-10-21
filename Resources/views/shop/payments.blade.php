@@ -18,7 +18,7 @@
                 <td>
                     <div class="form-group {{ $errors->has('payment_mode') ? ' has-error' : '' }} req">
                         <div>
-                            {!! Form::select('payment_mode',config('inventory.payment_modes'),null,['class'=>'form-control payment', 'required','id'=>'payment_mode']) !!}
+                            {!! Form::select('payment_mode',mconfig('inventory.options.payment_modes'),null,['class'=>'form-control payment', 'required','id'=>'payment_mode']) !!}
                             {!! $errors->first('payment_mode', '<span class="help-block">:message</span>') !!}
                         </div>
                     </div>
@@ -135,96 +135,6 @@
                         <td>&nbsp;</td>
                     </tr>
                 </table>
-            </div>
-        </div>
-        <div id="insurance">
-            <div id="wrapper1">
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="col-md-4"><label>Phone Number</label></div>
-                        <div class="col-md-8">
-                            <input type="text" placeholder="Phone Number" id="phone1" value="" name="phone_ins" autocomplete="off" class="form-control" />
-                            <div id="suggesstion-box1"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-4"><label>First Name</label></div>
-                        <div class="col-md-8">
-                            <input type="text" id="fname1" placeholder="First Name" value="" name="first_name_ins" autocomplete="off" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-4"><label>Last Name</label></div>
-                        <div class="col-md-8">
-                            <input type="text" id="lname1" placeholder="Last Name" value="" name="last_name_ins" autocomplete="off" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-md-4"><label>Email Address</label></div>
-                        <div class="col-md-8">
-                            <input type="email" id="email1" placeholder="Email Address" value="" autocomplete="off" name="email_ins" class="form-control">
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <div class="col-md-4"><label>User Date Of Birth</label></div>
-                        <div class="col-md-8">
-                            <input type="text" id="user_dob" placeholder="User Date of Birth" value="" name="dob_user" class="form-control date1">
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="col-md-6">
-                    <div class="form-group {{ $errors->has('company') ? ' has-error' : '' }}">
-                        {!! Form::label('company', 'Insurance Company',['class'=>'control-label col-md-4']) !!}
-                        <div class="col-md-8">
-                            {!! Form::select('company',get_insurance_companies(), null, ['class' => 'form-control company', 'placeholder' => 'Choose...']) !!}
-                        </div>
-                    </div>
-                    <div class="form-group {{ $errors->has('scheme') ? ' has-error' : '' }}">
-                        {!! Form::label('scheme', 'Credit Schemes',['class'=>'control-label col-md-4']) !!}
-                        <div class="col-md-8">
-                            <select name="scheme" class="form-control">
-                                @foreach($data['schemes'] as $s)
-                                <option value="{{$s->id}}">{{$s->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group {{ $errors->has('policy_number') ? ' has-error' : '' }}">
-                        {!! Form::label('policy_number', 'Policy Number',['class'=>'control-label col-md-4']) !!}
-                        <div class="col-md-8">
-                            {!! Form::text('policy_number', null, ['class' => 'form-control', 'placeholder' => 'Policy Number']) !!}
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group {{ $errors->has('principal') ? ' has-error' : '' }}">
-                        {!! Form::label('principal', 'Principal',['class'=>'control-label col-md-4']) !!}
-                        <div class="col-md-8">
-                            {!! Form::text('principal', null, ['class' => 'form-control', 'placeholder' => 'Principal Name']) !!}
-                        </div>
-                    </div>
-                    <div class="form-group {{ $errors->has('principal_dob') ? ' has-error' : '' }}">
-                        {!! Form::label('principal_dob', 'Principal Date of Birth',['class'=>'date control-label col-md-4']) !!}
-                        <div class="col-md-8">
-                            {!! Form::text('principal_dob', null, ['class' => 'form-control date2', 'placeholder' => 'Principal Date of Birth']) !!}
-                        </div>
-                    </div>
-                    <div class="form-group {{ $errors->has('principal_relationship') ? ' has-error' : '' }}">
-                        {!! Form::label('principal_relationship', 'Relationship',['class'=>'control-label col-md-4']) !!}
-                        <div class="col-md-8">
-                            {!! Form::select('principal_relationship',config('system.relationship'), null, ['class' => 'form-control', 'placeholder' => 'Choose...']) !!}
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 

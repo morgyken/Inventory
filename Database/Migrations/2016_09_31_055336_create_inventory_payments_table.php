@@ -57,7 +57,7 @@ class CreateInventoryPaymentsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_payments');
+        Schema::dropIfExists('inventory_payments');
     }
 
 }

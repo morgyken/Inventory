@@ -17,10 +17,15 @@ class CreateInventoryBatchSalesTable extends Migration {
             $table->string('payment_mode');
             $table->boolean('paid')->default(false);
             $table->integer('user')->unsigned();
+            $table->integer('insurance')->unsigned()->nullable();
             $table->integer('customer')->unsigned()->nullable();
             $table->timestamps();
 
             $table->foreign('user')->references('id')->on('users')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
+
+            $table->foreign('insurance')->references('id')->on('inventory_insurance_details')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
 
@@ -36,7 +41,7 @@ class CreateInventoryBatchSalesTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_batch_sales');
+        Schema::dropIfExists('inventory_batch_sales');
     }
 
 }

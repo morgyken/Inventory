@@ -14,7 +14,9 @@ class CreateInventoryStockAdjustmentsTable extends Migration {
         Schema::create('inventory_stock_adjustments', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('product')->unsigned();
+            $table->integer('opening_qty')->default(0);
             $table->integer('quantity');
+            $table->integer('new_stock')->default(0);
             $table->enum('method', ['+', '-'])->default('+');
             $table->enum('type', ['manual', 'sales', 'purchase']);
             $table->longText('reason');
@@ -36,7 +38,7 @@ class CreateInventoryStockAdjustmentsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::drop('inventory_stock_adjustments');
+        Schema::dropIfExists('inventory_stock_adjustments');
     }
 
 }

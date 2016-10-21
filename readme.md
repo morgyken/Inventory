@@ -1,3 +1,4 @@
+
 # The Inventory module
 
 Provide an elegant, scalable inventory

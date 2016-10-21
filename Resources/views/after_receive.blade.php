@@ -40,6 +40,7 @@
                             <th>Package Size</th>
                             <th>Unit Cost</th>
                             <th>Discount</th>
+                            <th>Tax</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -51,13 +52,14 @@
                             <td>{{$item->package_size}}</td>
                             <td>{{number_format($item->unit_cost,2)}}</td>
                             <td>{{number_format($item->discount,2)}}%</td>
+                            <td>{{number_format($item->tax,2)}}%</td>
                             <td>{{number_format($item->total,2)}}</td>
                         </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5">Total</th>
+                            <th colspan="6">Total</th>
                             <th>{{number_format($data['batch']->products->sum('total'),2 )}}</th>
                         </tr>
                     </tfoot>

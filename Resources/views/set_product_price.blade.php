@@ -80,7 +80,7 @@
         @foreach($data['price'] as $m)
         <tr>
             <td>{{$m->id}}</td>
-            <td>{{$m->products->name}}</td>
+            <td>{{$m->products->name}}{{$m->products->strength?'('.$m->products->strength. $m->products->units->name.')'}}</td>
             <td><center>{{$m->price}}</center></td>
         <td>
             <a href="{{route('inventory.product.price.del', $m->id)}}"><i class="fa fa-trash"></i> Delete</a>

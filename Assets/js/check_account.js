@@ -19,9 +19,6 @@ $(document).ready(function () {
     $('#acc').change(function () {
         checkBogusWidthawal();
     });
-    $('#payment_toggle').click(function () {
-        checkBogusWidthawal();
-    });
 
     function checkBogusWidthawal() {
         var amount = $('#amount').val();

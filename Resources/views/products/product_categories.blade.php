@@ -34,7 +34,7 @@
                             <td>{{$category->cash_markup}}</td>
                             <td>{{$category->credit_markup}}</td>
                             <td>
-                                <a href="{{route('inventory.product_categories',$category->id)}}"
+                                <a href="{{route('inventory.product_cat',$category->id)}}"
                                    class="btn btn-primary btn-xs">
                                     <i class="fa fa-edit"></i> Edit</a> |
                                 <button class="btn btn-danger btn-xs delete" value="{{$category->id}}">
