@@ -40,7 +40,8 @@ $product = $data['product'];
                     </dl>
                 </div>
                 <div class="col-md-6">
-                    {!! Form::open(['class'=>'form-horizontal']) !!}
+                    {!! Form::open(['class'=>'form-horizontal','route'=>'inventory.adjust_stock.do']) !!}
+                    {!! Form::hidden('id',$product->id)!!}
                     <div class="form-group {{ $errors->has('quantity') ? ' has-error' : '' }} req">
                         <label class="control-label col-md-4">New quantity</label>
                         <div class="col-md-8">
@@ -126,7 +127,7 @@ $product = $data['product'];
         }
     });
 
-    var APPROVE_URL = "{{route('inventory.ajax.adj_approve')}}";
+    var APPROVE_URL = "{{route('api.inventory.adj_approve')}}";
     function approveAdj(id) {
         $.ajax({
             type: "get",
@@ -136,7 +137,7 @@ $product = $data['product'];
                 $('#feedback' + id).css("background", "#FFF");
             },
             success: function (data) {
-                $("#feedback" + id).html(data)
+                $("#feedback" + id).html(data);
                 //$('#item_qty_' + i).css("background", "#FFF");
             }
         });

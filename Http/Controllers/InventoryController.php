@@ -24,7 +24,6 @@ use Ignite\Inventory\Entities\InventoryBatch;
 use Ignite\Inventory\Http\Requests\AddSupplierRequest;
 use Ignite\Inventory\Repositories\InventoryRepository;
 use Illuminate\Http\Request;
-use Ignite\Inventory\Library\Validation;
 use Ignite\Inventory\Entities\InventoryBatchPurchases;
 
 class InventoryController extends AdminBaseController {
@@ -100,8 +99,8 @@ class InventoryController extends AdminBaseController {
 
     public function product_cat($id = null) {
         if ($this->request->isMethod('post')) {
-            $this->validate($this->request, Validation::add_product_category());
-            if ($this->inventoryRepository->add_product_category($this->request, $id)) {
+            $this->validate(Validation::add_product_category());
+            if ($this->inventoryRepository->add_product_category($id)) {
                 flash('Product category saved!');
                 return redirect()->route('inventory.product_categories');
             }
@@ -113,8 +112,8 @@ class InventoryController extends AdminBaseController {
 
     public function tax_categories($id = null) {
         if ($this->request->isMethod('post')) {
-            $this->validate($this->request, Validation::add_tax_category());
-            if ($this->inventoryRepository->add_tax_category($this->request, $id)) {
+            $this->validate(Validation::add_tax_category());
+            if ($this->inventoryRepository->add_tax_category($id)) {
                 flash('Tax category saved!');
                 return redirect()->route('inventory.tax_categories');
             }
@@ -126,8 +125,8 @@ class InventoryController extends AdminBaseController {
 
     public function units_of_measurement($id = null) {
         if ($this->request->isMethod('post')) {
-            $this->validate($this->request, Validation::add_unit_of_measure());
-            if ($this->inventoryRepository->add_unit_of_measure($this->request, $id)) {
+            $this->validate(Validation::add_unit_of_measure());
+            if ($this->inventoryRepository->add_unit_of_measure($id)) {
                 flash('Unit saved!');
                 return redirect()->route('inventory.units_of_measurement'); //->with('success',);
             }
@@ -139,8 +138,8 @@ class InventoryController extends AdminBaseController {
 
     public function add_product($id = null) {
         if ($this->request->isMethod('post')) {
-            $this->validate($this->request, Validation::add_product());
-            if ($this->inventoryRepository->add_product($this->request, $this->request->id)) {
+            $this->validate(Validation::add_product());
+            if ($this->inventoryRepository->add_product($this->request->id)) {
                 flash('Product Saved');
                 return redirect()->route('inventory.products');
             }
@@ -159,14 +158,14 @@ class InventoryController extends AdminBaseController {
         return view('inventory::products.view_stocks', ['data' => $this->data]);
     }
 
-    public function adjust_stock($id) {
-        if ($this->request->isMethod('post')) {
-            $this->validate($this->request, Validation::adjust_stock());
-            if ($this->inventoryRepository->set_stock_value($this->request, $id)) {
-                flash('Stock adjusted');
-                return redirect()->route('inventory.view_stock');
-            }
+    public function adjust_stock_do(\Ignite\Inventory\Http\Requests\AdjustStockRequest $request) {
+        if ($this->inventoryRepository->set_stock_value()) {
+            flash('Stock adjusted');
+            return redirect()->route('inventory.view_stock');
         }
+    }
+
+    public function adjust_stock($id) {
         $this->data['product'] = InventoryProducts::find($id);
         $this->data['adjustments'] = InventoryStockAdjustment::all();
         return view('inventory::products.adjust_stock', ['data' => $this->data]);
@@ -179,7 +178,7 @@ class InventoryController extends AdminBaseController {
 
     public function payment_terms($id = null) {
         if ($this->request->isMethod('post')) {
-            if ($this->inventoryRepository->add_payment_term($this->request, $id)) {
+            if ($this->inventoryRepository->add_payment_term($id)) {
                 flash('Product saved');
                 return back();
             }
@@ -191,7 +190,7 @@ class InventoryController extends AdminBaseController {
 
     public function add_lpo($id = null) {
         if ($this->request->isMethod('post')) {
-            if ($this->inventoryRepository->add_new_order($this->request, $id)) {
+            if ($this->inventoryRepository->add_new_order($id)) {
                 $x = \Session::get('last_order');
                 flash('LPO created');
                 return redirect()->route('inventory.order_details', $x);

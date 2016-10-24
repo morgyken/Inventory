@@ -4,7 +4,7 @@ namespace Ignite\Inventory\Http\Controllers;
 
 use Ignite\Core\Http\Controllers\AdminBaseController;
 use Ignite\Inventory\Entities\InventoryBatchProductSales;
-use Ignite\Inventory\Library\InventoryFunctions;
+use Ignite\Inventory\Repositories\InventoryRepository;
 use Ignite\Settings\Entities\Schemes;
 use Illuminate\Http\Request;
 use Ignite\Inventory\Entities\InventorySalesReturn;
@@ -13,17 +13,26 @@ use Ignite\Inventory\Entities\InventoryInsuranceDetails;
 
 class SalesController extends AdminBaseController {
 
-    protected $request;
+    /**
+     * @var InventoryRepository
+     */
+    protected $inventoryRepository;
 
-    public function __construct(Request $request) {
+    /**
+     * SalesController constructor.
+     * @param InventoryRepository $repository
+     * @param Request $request
+     */
+    public function __construct(InventoryRepository $repository, Request $request) {
         parent::__construct();
+        $this->inventoryRepository = $repository;
         $this->request = $request;
     }
 
     public function shopfront($id = null) {
         if ($this->request->isMethod('post')) {
-            if ($this->inventoryRepository->record_sales($this->request, $id)) {
-                $receipt = \Session::get('receipt_id');
+            if ($this->inventoryRepository->record_sales($id)) {
+                $receipt = session('receipt_id');
                 flash('Transaction completed');
                 return redirect()->route('inventory.receipt', $receipt);
             }
@@ -34,8 +43,8 @@ class SalesController extends AdminBaseController {
 
     public function shopfront_credit($id = null) {
         if ($this->request->isMethod('post')) {
-            if ($this->inventoryRepository->record_sales($this->request, $id)) {
-                $receipt = \Session::get('receipt_id');
+            if ($this->inventoryRepository->record_sales($id)) {
+                $receipt = session('receipt_id');
                 flash('Bill placed successfully');
                 return redirect()->route('inventory.receipt', $receipt);
             }
@@ -50,7 +59,7 @@ class SalesController extends AdminBaseController {
      */
     public function clients($id = null) {
         if ($this->request->isMethod('post')) {
-            if ($this->inventoryRepository->save_client($this->request, $id)) {
+            if ($this->inventoryRepository->save_client($id)) {
                 flash('Client Saved.. thank you');
                 return redirect()->route('inventory.clients.credit', null);
             }
@@ -68,7 +77,7 @@ class SalesController extends AdminBaseController {
      */
     public function show_clients($id = null) {
         if ($this->request->isMethod('post')) {
-            if ($this->inventoryRepository->save_client($this->request, $id)) {
+            if ($this->inventoryRepository->save_client($id)) {
                 flash('Client Saved.. thank you');
                 return redirect()->route('inventory.clients.credit', null);
             }
@@ -102,8 +111,9 @@ class SalesController extends AdminBaseController {
 
     public function return_goods() {
         if ($this->request->isMethod('post')) {
-            if ($this->inventoryRepository->sales_return($this->request)) {
-                return redirect()->back()->with('success', 'Transaction Successful');
+            if ($this->inventoryRepository->sales_return()) {
+                flash("Transaction Successful");
+                return back();
             }
         }
         $this->data['batch_sales'] = InventoryBatchProductSales::all();

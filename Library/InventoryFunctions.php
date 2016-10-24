@@ -10,7 +10,7 @@
  * =============================================================================
  */
 
-namespace Ignite\Inventory\Repositories;
+namespace Ignite\Inventory\Library;
 
 use Ignite\Inventory\Entities\InventoryBatch;
 use Ignite\Inventory\Entities\InventoryBatchProductSales;
@@ -33,6 +33,7 @@ use Ignite\Inventory\Entities\InventoryTaxCategory;
 use Ignite\Inventory\Entities\InventoryUnits;
 use Ignite\Inventory\Entities\InventoryProductDiscount;
 use Ignite\Inventory\Events\MarkupWasAdjusted;
+use Ignite\Inventory\Repositories\InventoryRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Ignite\Inventory\Entities\InventorySalesReturn;
@@ -45,6 +46,7 @@ use Ignite\Finance\Entities\InsuranceInvoice;
  * @author Samuel Dervis <samueldervis@gmail.com>
  */
 class InventoryFunctions implements InventoryRepository {
+
     /**
      * @var Request
      */
@@ -54,9 +56,8 @@ class InventoryFunctions implements InventoryRepository {
      * InventoryFunctions constructor.
      * @param Request $request
      */
-    public function __construct(Request $request)
-    {
-        $this->request=$request;
+    public function __construct(Request $request) {
+        $this->request = $request;
     }
 
     /**
@@ -65,18 +66,18 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function add_supplier(Request $request, $id = null) {
+    public function add_supplier($id = null) {
         $supplier = InventorySupplier::findOrNew($id);
-        $supplier->name = ucfirst($request->name);
-        $supplier->address = $request->address;
-        $supplier->telephone = $request->telephone;
-        $supplier->mobile = $request->mobile;
-        $supplier->post_code = $request->post_code;
-        $supplier->email = $request->email;
-        $supplier->building = $request->building;
-        $supplier->fax = $request->fax;
-        $supplier->street = $request->street;
-        $supplier->town = $request->town;
+        $supplier->name = ucfirst($this->request->name);
+        $supplier->address = $this->request->address;
+        $supplier->telephone = $this->request->telephone;
+        $supplier->mobile = $this->request->mobile;
+        $supplier->post_code = $this->request->post_code;
+        $supplier->email = $this->request->email;
+        $supplier->building = $this->request->building;
+        $supplier->fax = $this->request->fax;
+        $supplier->street = $this->request->street;
+        $supplier->town = $this->request->town;
         return $supplier->save();
     }
 
@@ -85,12 +86,12 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function add_product_category(Request $request, $id = null) {
+    public function add_product_category($id = null) {
         $category = InventoryCategories::findOrNew($id);
-        $category->name = ucfirst($request->name);
-        $category->parent = $request->parent_category;
-        $category->credit_markup = $request->credit_markup;
-        $category->cash_markup = $request->cash_markup;
+        $category->name = ucfirst($this->request->name);
+        $category->parent = $this->request->parent_category;
+        $category->credit_markup = $this->request->credit_markup;
+        $category->cash_markup = $this->request->cash_markup;
         $result = $category->save();
         return $result;
     }
@@ -101,10 +102,10 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return mixed
      */
-    public function add_tax_category(Request $request, $id = null) {
+    public function add_tax_category($id = null) {
         $category = InventoryTaxCategory::findOrNew($id);
-        $category->name = ucfirst($request->name);
-        $category->rate = $request->rate;
+        $category->name = ucfirst($this->request->name);
+        $category->rate = $this->request->rate;
         return $category->save();
     }
 
@@ -114,10 +115,10 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return mixed
      */
-    public function add_unit_of_measure(Request $request, $id = null) {
+    public function add_unit_of_measure($id = null) {
         $unit = InventoryUnits::findOrNew($id);
-        $unit->name = ucfirst($request->name);
-        $unit->description = $request->description;
+        $unit->name = ucfirst($this->request->name);
+        $unit->description = $this->request->description;
         return $unit->save();
     }
 
@@ -126,22 +127,18 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function add_product(Request $request, $id = null) {
-        DB::transaction(function () use ($request, $id) {
+    public function add_product($id = null) {
+        DB::transaction(function () use ( $id) {
             $product = InventoryProducts::firstOrNew(['id' => $id]);
-            $product->name = ucfirst($request->name);
-            $product->description = $request->description;
-            $product->category = $request->category;
-            $product->unit = $request->unit;
-            $product->tax_category = $request->tax;
-            $product->formulation = $request->formulation;
-            $product->label_type = $request->label_type;
-            $product->strength = $request->strength;
+            $product->name = ucfirst($this->request->name);
+            $product->description = $this->request->description;
+            $product->category = $this->request->category;
+            $product->unit = $this->request->unit;
+            $product->tax_category = $this->request->tax;
+            $product->formulation = $this->request->formulation;
+            $product->label_type = $this->request->label_type;
+            $product->strength = $this->request->strength;
             $product->save();
-//$price = InventoryProductPrice::firstOrNew(['product' => $product->id]);
-//$price->price = $request->unit_cost;
-//$price->selling = $request->selling_price;
-//$price->save();
         });
         return true;
     }
@@ -152,10 +149,10 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function add_payment_term(Request $request, $id = null) {
+    public function add_payment_term($id = null) {
         $term = InventoryPaymentTerms::findOrNew($id);
-        $term->terms = $request->terms;
-        $term->description = $request->description;
+        $term->terms = $this->request->terms;
+        $term->description = $this->request->description;
         return $term->save();
     }
 
@@ -165,28 +162,28 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function add_new_order(Request $request, $id = null) {
-        DB::transaction(function () use ($request, $id) {
+    public function add_new_order($id = null) {
+        DB::transaction(function () use ( $id) {
             $order = new InventoryPurchaseOrders();
-            $order->supplier = $request->supplier;
-            $order->deliver_date = new \Date($request->delivery_date);
-            $order->payment_terms = $request->payment_terms;
-            $order->payment_mode = $request->payment_mode;
-            $order->user = $request->user()->id;
+            $order->supplier = $this->request->supplier;
+            $order->deliver_date = new \Date($this->request->delivery_date);
+            $order->payment_terms = $this->request->payment_terms;
+            $order->payment_mode = $this->request->payment_mode;
+            $order->user = $this->request->user()->id;
             $order->save();
 
-            $request->session()->put('last_order', $order->id);
-            $stack = self::order_item_stack(array_keys($request->all()));
+            session(['last_order' => $order->id]);
+            $stack = self::order_item_stack(array_keys($this->request->all()));
             foreach ($stack as $index) {
                 $item = 'item' . $index;
                 $price = 'price' . $index;
                 $quantity = 'qty' . $index;
                 $details = new InventoryPurchaseOrderDetails();
-                if ($request->has($item) && $request->has($price) && $request->has($quantity)) {
+                if ($this->request->has($item) && $this->request->has($price) && $this->request->has($quantity)) {
                     $details->order = $order->id;
-                    $details->product = $request->$item;
-                    $details->price = $request->$price;
-                    $details->quantity = $request->$quantity;
+                    $details->product = $this->request->$item;
+                    $details->price = $this->request->$price;
+                    $details->quantity = $this->request->$quantity;
                     $details->save();
                 }
             }
@@ -213,20 +210,20 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function saveProdPrice(Request $request) {
-        foreach ($request->products as $index => $product_id) {
+    public function saveProdPrice() {
+        foreach ($this->request->products as $index => $product_id) {
             $product_price = InventoryProductPrice::firstOrNew(['product' => $product_id]);
-            $product_price->product = $request->products[$index];
-            $product_price->price = $request->prices[$index];
+            $product_price->product = $this->request->products[$index];
+            $product_price->price = $this->request->prices[$index];
             $product_price->save();
         }
         return 'saved';
     }
 
-    public function updateProdPrice(Request $request) {
-        foreach ($request->id as $index => $id) {
+    public function updateProdPrice() {
+        foreach ($this->request->id as $index => $id) {
             $price = InventoryProductPrice::find($id);
-            $price->price = $request->price[$index];
+            $price->price = $this->request->price[$index];
             $price->save();
         }
         return 'saved';
@@ -236,12 +233,12 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function saveProdDiscount(Request $request) {
-        foreach ($request->products as $index => $product_id) {
+    public function saveProdDiscount() {
+        foreach ($this->request->products as $index => $product_id) {
             $product_discount = InventoryProductDiscount::firstOrNew(['product' => $product_id]);
-            $product_discount->product = $request->products[$index];
-            $product_discount->discount = $request->discounts[$index];
-            $product_discount->end_date = new \Date($request->end_dates[$index]);
+            $product_discount->product = $this->request->products[$index];
+            $product_discount->discount = $this->request->discounts[$index];
+            $product_discount->end_date = new \Date($this->request->end_dates[$index]);
             $product_discount->save();
         }
         return 'saved';
@@ -251,11 +248,11 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function markup(Request $request) {
-        foreach ($request->product as $index => $product_id) {
+    public function markup() {
+        foreach ($this->request->product as $index => $product_id) {
             $markup = InventoryProductMarkup::firstOrNew(['product' => $product_id]);
-            $markup->product = $request->product[$index];
-            $markup->markup = $request->markup[$index];
+            $markup->product = $this->request->product[$index];
+            $markup->markup = $this->request->markup[$index];
             $markup->save();
         }
         return 'saved';
@@ -265,11 +262,11 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function saveCatPrice(Request $request) {
-        foreach ($request->cats as $index => $cat_id) {
+    public function saveCatPrice() {
+        foreach ($this->request->cats as $index => $cat_id) {
             $cat_price = InventoryCategoryPrice::firstOrNew(['category' => $cat_id]);
-            $cat_price->category = $request->cats[$index];
-            $cat_price->price = $request->prices[$index];
+            $cat_price->category = $this->request->cats[$index];
+            $cat_price->price = $this->request->prices[$index];
             $cat_price->save();
         }
         return 'saved';
@@ -291,25 +288,25 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function record_sales(Request $request, $id = null) {
+    public function record_sales($id = null) {
         DB::beginTransaction();
         try {
             $receipt = config('system.receipt_prefix') . mt_rand(1000, 9000) . '-' . date('d/m/y');
-            $stack = self::order_item_stack(array_keys($request->all()));
-            if ($request->first_name || $request->phone) {
-                $customer = Customer::firstOrNew(['phone' => $request->phone]);
-                $customer->first_name = $request->first_name;
-                $customer->last_name = $request->last_name;
-                $customer->email = $request->email;
-                $customer->phone = $request->phone;
+            $stack = self::order_item_stack(array_keys($this->request->all()));
+            if ($this->request->first_name || $this->request->phone) {
+                $customer = Customer::firstOrNew(['phone' => $this->request->phone]);
+                $customer->first_name = $this->request->first_name;
+                $customer->last_name = $this->request->last_name;
+                $customer->email = $this->request->email;
+                $customer->phone = $this->request->phone;
                 $customer->save();
             }
             $sales = new InventoryBatchProductSales;
-            $sales->user = $request->user()->id;
+            $sales->user = $this->request->user()->id;
             if (isset($customer->id)) {
                 $sales->customer = $customer->id;
             }
-            $sales->payment_mode = $request->payment_mode;
+            $sales->payment_mode = $this->request->payment_mode;
 
             $sales->receipt = strtoupper($receipt);
             $sales->paid = ($sales->payment_mode != 'insurance');
@@ -320,29 +317,29 @@ class InventoryFunctions implements InventoryRepository {
                 $batch = 'batch' . $index;
                 $quantity = 'qty' . $index;
                 $discount = 'dis' . $index;
-                if ($request->has($item) && $request->has($price) && $request->has($quantity)) {
+                if ($this->request->has($item) && $this->request->has($price) && $this->request->has($quantity)) {
                     $sale = new InventoryDispensing;
                     $sale->batch = $sales->id;
-                    $sale->product = $request->$item;
-                    $sale->price = $request->$price;
-                    $sale->quantity = $request->$quantity;
-                    $sale->discount = $request->$discount;
+                    $sale->product = $this->request->$item;
+                    $sale->price = $this->request->$price;
+                    $sale->quantity = $this->request->$quantity;
+                    $sale->discount = $this->request->$discount;
 //move items in queue
-                    $stock = InventoryStock::where('product', '=', $request->$item)->first();
-                    if ($stock->quantity < $request->$quantity) {
+                    $stock = InventoryStock::where('product', '=', $this->request->$item)->first();
+                    if ($stock->quantity < $this->request->$quantity) {
                         DB::rollback();
                         flash()->error("An item you tried to sell is unfortunately out of stock...");
                         redirect()->back();
                     }
-                    if ($request->$batch > 0) {
-                        self::update_queue($sale->product, $request->$batch, $sale->quantity);
+                    if ($this->request->$batch > 0) {
+                        self::update_queue($sale->product, $this->request->$batch, $sale->quantity);
                     }
                     $sale->save();
                 }
             }
             self::take_products($sales); //notify stock
-            self::record_payments($request, $receipt, $request->payment_mode);
-            $request->session()->put('receipt_id', $sales->id);
+            self::record_payments($receipt, $this->request->payment_mode);
+            session(['receipt_id' => $sales->id]);
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -357,42 +354,42 @@ class InventoryFunctions implements InventoryRepository {
      * @param $payment_mode
      * @return bool
      */
-    private function record_payments(Request $request, $receipt, $payment_mode) {
+    private function record_payments($receipt, $payment_mode) {
         $pay = new InventoryPayments;
         $pay->receipt = strtoupper($receipt); //$receipt;
 //user and patient
-        $pay->user = $request->user()->id;
+        $pay->user = $this->request->user()->id;
 
         if ($payment_mode == 'cash') {
 //cash
-            $pay->CashAmount = $request->amount;
+            $pay->CashAmount = $this->request->amount;
         } elseif ($payment_mode == 'mpesa') {
 //mpesa
-            $pay->MpesaAmount = $request->amount;
-            $pay->MpesaReference = strtoupper($request->MpesaRef);
+            $pay->MpesaAmount = $this->request->amount;
+            $pay->MpesaReference = strtoupper($this->request->MpesaRef);
         } elseif ($payment_mode == 'cheque') {
 //cheque
-            $pay->ChequeName = strtoupper($request->Ac_holder_name);
-            $pay->ChequeDate = $request->ChequeDate;
-            $pay->ChequeAmount = $request->amount;
-            $pay->ChequeName = $request->ChequeNumber;
-            $pay->ChequeBank = $request->Bank;
-            $pay->ChequeBankBranch = $request->Branch;
+            $pay->ChequeName = strtoupper($this->request->Ac_holder_name);
+            $pay->ChequeDate = $this->request->ChequeDate;
+            $pay->ChequeAmount = $this->request->amount;
+            $pay->ChequeName = $this->request->ChequeNumber;
+            $pay->ChequeBank = $this->request->Bank;
+            $pay->ChequeBankBranch = $this->request->Branch;
         } elseif ($payment_mode == 'card') {
 //card
-            $pay->CardName = $request->CardNames;
-            $pay->CardType = $request->CardType;
-            $pay->CardAmount = $request->amount;
-            $pay->CardSecurity = $request->security_code;
-            $pay->CardExpiry = $request->expiry_month + "/" + $request->expiry_year;
-            $pay->CardNumber = $request->CardNumber;
+            $pay->CardName = $this->request->CardNames;
+            $pay->CardType = $this->request->CardType;
+            $pay->CardAmount = $this->request->amount;
+            $pay->CardSecurity = $this->request->security_code;
+            $pay->CardExpiry = $this->request->expiry_month + "/" + $this->request->expiry_year;
+            $pay->CardNumber = $this->request->CardNumber;
         } elseif ($payment_mode == 'insurance') {
             try {//payment
-                $pay->scheme = $request->InsuranceScheme;
-                $pay->InsuranceAmount = $request->amount;
-                $customer = $request->customer_id; //Client
+                $pay->scheme = $this->request->InsuranceScheme;
+                $pay->InsuranceAmount = $this->request->amount;
+                $customer = $this->request->customer_id; //Client
                 $details = InventoryInsuranceDetails::where('customer', '=', $customer)
-                        ->where('policy_no', '=', $request->policy)
+                        ->where('policy_no', '=', $this->request->policy)
                         ->first(); //Credit Details
                 $sale = InventoryBatchProductSales::query()->where('receipt', '=', $receipt)->first(); //update sale
                 $sale->customer = $customer;
@@ -532,12 +529,12 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function receive_goods_direct(Request $request) {
-        DB::transaction(function () use ($request) {
-            $stack = self::order_item_stack(array_keys($request->all()));
+    public function receive_goods_direct() {
+        DB::transaction(function () {
+            $stack = self::order_item_stack(array_keys($this->request->all()));
             $order = new InventoryBatch;
-            $order->user = $request->user()->id;
-            $order->supplier = $request->supplier;
+            $order->user = $this->request->user()->id;
+            $order->supplier = $this->request->supplier;
             $order->save();
             foreach ($stack as $index) {
                 $item = 'item' . $index;
@@ -548,28 +545,28 @@ class InventoryFunctions implements InventoryRepository {
                 $tax = 'tax' . $index;
                 $expiry = 'expiry' . $index;
                 $package = 'package' . $index;
-                if ($request->has($item) && $request->has($price) && $request->has($quantity)) {
+                if ($this->request->has($item) && $this->request->has($price) && $this->request->has($quantity)) {
                     $details = new InventoryBatchPurchases;
                     $details->batch = $order->id;
-                    $details->bonus = $request->$bonus;
-                    $details->product = $request->$item;
-                    if ($request->$package > 0) {
-                        $details->unit_cost = $request->$price / $request->$package;
+                    $details->bonus = $this->request->$bonus;
+                    $details->product = $this->request->$item;
+                    if ($this->request->$package > 0) {
+                        $details->unit_cost = $this->request->$price / $this->request->$package;
                     } else {
-                        $details->unit_cost = $request->$price;
+                        $details->unit_cost = $this->request->$price;
                     }
-                    $details->quantity = $request->$quantity;
-                    $details->discount = $request->$discount;
-                    $details->tax = $request->$tax;
-                    $details->expiry_date = $request->$expiry;
-                    $details->package_size = $request->$package;
+                    $details->quantity = $this->request->$quantity;
+                    $details->discount = $this->request->$discount;
+                    $details->tax = $this->request->$tax;
+                    $details->expiry_date = $this->request->$expiry;
+                    $details->package_size = $this->request->$package;
                     $details->save();
                 }
             }
 //$job = (new StockUpdate($order, true))->onQueue('stock');
 //dispatch($job);
             self::update_stock_from_lpo($order, true);
-            $request->session()->put('last_receive', $order->id);
+            session(['last_receive' => $order->id]);
         });
 
         return true;
@@ -580,13 +577,13 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function receive_from_lpo(Request $request) {
-        DB::transaction(function () use ($request) {
-            $stack = self::order_item_stack(array_keys($request->all()));
+    public function receive_from_lpo() {
+        DB::transaction(function () {
+            $stack = self::order_item_stack(array_keys($this->request->all()));
             $order = new InventoryBatch;
-            $order->order = $request->lpo;
-            $order->user = $request->user()->id;
-            $order->supplier = $request->supplier;
+            $order->order = $this->request->lpo;
+            $order->user = $this->request->user()->id;
+            $order->supplier = $this->request->supplier;
             $order->save();
             foreach ($stack as $index) {
                 $item = 'item' . $index;
@@ -597,17 +594,17 @@ class InventoryFunctions implements InventoryRepository {
                 $tax = 'tax' . $index;
                 $expiry = 'expiry' . $index;
                 $package = 'package' . $index;
-                if ($request->has($item) && $request->has($price) && $request->has($quantity)) {
+                if ($this->request->has($item) && $this->request->has($price) && $this->request->has($quantity)) {
                     $details = new InventoryBatchPurchases;
                     $details->batch = $order->id;
-                    $details->bonus = $request->$bonus;
-                    $details->product = $request->$item;
-                    $details->unit_cost = $request->$price / $request->$package;
-                    $details->quantity = $request->$quantity;
-                    $details->discount = $request->$discount;
-                    $details->tax = $request->$tax;
-                    $details->expiry_date = $request->$expiry;
-                    $details->package_size = $request->$package;
+                    $details->bonus = $this->request->$bonus;
+                    $details->product = $this->request->$item;
+                    $details->unit_cost = $this->request->$price / $this->request->$package;
+                    $details->quantity = $this->request->$quantity;
+                    $details->discount = $this->request->$discount;
+                    $details->tax = $this->request->$tax;
+                    $details->expiry_date = $this->request->$expiry;
+                    $details->package_size = $this->request->$package;
                     $details->save();
                 }
             }
@@ -617,7 +614,7 @@ class InventoryFunctions implements InventoryRepository {
             /* $job = (new StockUpdate($order))->onQueue('stock');
               dispatch($job); */
             self::update_stock_from_lpo($order);
-            $request->session()->put('last_receive', $order->id);
+            session(['last_receive' => $order->id]);
         });
 
         return true;
@@ -671,8 +668,9 @@ class InventoryFunctions implements InventoryRepository {
      * @param $id
      * @return bool
      */
-    public function set_stock_value(Request $request, $id) {
-        DB::transaction(function () use ($request, $id) {
+    public function set_stock_value() {
+        DB::transaction(function () {
+            $id = $this->request->id;
             $curr = InventoryStock::firstOrNew(['product' => $id])->quantity;
             if (empty($curr)) {
                 $curr = 0;
@@ -680,10 +678,10 @@ class InventoryFunctions implements InventoryRepository {
             $adj = new InventoryStockAdjustment;
             $adj->product = $id;
             $adj->opening_qty = self::openingStock($id);
-            $adj->quantity = abs($request->quantity - $curr);
-            $adj->user = $request->user()->id;
-            $adj->method = ($request->quantity >= $curr) ? '+' : '-';
-            $adj->reason = $request->reason;
+            $adj->quantity = abs($this->request->quantity - $curr);
+            $adj->user = $this->request->user()->id;
+            $adj->method = ($this->request->quantity >= $curr) ? '+' : '-';
+            $adj->reason = $this->request->reason;
             $adj->type = 'manual';
             $adj->approved = 'no';
             $adj->save();
@@ -705,29 +703,29 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function sales_return(Request $request) {
+    public function sales_return() {
         DB::beginTransaction();
         try {
             $sreturn = new InventorySalesReturn;
-            $sreturn->product = $request->product;
-            $sreturn->receipt_no = $request->rcpt;
-            $sreturn->quantity = $request->qty;
-            if (!isset($request->trash)) {
+            $sreturn->product = $this->request->product;
+            $sreturn->receipt_no = $this->request->rcpt;
+            $sreturn->quantity = $this->request->qty;
+            if (!isset($this->request->trash)) {
                 $sreturn->stocked = true;
             }
-            $sreturn->reason = $request->reason;
+            $sreturn->reason = $this->request->reason;
             $sreturn->save(); //update stock
-            $curr = InventoryStock::firstOrNew(['product' => $request->product])->quantity;
+            $curr = InventoryStock::firstOrNew(['product' => $this->request->product])->quantity;
             if (empty($curr)) {
                 $curr = 0;
             }
 
-            if (!isset($request->trash)) {
+            if (!isset($this->request->trash)) {
                 $adj = new InventoryStockAdjustment;
-                $adj->product = $request->product;
-                $adj->opening_qty = self::openingStock($request->product);
-                $adj->quantity = $request->qty;
-                $adj->user = $request->user()->id;
+                $adj->product = $this->request->product;
+                $adj->opening_qty = self::openingStock($this->request->product);
+                $adj->quantity = $this->request->qty;
+                $adj->user = $this->request->user()->id;
                 $adj->method = '+';
                 $adj->reason = 'sales seturn';
                 $adj->type = 'return';
@@ -747,38 +745,38 @@ class InventoryFunctions implements InventoryRepository {
     /**
      * @param Request $request
      */
-    public function supplier_invoice(Request $request) {
+    public function supplier_invoice() {
         $inv = new InventoryInvoice;
-        $inv->creditor = $request->creditor;
-        $inv->amount = $request->amount;
-        $inv->grn = $request->grn;
-        $inv->date = $request->date;
-        $inv->due_date = $request->due_date;
-        $inv->status = $request->status;
-        $inv->description = $request->description;
-        $inv->number = $request->number;
+        $inv->creditor = $this->request->creditor;
+        $inv->amount = $this->request->amount;
+        $inv->grn = $this->request->grn;
+        $inv->date = $this->request->date;
+        $inv->due_date = $this->request->due_date;
+        $inv->status = $this->request->status;
+        $inv->description = $this->request->description;
+        $inv->number = $this->request->number;
         $inv->save();
     }
 
-    public function save_client(Request $request) {
+    public function save_client() {
         try {
 //Client information
             $client = new Customer();
-            $client->first_name = $request->first_name_ins;
-            $client->last_name = $request->last_name_ins;
-            $client->date_of_birth = new \Date($request->dob_user);
-            $client->email = $request->email_ins;
-            $client->phone = $request->phone_ins;
+            $client->first_name = $this->request->first_name_ins;
+            $client->last_name = $this->request->last_name_ins;
+            $client->date_of_birth = new \Date($this->request->dob_user);
+            $client->email = $this->request->email_ins;
+            $client->phone = $this->request->phone_ins;
             $client->save();
 //Credit Details
             $details = new InventoryInsuranceDetails;
             $details->customer = $client->id;
-            $details->insurance_company = $request->company;
-            $details->credit_scheme = $request->scheme;
-            $details->policy_no = $request->policy_number;
-            $details->principal = $request->principal;
-            $details->date_of_birth = new \Date($request->principal_dob);
-            $details->relation = $request->principal_relationship;
+            $details->insurance_company = $this->request->company;
+            $details->credit_scheme = $this->request->scheme;
+            $details->policy_no = $this->request->policy_number;
+            $details->principal = $this->request->principal;
+            $details->date_of_birth = new \Date($this->request->principal_dob);
+            $details->relation = $this->request->principal_relationship;
             $details->save();
             return true;
         } catch (\Exception $exc) {

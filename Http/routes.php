@@ -25,7 +25,9 @@ $router->get('products/{id?}', ['uses' => 'InventoryController@products', 'as' =
 $router->match(['post', 'get'], 'manage/products/{id?}', ['uses' => 'InventoryController@add_product', 'as' => 'add_product']);
 $router->get('store/products/available', ['uses' => 'InventoryController@view_stock', 'as' => 'view_stock']);
 //stock_adjustments
-$router->match(['get', 'post'], 'store/products/adjust/{id}', ['uses' => 'InventoryController@adjust_stock', 'as' => 'adjust_stock']);
+$router->get('store/products/adjust/{id}', ['uses' => 'InventoryController@adjust_stock', 'as' => 'adjust_stock']);
+$router->post('store/products/do_adjust/', ['uses' => 'InventoryController@adjust_stock_do', 'as' => 'adjust_stock.do']);
+
 $router->match(['get', 'post'], 'store/products/stock_adjustments', ['uses' => 'InventoryController@stock_adjustments', 'as' => 'stock.adjustments']);
 //Discount, Price and Category Price
 $router->get('product/discount', ['uses' => 'InventoryController@setProductDiscount', 'as' => 'product.discount']);

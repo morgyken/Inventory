@@ -113,8 +113,7 @@ if (isset($data['ins'])) {
                                             <div class="form-group {{ $errors->has('scheme') ? ' has-error' : '' }}">
                                                 {!! Form::label('scheme', 'Credit Schemes',['class'=>'control-label col-md-4']) !!}
                                                 <div class="col-md-8">
-                                                    <select name="scheme" id="scheme" class="form-control">
-                                                    </select>
+                                                    <select name="scheme" id="scheme" class="form-control"></select>
                                                 </div>
                                             </div>
                                             <div class="form-group {{ $errors->has('policy_number') ? ' has-error' : '' }}">

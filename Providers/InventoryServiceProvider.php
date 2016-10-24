@@ -3,7 +3,7 @@
 namespace Ignite\Inventory\Providers;
 
 use Ignite\Inventory\Console\UpdateStock;
-use Ignite\Inventory\Repositories\InventoryFunctions;
+use Ignite\Inventory\Library\InventoryFunctions;
 use Ignite\Inventory\Repositories\InventoryRepository;
 use Illuminate\Support\ServiceProvider;
 
