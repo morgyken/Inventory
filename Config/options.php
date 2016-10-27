@@ -22,6 +22,15 @@ return [
         'insurance' => 'Insurance',
         'card' => 'Credit Card', 'cheque' => 'Cheque',
     ],
+        'rcv_modes' => [
+        '1' => 'Cash',
+        '2' => 'Bank Deposit',
+        '3' => 'Credit',
+        '4' => 'MPESA',
+        '5' => 'Airtel Money',
+        '6' => 'Insurance',
+        '7' => 'Credit Card', 'cheque' => 'Cheque',
+    ],
     'label_type' => [
         1 => 'External',
         2 => 'Oral',

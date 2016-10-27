@@ -332,13 +332,13 @@ class InventoryFunctions implements InventoryRepository {
                         redirect()->back();
                     }
                     if ($this->request->$batch > 0) {
-                        self::update_queue($sale->product, $this->request->$batch, $sale->quantity);
+                        $this->update_queue($sale->product, $this->request->$batch, $sale->quantity);
                     }
                     $sale->save();
                 }
             }
-            self::take_products($sales); //notify stock
-            self::record_payments($receipt, $this->request->payment_mode);
+            $this->take_products($sales); //notify stock
+            $this->record_payments($receipt, $this->request->payment_mode);
             session(['receipt_id' => $sales->id]);
             DB::commit();
             return true;
@@ -385,7 +385,7 @@ class InventoryFunctions implements InventoryRepository {
             $pay->CardNumber = $this->request->CardNumber;
         } elseif ($payment_mode == 'insurance') {
             try {//payment
-                $pay->scheme = $this->request->InsuranceScheme;
+                $pay->scheme = $this->request->scheme;
                 $pay->InsuranceAmount = $this->request->amount;
                 $customer = $this->request->customer_id; //Client
                 $details = InventoryInsuranceDetails::where('customer', '=', $customer)
@@ -395,7 +395,9 @@ class InventoryFunctions implements InventoryRepository {
                 $sale->customer = $customer;
                 $sale->insurance = $details->id;
                 $sale->save();
-                self::save_insurance_invoice($sale->id, $sale->receipt, $sale->created_at);
+
+                //save invoice details
+                $this->save_insurance_invoice($sale->id, $sale->receipt, $sale->created_at);
             } catch (\Exception $e) {
                 flash()->info('There was a problem processing your request... kindly try again');
                 redirect()->back();
@@ -408,13 +410,13 @@ class InventoryFunctions implements InventoryRepository {
     }
 
     /**
-     * @param InventoryBatchProductSales $sale
+     * @param save_insurance_invoice $sale
      */
     private function save_insurance_invoice($id, $receipt, $date) {
-        $inv = new InsuranceInvoice();
+        $inv = new InsuranceInvoice;
         $inv->invoice_no = $receipt;
         $inv->receipt = $id;
-        $inv->status = 'billed';
+        $inv->status = 0;
         $inv->invoice_date = new \Date($date);
         $inv->save();
     }
@@ -433,7 +435,7 @@ class InventoryFunctions implements InventoryRepository {
             $adj->opening_qty = self::openingStock($vending->product);
             $adj->reason = 'Product sales Receipt #' . $vending->receipt_no;
             $adj->save();
-            self::adjust_stock($adj);
+            $this->adjust_stock($adj);
         }
     }
 
@@ -452,7 +454,7 @@ class InventoryFunctions implements InventoryRepository {
                 $price->batch = $incoming->id;
                 $price->selling = null; // empty($markup) ? 0 : ($markup + 100) / 100 * $price->price;
                 $price->save();
-                self::enQueueProductBatch($price->batch, $price->product);
+                $this->enQueueProductBatch($price->batch, $price->product);
             }
         });
         return true;
@@ -512,9 +514,9 @@ class InventoryFunctions implements InventoryRepository {
                     ->where('id', '>', $b_purchase->id)
                     ->first();
 
-            self::deQueueProductBatch($b_purchase->batch, $b_purchase->product);
+            $this->deQueueProductBatch($b_purchase->batch, $b_purchase->product);
             if (isset($next)) {
-                self::activateQueue($next->batch, $next->product);
+                $this->activateQueue($next->batch, $next->product);
                 $next->qty_sold+= $surplus;
                 $next->save();
             }
@@ -565,7 +567,7 @@ class InventoryFunctions implements InventoryRepository {
             }
 //$job = (new StockUpdate($order, true))->onQueue('stock');
 //dispatch($job);
-            self::update_stock_from_lpo($order, true);
+            $this->update_stock_from_lpo($order, true);
             session(['last_receive' => $order->id]);
         });
 
@@ -603,7 +605,7 @@ class InventoryFunctions implements InventoryRepository {
                     $details->quantity = $this->request->$quantity;
                     $details->discount = $this->request->$discount;
                     $details->tax = $this->request->$tax;
-                    $details->expiry_date = $this->request->$expiry;
+                    $details->expiry_date = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $this->request->$expiry))); //\Date($this->request->$expiry);
                     $details->package_size = $this->request->$package;
                     $details->save();
                 }
@@ -613,7 +615,7 @@ class InventoryFunctions implements InventoryRepository {
             $lpo->save();
             /* $job = (new StockUpdate($order))->onQueue('stock');
               dispatch($job); */
-            self::update_stock_from_lpo($order);
+            $this->update_stock_from_lpo($order);
             session(['last_receive' => $order->id]);
         });
 
@@ -642,7 +644,7 @@ class InventoryFunctions implements InventoryRepository {
                 $adj->product = $product->product;
                 $adj->opening_qty = self::openingStock($product->product);
                 $adj->save();
-                self::adjust_stock($adj);
+                $this->adjust_stock($adj);
             }
         });
         event(new MarkupWasAdjusted($batch));
@@ -685,7 +687,7 @@ class InventoryFunctions implements InventoryRepository {
             $adj->type = 'manual';
             $adj->approved = 'no';
             $adj->save();
-            self::adjust_stock($adj);
+            $this->adjust_stock($adj);
         });
         return true;
     }
@@ -728,9 +730,9 @@ class InventoryFunctions implements InventoryRepository {
                 $adj->user = $this->request->user()->id;
                 $adj->method = '+';
                 $adj->reason = 'sales seturn';
-                $adj->type = 'return';
+                //$adj->type = 'return';
                 $adj->save();
-                self::adjust_stock($adj);
+                $this->adjust_stock($adj);
             }
 
             DB::commit();

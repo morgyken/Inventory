@@ -27,8 +27,12 @@ $category = $data['category'];
                 <div class="form-group {{ $errors->has('parent_category') ? ' has-error' : '' }} req">
                     <label class="control-label col-md-4">Parent Category</label>
                     <div class="col-md-8">
-                        {!! Form::select('parent_category',get_product_categories(),null,['class'=>"form-control",'placeholder'=>'None'])!!}
-                        {!! $errors->first('parent_category', '<span class="help-block">:message</span>') !!}
+                        <select name="parent_category" class="form-control">
+                            @foreach($data['product_categories'] as $cat)
+                            <option value="{{$cat->id}}">{{$cat->name}}</option>
+                            @endforeach
+                            <option selected="selected" value="0">None</option>
+                        </select>
                     </div>
                 </div>
             </div>

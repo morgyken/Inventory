@@ -35,7 +35,7 @@
                     <div class="form-group row">
                         <label class="col-xs-2 col-form-label">Receipt Number:</label>
                         <div class="col-xs-6">
-                            <input type="text" id="sale" class="form-control">
+                            <input type="text" name="rcpt" id="sale" class="form-control">
                             <div id="data"></div>
                         </div>
                     </div>

@@ -99,10 +99,10 @@ class InventoryController extends AdminBaseController {
 
     public function product_cat($id = null) {
         if ($this->request->isMethod('post')) {
-            $this->validate(Validation::add_product_category());
+            //$this->validate(Validation::add_product_category());
             if ($this->inventoryRepository->add_product_category($id)) {
                 flash('Product category saved!');
-                return redirect()->route('inventory.product_categories');
+                return redirect()->route('inventory.product_cat');
             }
         }
         $this->data['category'] = InventoryCategories::findOrNew($id);
@@ -112,7 +112,7 @@ class InventoryController extends AdminBaseController {
 
     public function tax_categories($id = null) {
         if ($this->request->isMethod('post')) {
-            $this->validate(Validation::add_tax_category());
+            //$this->validate(Validation::add_tax_category());
             if ($this->inventoryRepository->add_tax_category($id)) {
                 flash('Tax category saved!');
                 return redirect()->route('inventory.tax_categories');
@@ -125,7 +125,7 @@ class InventoryController extends AdminBaseController {
 
     public function units_of_measurement($id = null) {
         if ($this->request->isMethod('post')) {
-            $this->validate(Validation::add_unit_of_measure());
+            //$this->validate(Validation::add_unit_of_measure());
             if ($this->inventoryRepository->add_unit_of_measure($id)) {
                 flash('Unit saved!');
                 return redirect()->route('inventory.units_of_measurement'); //->with('success',);
@@ -138,13 +138,14 @@ class InventoryController extends AdminBaseController {
 
     public function add_product($id = null) {
         if ($this->request->isMethod('post')) {
-            $this->validate(Validation::add_product());
+            // //$this->validate(Validation::add_product());
             if ($this->inventoryRepository->add_product($this->request->id)) {
                 flash('Product Saved');
                 return redirect()->route('inventory.products');
             }
         }
         $this->data['product'] = InventoryProducts::findOrNew($id);
+        $this->data['category'] = InventoryCategories::all();
         return view('inventory::products.add_product', ['data' => $this->data]);
     }
 
@@ -368,8 +369,9 @@ class InventoryController extends AdminBaseController {
         return view('inventory::receive_lpo_goods', ['data' => $this->data]);
     }
 
-    public function purchase_details(InventoryBatch $batch) {
+    public function purchase_details($batch) {
         $this->data['batch'] = $batch;
+        $this->data['bought'] = InventoryBatchPurchases::where('batch', '=', $batch)->get();
         return view('inventory::after_receive')
                         ->with('data', $this->data);
     }

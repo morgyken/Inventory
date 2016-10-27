@@ -3,9 +3,12 @@
 namespace Ignite\Inventory\Events\Handlers;
 
 use Ignite\Inventory\Events\MarkupWasAdjusted;
-use Ignite\Inventory\Library\InventoryFunctions;
 
 class AdjustMarkup {
+
+    public function __construct(\Ignite\Inventory\Repositories\InventoryRepository $repo) {
+        $this->repo = $repo;
+    }
 
     /**
      * Handle the event.
@@ -14,7 +17,8 @@ class AdjustMarkup {
      * @return void
      */
     public function handle(MarkupWasAdjusted $event) {
-        return InventoryFunctions::apply_markup($event->batch);
+
+        return $this->repo->apply_markup($event->batch);
     }
 
 }

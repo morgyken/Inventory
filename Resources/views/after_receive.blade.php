@@ -18,12 +18,8 @@
 <div class="box box-info">
     <div class="box-header with-border">
         <h3 class="box-title">
-            @if(empty($data['batch']->order))
-            <a href="{{route('inventory.dnote',$data['batch']->id)}}" target="blank" class="btn btn-sm btn-primary">
-                <i class="fa fa-print"></i> Goods Received Note (GRN)
-            </a>
-            @else
-            <a href="{{route('inventory.dnote_lpo',$data['batch']->order)}}" target="blank" class="btn btn-sm btn-primary">
+            @if(!empty($data['batch']))
+            <a href="{{route('inventory.dnote',$data['batch'])}}" target="blank" class="btn btn-sm btn-primary">
                 <i class="fa fa-print"></i> Goods Received Note (GRN)
             </a>
             @endif
@@ -45,7 +41,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($data['batch']->products as $item)
+                        <?php
+                        $sum = 0;
+                        ?>
+                        @foreach($data['bought'] as $item)
                         <tr>
                             <td>{{$item->products->name}}</td>
                             <td>{{$item->quantity}}</td>
@@ -55,12 +54,15 @@
                             <td>{{number_format($item->tax,2)}}%</td>
                             <td>{{number_format($item->total,2)}}</td>
                         </tr>
+                        <?php
+                        $sum+=$item->total;
+                        ?>
                         @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
                             <th colspan="6">Total</th>
-                            <th>{{number_format($data['batch']->products->sum('total'),2 )}}</th>
+                            <th>{{number_format($sum,2 )}}</th>
                         </tr>
                     </tfoot>
                 </table>

@@ -114,10 +114,13 @@ class SalesController extends AdminBaseController {
             if ($this->inventoryRepository->sales_return()) {
                 flash("Transaction Successful");
                 return back();
+            } else {
+                flash("There was a problem returning the goods");
+                return back();
             }
         }
         $this->data['batch_sales'] = InventoryBatchProductSales::all();
-        $this->data['dispenses'] = InventoryDispensing::groupBy('product')->get();
+        $this->data['dispenses'] = InventoryDispensing::all();
         $this->data['returns'] = InventorySalesReturn::all();
         return view('inventory::shop.goods_return', ['data' => $this->data]);
     }

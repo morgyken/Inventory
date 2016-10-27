@@ -186,7 +186,7 @@ $item = $data['items'];
 </div>
 
 <script>
-    var ACCOUNT_URL = "{{route('finance.ajax.widthraw.bogus')}}";
+    var ACCOUNT_URL = "{{route('api.finance.widthraw.bogus')}}";
 </script>
 <script type="text/javascript" src="{!! m_asset('inventory:js/check_account.js') !!}"></script>
 @endsection

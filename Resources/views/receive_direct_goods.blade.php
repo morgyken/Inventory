@@ -48,7 +48,7 @@
                 <div class="form-group {{ $errors->has('payment_mode') ? ' has-error' : '' }} req">
                     <label class="control-label col-md-4">Payment Mode</label>
                     <div class="col-md-8">
-                        {!! Form::select('payment_mode',config('inventory.payment_modes'),old('payment_mode'),['class'=>'form-control']) !!}
+                        {!! Form::select('payment_mode',mconfig('inventory.options.payment_modes'),old('payment_mode'),['class'=>'form-control']) !!}
                         {!! $errors->first('payment_mode', '<span class="help-block">:message</span>') !!}
                     </div>
                 </div>
@@ -107,6 +107,6 @@
     </div>
     {!! Form::close() !!}
 </div>
-<script type="text/javascript">var PRODUCTS_URL = "{{route('inventory.ajax.get_products')}}";</script>
+<script type="text/javascript">var PRODUCTS_URL = "{{route('api.inventory.get_products')}}";</script>
 <script src="{!! m_asset('inventory:js/direct_stock.js') !!}"></script>
 @endsection
