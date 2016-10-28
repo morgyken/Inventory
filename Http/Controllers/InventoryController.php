@@ -49,6 +49,7 @@ class InventoryController extends AdminBaseController {
     }
 
     public function save_supplier(AddSupplierRequest $request) {
+        dd($request);
         if ($this->inventoryRepository->add_supplier()) {
             flash("Supplier details saved");
             return redirect()->route('inventory.suppliers');
@@ -390,6 +391,7 @@ class InventoryController extends AdminBaseController {
 
     public function batch_details($id) {
         $this->data['del'] = InventoryBatch::find($id);
+        //dd($id);
         $this->data['accounts'] = BankAccount::all();
         $purchases = InventoryBatchPurchases::query();
         $this->data['items'] = $purchases->where('batch', '=', $id)->get();

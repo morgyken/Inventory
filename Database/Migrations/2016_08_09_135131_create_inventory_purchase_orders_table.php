@@ -15,7 +15,7 @@ class CreateInventoryPurchaseOrdersTable extends Migration {
             $table->increments('id');
             $table->integer('supplier')->unsigned();
             $table->integer('payment_terms')->unsigned();
-            $table->integer('payment_mode');
+            $table->string('payment_mode', 80);
             $table->date('deliver_date')->nullable();
             $table->smallInteger('status')->default(0);
             $table->integer('user')->unsigned();

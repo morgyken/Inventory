@@ -536,6 +536,7 @@ class InventoryFunctions implements InventoryRepository {
             $stack = self::order_item_stack(array_keys($this->request->all()));
             $order = new InventoryBatch;
             $order->user = $this->request->user()->id;
+            $order->amount = $this->request->amount;
             $order->supplier = $this->request->supplier;
             $order->save();
             foreach ($stack as $index) {
@@ -560,7 +561,7 @@ class InventoryFunctions implements InventoryRepository {
                     $details->quantity = $this->request->$quantity;
                     $details->discount = $this->request->$discount;
                     $details->tax = $this->request->$tax;
-                    $details->expiry_date = $this->request->$expiry;
+                    $this->request->$expiry ? $details->expiry_date = strtotime(str_replace('-', '/', $this->request->$expiry)) : $details->expiry_date = NULL;
                     $details->package_size = $this->request->$package;
                     $details->save();
                 }
@@ -585,6 +586,7 @@ class InventoryFunctions implements InventoryRepository {
             $order = new InventoryBatch;
             $order->order = $this->request->lpo;
             $order->user = $this->request->user()->id;
+            $order->amount = $this->request->amount;
             $order->supplier = $this->request->supplier;
             $order->save();
             foreach ($stack as $index) {

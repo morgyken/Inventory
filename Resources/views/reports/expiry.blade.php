@@ -63,18 +63,21 @@ $today = (new \DateTime())->format('Y-m-d');
                     <td>{{(new Date($record->created_at))->format('jS M Y')}}</td>
                     <td>{{$record->remaining}}</td>
                     <td>
-                        {{(new Date($record->expiry_date))->format('jS M Y')}}
+                        {{$record->expiry_date?(new Date($record->expiry_date))->format('jS M Y'):'-'}}
                     </td>
                     <td>
+                        @if($record->expiry_date!==NULL)
                         @if($record->expiry_date < $today)
                         <span style="color: red">
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Expired
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            Expired
                             {{\Carbon\Carbon::createFromTimeStamp(strtotime($record->expiry_date))->diffForHumans() }}
                         </span>
                         @else
                         <span style="color: green"><i class="fa fa-circle-o-notch fa-spin"></i>
                             {{ \Carbon\Carbon::createFromTimeStamp(strtotime($record->expiry_date))->diffForHumans()}}
                         </span>
+                        @endif
                         @endif
                     </td>
                 </tr>

@@ -90,7 +90,10 @@
                             <td><a id="add_row" class="btn btn-primary btn-sm pull-left"><i class="fa fa-plus"></i> Add</a>
                             </td>
                             <td colspan="7"></td>
-                            <td><strong id="total">0.00</strong></td>
+                            <td>
+                                <strong id="total">0.00</strong>
+                                <input type="hidden" id="amount" name="amount">
+                            </td>
                         </tr>
                     </tfoot>
                 </table>

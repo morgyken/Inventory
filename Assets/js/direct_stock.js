@@ -41,6 +41,7 @@ $(document).ready(function () {
             }
         });
         $('#total').html(SUM);
+        $('#amount').val(SUM);
         console.info(items);
     }
     $('#tab_logic input').keyup(function () {

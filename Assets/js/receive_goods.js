@@ -50,6 +50,7 @@ $(document).ready(function () {
         $('#discount').html(DISCOUNT.toFixed(2));
         $('#net').html((SUM - DISCOUNT).toFixed(2));
         $('#sum').html(SUM.toFixed(2));
+        $('#amount').val(SUM);
     }
     $('#tab_logic input').keyup(function () {
         calculate_total();

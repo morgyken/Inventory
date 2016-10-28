@@ -11,8 +11,6 @@
 $order = $data['order'];
 $count = 0;
 ?>
-
-
 @extends('layouts.app')
 @section('content_title','Receive Goods from LPO.')
 @section('content_description','Receive goods from LPO')
@@ -25,7 +23,9 @@ $count = 0;
                 <dt>Supplier:</dt>
                 <dd>{{$order->suppliers->name}}</dd>
                 <dt>Order Status:</dt>
-                <dd><span class="label label-primary">{{$order->status_label}}</span></dd>
+                <dd>
+                    <span class="label label-primary">{{$order->status_label}}</span>
+                </dd>
                 <dt>Delivery Date:</dt>
                 <dd>{{$order->deliver_date}}</dd>
                 <dt>Ordered Amount:</dt>
@@ -57,16 +57,14 @@ $count = 0;
                         @foreach($order->details as $line)
                         <tr id='addr{{$count}}'>
                             <td>{{$line->products->name}} {!! Form::hidden("item".$count,$line->product) !!}</td>
-                            <td><input type="text" name='qty{{$count}}' placeholder='Quantity'
-                                       value="{{$line->quantity}}" size="2"/></td>
-                            <td><input type="text" name='bonus{{$count}}' placeholder='Bonus' value="0" size="2"/>
+                            <td><input type="text" name='qty{{$count}}' placeholder='Quantity' value="{{$line->quantity}}" size="2"/></td>
+                            <td>
+                                <input type="text" name='bonus{{$count}}' placeholder='Bonus' value="0" size="2"/>
                             </td>
                             <td><input type="text" value="1" name='package{{$count}}' placeholder='Product Packaging' /></td>
                             <td><input type="text" onclick="pick_date({{$count}})" id="expiry{{$count}}" name='expiry{{$count}}' placeholder='Expiry Date'/></td>
-                            <td><input type="text" name='price{{$count}}' placeholder='Price' size="4"
-                                       value="{{$line->price}}"/></td>
-                            <td><input type="text" name='dis{{$count}}' placeholder='eg. 2'
-                                       value="0" size="2"/></td>
+                            <td><input type="text" name='price{{$count}}' placeholder='Price' size="4" value="{{$line->price}}"/></td>
+                            <td><input type="text" name='dis{{$count}}' placeholder='eg. 2' value="0" size="2"/></td>
                             <td><input type='text' onchange="calculate_total()" name='tax{{$count}}' placeholder='' value='{{$line->products->taxgroups?$line->products->taxgroups->rate:0}}' size='3'/></td>
                             <td><span id="total{{$count}}">{{$line->total}}</span></td>
                         </tr>
@@ -78,7 +76,10 @@ $count = 0;
                             <th></th>
                             <th></th>
                             <th colspan="6">Grand Total</th>
-                            <th><strong id="net">0.00</strong></th>
+                            <th>
+                                <strong id="net">0.00</strong>
+                                <input type="hidden" id="amount" name="amount">
+                            </th>
                         </tr>
                     </tfoot>
                 </table>
