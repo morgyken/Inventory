@@ -39,6 +39,9 @@ use Illuminate\Support\Facades\DB;
 use Ignite\Inventory\Entities\InventorySalesReturn;
 use Ignite\Inventory\Entities\InventoryInsuranceDetails;
 use Ignite\Finance\Entities\InsuranceInvoice;
+use Ignite\Evaluation\Entities\Dispensing;
+use Ignite\Finance\Entities\EvaluationPayments;
+use Ignite\Finance\Entities\EvaluationPaymentsDetails;
 
 /**
  * Description of InventoryFunctions
@@ -340,12 +343,39 @@ class InventoryFunctions implements InventoryRepository {
             $this->take_products($sales); //notify stock
             $this->record_payments($receipt, $this->request->payment_mode);
             session(['receipt_id' => $sales->id]);
+            if (isset($this->request->pharmacy)) {
+                //save dispense
+                $this->saveEvaluationDispense($this->request, $sales->id);
+            }
             DB::commit();
             return true;
         } catch (\Exception $e) {
             DB::rollback();
             flash()->warning("Ooops! something went wrong... Be sure any product added to cart is in the system (<a target='blank' href='/inventory/goods/receive'>was received</a>)");
         }//Catch
+    }
+
+    public static function saveEvaluationDispense($request, $batch) {
+        $sale = InventoryBatchProductSales::find($batch);
+        $sale->paid = false;
+        $sale->update();
+
+        $dispense = new Dispensing();
+        $dispense->visit = $request->visit_id;
+        $dispense->user = \Auth::user()->id;
+        $dispense->batch = $batch;
+
+        self::saveEvaluationPayment($request, $sale->receipt);
+        return $dispense->save();
+    }
+
+    public static function saveEvaluationPayment($request, $rcpt) {
+        $payment = new EvaluationPayments();
+        $payment->receipt = $rcpt;
+        $payment->patient = $request->patient_id;
+        $payment->amount = $request->amount;
+        $payment->user = \Auth::user()->id;
+        $payment->save();
     }
 
     /**
@@ -561,7 +591,7 @@ class InventoryFunctions implements InventoryRepository {
                     $details->quantity = $this->request->$quantity;
                     $details->discount = $this->request->$discount;
                     $details->tax = $this->request->$tax;
-                    $this->request->$expiry ? $details->expiry_date = strtotime(str_replace('-', '/', $this->request->$expiry)) : $details->expiry_date = NULL;
+                    $this->request->$expiry ? $details->expiry_date = str_replace('-', '/', $this->request->$expiry) : $details->expiry_date = NULL;
                     $details->package_size = $this->request->$package;
                     $details->save();
                 }
@@ -607,7 +637,7 @@ class InventoryFunctions implements InventoryRepository {
                     $details->quantity = $this->request->$quantity;
                     $details->discount = $this->request->$discount;
                     $details->tax = $this->request->$tax;
-                    $details->expiry_date = date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $this->request->$expiry))); //\Date($this->request->$expiry);
+                    $details->expiry_date = $this->request->$expiry ? $details->expiry_date = str_replace('-', '/', $this->request->$expiry) : $details->expiry_date = NULL;
                     $details->package_size = $this->request->$package;
                     $details->save();
                 }

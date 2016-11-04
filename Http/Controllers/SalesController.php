@@ -33,8 +33,14 @@ class SalesController extends AdminBaseController {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->record_sales($id)) {
                 $receipt = session('receipt_id');
-                flash('Transaction completed');
-                return redirect()->route('inventory.receipt', $receipt);
+                if (isset($this->request->pharmacy)) {
+                    //dd($this->request->pharmacy);
+                    flash('Drugs dispensed successfully');
+                    return redirect()->back();
+                } else {
+                    flash('Transaction completed');
+                    return redirect()->route('inventory.receipt', $receipt);
+                }
             }
         }
         $this->data['schemes'] = Schemes::all();
