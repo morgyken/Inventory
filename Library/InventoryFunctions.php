@@ -439,6 +439,20 @@ class InventoryFunctions implements InventoryRepository {
         }
     }
 
+    public function take_dispensed_products($dispense) {
+        $vending = $dispense;
+        $adj = new InventoryStockAdjustment;
+        $adj->quantity = $vending->quantity;
+        $adj->type = 'pharmacy';
+        $adj->method = '-';
+        $adj->user = \Auth::user()->id;
+        $adj->product = $vending->product;
+        $adj->opening_qty = $this->openingStock($vending->product);
+        $adj->reason = 'Pharmacy Dispensing' . $vending->batch;
+        $adj->save();
+        $this->adjust_stock($adj);
+    }
+
     /**
      * @todo Rename to set product price
      * @param InventoryBatch $incoming

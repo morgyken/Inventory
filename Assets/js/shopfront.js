@@ -50,7 +50,8 @@ $(document).ready(function () {
         $('#sum').html(SUM.toFixed(2));
     }
     function map_select2(i) {
-        $('#addr' + i + ' select').select2({
+        //$('#addr' + i + ' select').select2({
+        $('#item_' + i).select2({
             "theme": "classic",
             "placeholder": 'Please select an item',
             "formatNoMatches": function () {
