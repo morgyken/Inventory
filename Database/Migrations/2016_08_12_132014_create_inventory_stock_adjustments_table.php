@@ -18,7 +18,8 @@ class CreateInventoryStockAdjustmentsTable extends Migration {
             $table->integer('quantity');
             $table->integer('new_stock')->default(0);
             $table->enum('method', ['+', '-'])->default('+');
-            $table->enum('type', ['manual', 'sales', 'purchase']);
+            //$table->enum('type', ['manual', 'sales', 'purchase']);
+            $table->string('type', 30);
             $table->longText('reason');
             $table->enum('approved', ['yes', 'no'])->nullable();
             $table->integer('user')->unsigned()->nullable();

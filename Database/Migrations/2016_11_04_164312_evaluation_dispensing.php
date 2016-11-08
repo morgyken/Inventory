@@ -16,7 +16,7 @@ class EvaluationDispensing extends Migration {
             $column->increments('id');
             $column->integer('visit')->unsigned();
             $column->integer('user')->unsigned()->nullable();
-            $column->integer('batch')->unsigned();
+            $column->boolean('payment_status')->default(0)->nullable();
             $column->timestamps();
 
             $column->foreign('user')
@@ -26,12 +26,6 @@ class EvaluationDispensing extends Migration {
 
             $column->foreign('visit')
                     ->references('id')->on('evaluation_visits')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
-
-            $column->foreign('batch')
-                    ->references('id')
-                    ->on('inventory_batch_sales')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
         });
