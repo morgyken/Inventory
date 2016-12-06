@@ -24,7 +24,7 @@
         "collabmed/finance-module": "1.0.*"
     },
     "suggest": {
-        "collabmed/report-module": "Show inventory reports."
+        "collabmed/analytics-module": "he Business Intelligence and Analytics module."
     },
     "autoload": {
         "psr-4": {
