@@ -94,12 +94,11 @@ class InventoryServiceProvider extends ServiceProvider {
      * @return array
      */
     public function provides() {
-        return array();
+        return [];
     }
 
-    private function bindClasses()
-    {
-        $this->app->bind(InventoryRepository::class,InventoryFunctions::class);
+    private function bindClasses() {
+        $this->app->bind(InventoryRepository::class, InventoryFunctions::class);
     }
 
 }

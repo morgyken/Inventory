@@ -78,10 +78,10 @@ class ReportController extends AdminBaseController {
         $this->data['sales'] = InventoryBatchProductSales::find($id);
         $min_height = 420;
         foreach ($this->data['sales']->goodies as $n) {
-            $min_height+=20;
+            $min_height += 20;
         }
         $pdf = \PDF::loadView('inventory::prints.rcpt', ['data' => $this->data]);
-        $customPaper = array(0, 0, 300, $min_height);
+        $customPaper = [0, 0, 300, $min_height];
         $pdf->setPaper($customPaper);
         return $pdf->stream('receipt_' . $id . '.pdf');
     }
