@@ -12,16 +12,51 @@ $lpo = $data['lpo'];
 ?>
 
 @extends('layouts.app')
-@section('content_title','Manage LPO')
+@section('content_title','Manage LPOs')
 @section('content_description','LPO Details')
 
 @section('content')
 <div class="box box-info">
-    {!! Form::open(['class'=>'form-horizontal']) !!}
+    {!! Form::open(['class'=>'form-horizontal', 'route'=>'inventory.new_lpo']) !!}
     <div class="box-header with-border">
         <h3 class="box-title">Order details</h3>
     </div>
     <div class="box-body">
+        @if(isset($data['requisition']))
+        <input type="hidden" name="req" value="{{$data['requisition']->id}}">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Requisition#: {{$data['requisition']->id}}</h4>
+                <table class="table table-responsive table-striped">
+                    <tbody>
+                        @foreach($data['details'] as $item)
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$item->items->name}}</td>
+                            <td>{{$item->quantity}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Item</th>
+                            <th>Requested Quantity</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <h3>Reason/Description</h3>
+                <p>
+                    {{$data['requisition']['reason']?$data['requisition']['reason']:'No details given' }}
+                </p>
+            </div>
+        </div>
+        <hr>
+        @endif
+
         <div class="row">
             <div class="col-md-4 col-md-offset-1">
                 <div class="form-group {{ $errors->has('supplier') ? ' has-error' : '' }} req">

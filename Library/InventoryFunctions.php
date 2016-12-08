@@ -42,6 +42,8 @@ use Ignite\Finance\Entities\InsuranceInvoice;
 use Ignite\Evaluation\Entities\Dispensing;
 use Ignite\Finance\Entities\EvaluationPayments;
 use Ignite\Finance\Entities\EvaluationPaymentsDetails;
+use Ignite\Inventory\Entities\Requisition;
+use Ignite\Inventory\Entities\RequisitionDetails;
 
 /**
  * Description of InventoryFunctions
@@ -174,6 +176,10 @@ class InventoryFunctions implements InventoryRepository {
             $order->payment_mode = $this->request->payment_mode;
             $order->user = $this->request->user()->id;
             $order->save();
+
+            if (isset($this->request->req)) {
+                $this->CancelRequisition($this->request->req);
+            }
 
             session(['last_order' => $order->id]);
             $stack = self::order_item_stack(array_keys($this->request->all()));
@@ -842,6 +848,33 @@ class InventoryFunctions implements InventoryRepository {
             flash('A problem occured while executing your request.. kindly try again', 'success');
             return redirect()->back();
         }
+    }
+
+    public function SaveRequisition() {
+        DB::transaction(function () {
+            $stack = self::order_item_stack(array_keys($this->request->all()));
+            $req = new Requisition;
+            $req->user = \Auth::user()->id;
+            $req->reason = $this->request->description;
+            $req->save();
+            foreach ($stack as $index) {
+                $item = 'item' . $index;
+                $quantity = 'qty' . $index;
+                $details = new RequisitionDetails();
+                $details->requisition = $req->id;
+                $details->item = $this->request->$item;
+                $details->quantity = $this->request->$quantity;
+                $details->save();
+            }
+        });
+
+        return true;
+    }
+
+    public function CancelRequisition($id) {
+        $req = Requisition::find($id);
+        $req->status = 1;
+        return $req->save();
     }
 
 }
