@@ -25,6 +25,8 @@ use Ignite\Inventory\Http\Requests\AddSupplierRequest;
 use Ignite\Inventory\Repositories\InventoryRepository;
 use Illuminate\Http\Request;
 use Ignite\Inventory\Entities\InventoryBatchPurchases;
+use Ignite\Inventory\Entities\Requisition;
+use Ignite\Inventory\Entities\RequisitionDetails;
 
 class InventoryController extends AdminBaseController {
 
@@ -198,6 +200,12 @@ class InventoryController extends AdminBaseController {
                 return redirect()->route('inventory.order_details', $x);
             }
         }
+
+        if (isset($this->request->requisition)) {
+            $this->data['requisition'] = Requisition::find($this->request->requisition);
+            $this->data['details'] = RequisitionDetails::whereRequisition($this->request->requisition)->get();
+        }
+
         $this->data['lpo'] = InventoryPurchaseOrders::findOrNew($id);
         return view('inventory::new_purchase_order', ['data' => $this->data]);
     }
@@ -396,6 +404,34 @@ class InventoryController extends AdminBaseController {
         $purchases = InventoryBatchPurchases::query();
         $this->data['items'] = $purchases->where('batch', '=', $id)->get();
         return view('inventory::batch_details', ['data' => $this->data]);
+    }
+
+    public function Requisition() {
+        return view('inventory::new_requisition', ['data' => $this->data]);
+    }
+
+    public function SaveRequisition() {
+        if ($this->inventoryRepository->SaveRequisition($this->request)) {
+            flash('Your item requisition was successfully placed');
+            return redirect()->back(); //route('inventory.purchase_details', $batch_id);
+        }
+    }
+
+    public function ViewRequisitions() {
+        $this->data['requisitions'] = Requisition::all()->sortByDesc("id");
+        if (isset($this->request->id)) {
+            $this->data['clicked'] = Requisition::find($this->request->id);
+            $this->data['details'] = RequisitionDetails::whereRequisition($this->request->id)->get();
+        }
+        return view('inventory::requisitions', ['data' => $this->data]);
+    }
+
+    public function CancelRequisition() {
+        $req = Requisition::find($this->request->id);
+        $req->status = 1;
+        $req->save();
+        flash('Item requisition was marked as settled');
+        return redirect()->back(); //route('inventory.purchase_details', $batch_id);
     }
 
 }

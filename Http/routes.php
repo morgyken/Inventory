@@ -4,6 +4,12 @@ $router->get('/', ['uses' => 'InventoryController@index', 'as' => 'index']);
 
 //sales
 $router->match(['post', 'get'], 'shopfront', ['uses' => 'SalesController@shopfront', 'as' => 'shopfront']);
+$router->get('requisition/', ['uses' => 'InventoryController@Requisition', 'as' => 'requisition']);
+$router->post('requisition/save', ['uses' => 'InventoryController@SaveRequisition', 'as' => 'requisition.save']);
+$router->get('requisitions/all', ['uses' => 'InventoryController@ViewRequisitions', 'as' => 'requisitions.all']);
+$router->get('requisition/view/{id}', ['uses' => 'InventoryController@ViewRequisitions', 'as' => 'requisition.view']);
+$router->get('requisition/cancel/{id}', ['uses' => 'InventoryController@CancelRequisition', 'as' => 'requisition.cancel']);
+
 $router->match(['post', 'get'], 'shopfront/credit', ['uses' => 'SalesController@shopfront_credit', 'as' => 'shopfront.credit']);
 $router->match(['post', 'get'], 'clients/credit/{id}', ['uses' => 'SalesController@clients', 'as' => 'clients.credit']);
 $router->match(['post', 'get'], 'clients/{id}', ['uses' => 'SalesController@show_clients', 'as' => 'clients.all']);
@@ -51,6 +57,7 @@ $router->match(['post', 'get'], 'purchase/paymnent/terms/{id?}', ['uses' => 'Inv
 $router->match(['post', 'get'], 'purchase/orders', ['uses' => 'InventoryController@purchase_orders', 'as' => 'purchase_orders']);
 $router->match(['post', 'get'], 'internalorders', ['uses' => 'InventoryController@internal_orders', 'as' => 'orders.internal']);
 $router->match(['post', 'get'], 'purchase/manager', ['uses' => 'InventoryController@add_lpo', 'as' => 'new_lpo']);
+$router->get('purchase/lpo/requisition/{requisition}', ['uses' => 'InventoryController@add_lpo', 'as' => 'req.lpo']);
 $router->match(['get', 'post'], 'purchase/receive/{ref}', ['uses' => 'InventoryController@receive_lpo', 'as' => 'receive_from_lpo']);
 $router->match(['post', 'get'], 'purchase/direct/goods', ['uses' => 'InventoryController@receive_direct', 'as' => 'receive_direct']);
 $router->get('goods/receive', ['uses' => 'InventoryController@receive_goods', 'as' => 'receive_goods']);

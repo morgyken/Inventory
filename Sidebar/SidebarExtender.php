@@ -32,6 +32,22 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                 $item->route('inventory.shopfront');
                 $item->authorize($this->auth->hasAccess('inventory.Point of Sale.Make Sales'));
             });
+
+            $group->item('Requisitions', function (Item $item) {
+                $item->icon('fa fa-registered');
+                $item->item('Make Requisition', function (Item $item) {
+                    $item->icon('fa fa-bell');
+                    $item->route('inventory.requisition');
+                    $item->authorize($this->auth->hasAccess('inventory.Point of Sale.Make Sales'));
+                });
+                $item->item('View Requisitions', function (Item $item) {
+                    $item->icon('fa fa-list');
+                    $item->route('inventory.requisitions.all');
+                    $item->authorize($this->auth->hasAccess('inventory.Point of Sale.Make Sales'));
+                });
+                $item->authorize($this->auth->hasAccess('inventory.Point of Sale.Make Sales'));
+            });
+
             $group->item('Inventory', function (Item $item) {
                 $item->weight(3);
                 $item->icon('fa fa-barcode');
