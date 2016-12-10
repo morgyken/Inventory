@@ -88,23 +88,13 @@ extract($data);
                 </div>
             </div>
 
-            <!--
-            <div class="form-group {{ $errors->has('unit_cost') ? ' has-error' : '' }} req">
-                <label class="control-label col-md-4">Unit Cost</label>
+            <div class="form-group {{ $errors->has('reorder_level') ? ' has-error' : '' }} req">
+                <label class="control-label col-md-4">Reorder Level</label>
                 <div class="col-md-8">
-                    {!! Form::text('unit_cost',old('unit_cost',$product->unit_cost),['class'=>'form-control']) !!}
-            {!! $errors->first('unit_cost', '<span class="help-block">:message</span>') !!}
-                    </div>
+                    {!! Form::text('reorder_level',old('reorder_level',$product->reorder_level),['class'=>'form-control']) !!}
+                    {!! $errors->first('reorder_level', '<span class="help-block">:message</span>') !!}
                 </div>
-                <div class="form-group {{ $errors->has('selling_price') ? ' has-error' : '' }}">
-                <label class="control-label col-md-4">Selling Price</label>
-                <div class="col-md-8">
-                    {!! Form::text('selling_price',old('selling_price',$product->selling_price),['class'=>'form-control']) !!}
-            {!! $errors->first('selling_price', '<span class="help-block">:message</span>') !!}
-                    </div>
-                </div>
-
-            -->
+            </div>
         </div>
     </div>
     <div class="box-footer">

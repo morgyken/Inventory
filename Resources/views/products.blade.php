@@ -33,6 +33,7 @@
                             <td>{{$product->name}}{{$product->strength?'('.$product->strength.$product->units->name.')':''}}</td>
                             <td>{{$product->categories?$product->categories->name:'-'}}</td>
                             <td>{{$product->strength?$product->strength.$product->units->name:'-'}}</td>
+                            <td>{{$product->reorder_level?$product->reorder_level:'-'}}</td>
                             <td>
                                 <a href="{{route('inventory.add_product',$product->id)}}"
                                    class="btn btn-primary btn-xs">
@@ -50,6 +51,7 @@
                             <th>Name</th>
                             <th>Category</th>
                             <th>Strength</th>
+                            <th>Reorder Level</th>
                             <th></th>
                         </tr>
                     </thead>

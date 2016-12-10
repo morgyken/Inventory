@@ -18,6 +18,7 @@ class CreateInventoryProductsTable extends Migration {
             $table->integer('category')->unsigned();
             $table->integer('unit')->unsigned();
             $table->integer('tax_category')->unsigned()->nullable();
+            $table->integer('reorder_level')->nullable();
             $table->string('strength')->nullable();
             $table->string('label_type')->nullable();
             $table->string('formulation')->nullable();

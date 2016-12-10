@@ -44,6 +44,7 @@ use Ignite\Finance\Entities\EvaluationPayments;
 use Ignite\Finance\Entities\EvaluationPaymentsDetails;
 use Ignite\Inventory\Entities\Requisition;
 use Ignite\Inventory\Entities\RequisitionDetails;
+use Ignite\Core\Entities\Notification;
 
 /**
  * Description of InventoryFunctions
@@ -140,6 +141,7 @@ class InventoryFunctions implements InventoryRepository {
             $product->category = $this->request->category;
             $product->unit = $this->request->unit;
             $product->tax_category = $this->request->tax;
+            $product->reorder_level = $this->request->reorder_level;
             $product->formulation = $this->request->formulation;
             $product->label_type = $this->request->label_type;
             $product->strength = $this->request->strength;
@@ -714,7 +716,22 @@ class InventoryFunctions implements InventoryRepository {
             $curr = 0;
         }
         $stock->quantity = ($adj->method == '+') ? $curr + $adj->quantity : $curr - $adj->quantity;
-        return $stock->save();
+        $stock->save();
+        $this->StockNotification($stock->quantity, $adj->product);
+    }
+
+    public function StockNotification($stock, $item) {
+        $product = InventoryProducts::find($item);
+        if (isset($product->reorder_level)) {
+            if ($stock < $product->reorder_level) {
+                $noti = new Notification;
+                $noti->user_id = \Auth::user()->id;
+                $noti->title = $product->name . ' stock running low';
+                $noti->message = $product->name . '\'s stock gone below reorder level';
+                $noti->icon_class = 'fa fa-bell';
+                $noti->save();
+            }
+        }
     }
 
     /**
