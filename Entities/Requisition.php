@@ -5,24 +5,23 @@ namespace Ignite\Inventory\Entities;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Ignite\Inventory\Entities\Customer
+ * Ignite\Inventory\Entities\Requisition
  *
  * @property integer $id
- * @property string $first_name
- * @property string $last_name
- * @property string $date_of_birth
- * @property string $email
- * @property string $phone
+ * @property integer $user
+ * @property string $reason
+ * @property boolean $status
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Customer whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Customer whereFirstName($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Customer whereLastName($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Customer whereDateOfBirth($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Customer whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Customer wherePhone($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Customer whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Customer whereUpdatedAt($value)
+ * @property-read \Illuminate\Foundation\Auth\User $users
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\RequisitionDetails[] $details
+ * @property-read mixed $item_count
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereUser($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereReason($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereStatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Requisition extends Model {
