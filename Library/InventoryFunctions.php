@@ -44,6 +44,8 @@ use Ignite\Finance\Entities\EvaluationPayments;
 use Ignite\Finance\Entities\EvaluationPaymentsDetails;
 use Ignite\Inventory\Entities\Requisition;
 use Ignite\Inventory\Entities\RequisitionDetails;
+use Ignite\Inventory\Entities\InternalOrder;
+use Ignite\Inventory\Entities\InternalOrderDetails;
 
 /**
  * Description of InventoryFunctions
@@ -875,6 +877,29 @@ class InventoryFunctions implements InventoryRepository {
         $req = Requisition::find($id);
         $req->status = 1;
         return $req->save();
+    }
+
+    public function SaveInternalOrder() {
+        DB::transaction(function () {
+            $stack = self::order_item_stack(array_keys($this->request->all()));
+            $order = new InternalOrder;
+            $order->author = \Auth::user()->id;
+            $order->dispatching_store = $this->request->dispatching_store;
+            $order->requesting_store = $this->request->requesting_store;
+            $order->deliver_date = $this->request->deliver_date;
+            $order->save();
+            foreach ($stack as $index) {
+                $item = 'item' . $index;
+                $quantity = 'qty' . $index;
+                $details = new InternalOrderDetails();
+                $details->internal_order = $order->id;
+                $details->item = $this->request->$item;
+                $details->quantity = $this->request->$quantity;
+                $details->save();
+            }
+        });
+
+        return true;
     }
 
 }
