@@ -11,7 +11,7 @@ class MakeStoresTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('inventory_stores', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('description')->nullable();

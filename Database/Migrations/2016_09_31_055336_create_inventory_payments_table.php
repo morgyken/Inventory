@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * =============================================================================
+ *
+ * Collabmed Solutions Ltd
+ * Project: Collabmed Health Platform
+ * Author: Samuel Okoth <sodhiambo@collabmed.com>
+ *
+ * =============================================================================
+ */
+
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 

@@ -11,7 +11,7 @@ class MakeInternalOrderDetailsTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('internal_order_details', function (Blueprint $table) {
+        Schema::create('inventory_internal_order_details', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('internal_order')->unsigned();
             $table->integer('item')->unsigned();
@@ -20,7 +20,7 @@ class MakeInternalOrderDetailsTable extends Migration {
 
             $table->foreign('internal_order')
                     ->references('id')
-                    ->on('internal_order')
+                    ->on('inventory_internal_orders')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
 

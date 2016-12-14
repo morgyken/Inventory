@@ -11,7 +11,7 @@ class MakeRequsitionDetailsTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('requisition_details', function (Blueprint $table) {
+        Schema::create('inventory_requisition_details', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('requisition')->unsigned();
             $table->integer('item')->unsigned();
@@ -20,7 +20,7 @@ class MakeRequsitionDetailsTable extends Migration {
 
             $table->foreign('requisition')
                     ->references('id')
-                    ->on('requisitions')
+                    ->on('inventory_requisition')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
 

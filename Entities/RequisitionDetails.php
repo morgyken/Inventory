@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RequisitionDetails extends Model {
 
-    public $table = 'requisition_details';
+    public $table = 'inventory_requisition_details';
 
     public function requisitions() {
         return $this->belongsTo(Requisition::class, 'requisition');

@@ -21,11 +21,11 @@ class InternalOrders extends Migration {
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('dispatching_store')->references('id')->on('stores')
+            $table->foreign('dispatching_store')->references('id')->on('inventory_stores')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
 
-            $table->foreign('requesting_store')->references('id')->on('stores')
+            $table->foreign('requesting_store')->references('id')->on('inventory_stores')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
 

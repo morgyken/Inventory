@@ -12,7 +12,7 @@ class EvaluationDispensingDetails extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('evaluation_dispensing_details', function(Blueprint $table) {
+        Schema::create('inventory_evaluation_dispensing_details', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('batch')->unsigned();
             $table->integer('product')->unsigned();

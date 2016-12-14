@@ -4,6 +4,12 @@ namespace Ignite\Inventory\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Ignite\Inventory\Entities\InternalOrderDetails
+ *
+ * @property-read \Ignite\Inventory\Entities\InventoryProducts $items
+ * @mixin \Eloquent
+ */
 class InternalOrderDetails extends Model {
 
     protected $fillable = [];

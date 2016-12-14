@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $category
  * @property integer $unit
  * @property integer $tax_category
+ * @property integer $reorder_level
  * @property string $strength
  * @property string $label_type
  * @property string $formulation
@@ -33,6 +34,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereCategory($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereUnit($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereTaxCategory($value)
+ * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereReorderLevel($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereStrength($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereLabelType($value)
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereFormulation($value)

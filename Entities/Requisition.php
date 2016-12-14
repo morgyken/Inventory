@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
 class Requisition extends Model {
 
     protected $fillable = ['user', 'reason'];
+    public $table = 'inventory_requisition';
 
     public function users() {
         return $this->belongsTo(\Illuminate\Foundation\Auth\User::class, 'user');

@@ -11,7 +11,7 @@ class MakeRequsitionTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::create('requisitions', function (Blueprint $table) {
+        Schema::create('inventory_requisition', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user')->unsigned();
             $table->string('reason')->nullable();
