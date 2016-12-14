@@ -29,9 +29,25 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InternalOrder whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class InternalOrder extends Model
-{
+class InternalOrder extends Model {
 
     protected $fillable = [];
     public $table = 'inventory_internal_orders';
+
+    public function users() {
+        return $this->belongsTo(\Ignite\Users\Entities\User::class, 'author');
+    }
+
+    public function disp_store() {
+        return $this->hasOne(Store::class, 'id', 'dispatching_store');
+    }
+
+    public function rq_store() {
+        return $this->hasOne(Store::class, 'id', 'requesting_store');
+    }
+
+    public function details() {
+        return $this->hasMany(InternalOrderDetails::class, 'internal_order');
+    }
+
 }

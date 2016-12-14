@@ -55,7 +55,6 @@ $router->get('markup/{id}/delete', ['uses' => 'InventoryController@delMarkup', '
 $router->get('purchase/order/details/{id}', ['uses' => 'InventoryController@order_details', 'as' => 'order_details']);
 $router->match(['post', 'get'], 'purchase/paymnent/terms/{id?}', ['uses' => 'InventoryController@payment_terms', 'as' => 'payment_terms']);
 $router->match(['post', 'get'], 'purchase/orders', ['uses' => 'InventoryController@purchase_orders', 'as' => 'purchase_orders']);
-$router->match(['post', 'get'], 'internalorders', ['uses' => 'InventoryController@internal_orders', 'as' => 'orders.internal']);
 $router->match(['post', 'get'], 'purchase/manager', ['uses' => 'InventoryController@add_lpo', 'as' => 'new_lpo']);
 $router->get('purchase/lpo/requisition/{requisition}', ['uses' => 'InventoryController@add_lpo', 'as' => 'req.lpo']);
 $router->match(['get', 'post'], 'purchase/receive/{ref}', ['uses' => 'InventoryController@receive_lpo', 'as' => 'receive_from_lpo']);
@@ -65,6 +64,11 @@ $router->get('goods/received/grns', ['uses' => 'InventoryController@grns', 'as' 
 $router->get('batch/{id}/details', ['uses' => 'InventoryController@batch_details', 'as' => 'batch.details']);
 $router->get('goods/delivered/{batch}', ['uses' => 'InventoryController@purchase_details', 'as' => 'purchase_details']);
 
+
+$router->match(['post', 'get'], 'orders/internal', ['uses' => 'InventoryController@ManageInternalOrders', 'as' => 'new.order.internal']);
+$router->match(['post', 'get'], 'new/order/internal', ['uses' => 'InventoryController@ViewInternalOrders', 'as' => 'orders.internal']);
+$router->match(['post', 'get'], 'stores/', ['uses' => 'InventoryController@ManageStores', 'as' => 'stores']);
+$router->match(['post', 'get'], 'store/{id}', ['uses' => 'InventoryController@ManageStores', 'as' => 'store.manage']);
 //suppliers
 $router->match(['post', 'get'], 'suppliers/manage/{id?}', ['uses' => 'InventoryController@add_edit_suppliers', 'as' => 'manage_suppliers']);
 $router->get('suppliers/view/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);

@@ -11,6 +11,7 @@ use Ignite\Finance\Entities\BankAccount;
 use Ignite\Finance\Entities\FinanceGlAccounts;
 use Ignite\Finance\Entities\FinanceInvoicePayment;
 use Ignite\Inventory\Entities\InternalOrder;
+use Ignite\Inventory\Entities\Store;
 use Ignite\Inventory\Entities\InventoryProductMarkup;
 use Ignite\Inventory\Entities\InventoryPurchaseOrders;
 use Ignite\Inventory\Entities\InventoryProductPrice;
@@ -214,11 +215,6 @@ class InventoryController extends AdminBaseController {
         $this->data['orders'] = InventoryPurchaseOrders::all();
         $this->data['suppliers'] = InventoryPurchaseOrders::all();
         return view('inventory::product_orders', ['data' => $this->data]);
-    }
-
-    public function internal_orders() {
-        $this->data['orders'] = InternalOrder::all();
-        return view('inventory::internalorders', ['data' => $this->data]);
     }
 
     public function order_details($id) {
@@ -432,6 +428,37 @@ class InventoryController extends AdminBaseController {
         $req->save();
         flash('Item requisition was marked as settled');
         return redirect()->back(); //route('inventory.purchase_details', $batch_id);
+    }
+
+    public function ViewInternalOrders() {
+        $this->data['orders'] = InternalOrder::all();
+        return view('inventory::internalorders_all', ['data' => $this->data]);
+    }
+
+    public function ManageInternalOrders() {
+        if ($this->request->isMethod('post')) {
+            if ($this->inventoryRepository->SaveInternalOrder($this->request)) {
+                flash('Internal Order placed successfully');
+                return redirect()->back(); //route('inventory.purchase_details', $batch_id);
+            }
+        }
+        $this->data['orders'] = InternalOrder::all();
+        $this->data['stores'] = Store::all();
+        return view('inventory::internalorders', ['data' => $this->data]);
+    }
+
+    public function ManageStores() {
+        if ($this->request->isMethod('post')) {
+            $store = new Store;
+            $store->name = $this->request->name;
+            $store->description = $this->request->description;
+            $store->save();
+        }
+        $this->data['stores'] = Store::all();
+        if (isset($this->request->id)) {
+            $this->data['store'] = Store::find($this->request->id);
+        }
+        return view('inventory::stores', ['data' => $this->data]);
     }
 
 }
