@@ -46,6 +46,7 @@ use Ignite\Inventory\Entities\Requisition;
 use Ignite\Inventory\Entities\RequisitionDetails;
 use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\InternalOrderDetails;
+use Ignite\Core\Entities\Notification;
 
 /**
  * Description of InventoryFunctions
@@ -142,6 +143,7 @@ class InventoryFunctions implements InventoryRepository {
             $product->category = $this->request->category;
             $product->unit = $this->request->unit;
             $product->tax_category = $this->request->tax;
+            $product->reorder_level = $this->request->reorder_level;
             $product->formulation = $this->request->formulation;
             $product->label_type = $this->request->label_type;
             $product->strength = $this->request->strength;
@@ -569,12 +571,12 @@ class InventoryFunctions implements InventoryRepository {
             $this->deQueueProductBatch($b_purchase->batch, $b_purchase->product);
             if (isset($next)) {
                 $this->activateQueue($next->batch, $next->product);
-                $next->qty_sold+= $surplus;
+                $next->qty_sold += $surplus;
                 $next->save();
             }
-            $b_purchase->qty_sold+= $batch_items_remaining;
+            $b_purchase->qty_sold += $batch_items_remaining;
         } else {
-            $b_purchase->qty_sold+= $qty;
+            $b_purchase->qty_sold += $qty;
         }
         $b_purchase->save();
     }
@@ -716,7 +718,22 @@ class InventoryFunctions implements InventoryRepository {
             $curr = 0;
         }
         $stock->quantity = ($adj->method == '+') ? $curr + $adj->quantity : $curr - $adj->quantity;
-        return $stock->save();
+        $stock->save();
+        $this->StockNotification($stock->quantity, $adj->product);
+    }
+
+    public function StockNotification($stock, $item) {
+        $product = InventoryProducts::find($item);
+        if (isset($product->reorder_level)) {
+            if ($stock < $product->reorder_level) {
+                $noti = new Notification;
+                $noti->user_id = \Auth::user()->id;
+                $noti->title = $product->name . ' stock running low';
+                $noti->message = $product->name . '\'s stock gone below reorder level';
+                $noti->icon_class = 'fa fa-bell';
+                $noti->save();
+            }
+        }
     }
 
     /**
