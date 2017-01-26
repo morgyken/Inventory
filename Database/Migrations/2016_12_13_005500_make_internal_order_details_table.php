@@ -20,7 +20,7 @@ class MakeInternalOrderDetailsTable extends Migration {
 
             $table->foreign('internal_order')
                     ->references('id')
-                    ->on('internal_order')
+                    ->on('inventory_internal_orders')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
 
