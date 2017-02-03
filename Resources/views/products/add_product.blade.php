@@ -91,7 +91,7 @@ extract($data);
             <div class="form-group {{ $errors->has('reorder_level') ? ' has-error' : '' }} req">
                 <label class="control-label col-md-4">Reorder Level</label>
                 <div class="col-md-8">
-                    {!! Form::text('reorder_level',old('reorder_level',$product->reorder_level),['class'=>'form-control']) !!}
+                    <input type="text" name="reorder_level" class="form-control" value="{{$product?$product->reorder_level?$product->reorder_level:0:0}}">
                     {!! $errors->first('reorder_level', '<span class="help-block">:message</span>') !!}
                 </div>
             </div>
