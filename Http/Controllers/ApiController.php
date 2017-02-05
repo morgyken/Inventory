@@ -329,4 +329,18 @@ class ApiController extends Controller {
         echo "</table>";
     }
 
+    public function get_patient_schemes() {
+        $schemes = \Ignite\Reception\Entities\PatientInsurance::with('schemes')
+                ->wherePatient($this->request->patient)
+                ->get()
+                ->pluck('schemes.name', 'id');
+        if (isset($schemes)) {
+            foreach ($schemes as $key => $value) {
+                echo '<option value=' . $key . '>' . $value . '</option>';
+            }
+        } else {
+            echo '<p style="color:red">patient has no insurance</p>';
+        }
+    }
+
 }

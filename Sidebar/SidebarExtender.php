@@ -184,41 +184,6 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                     });
                 });
 
-                $item->item('Reports', function(Item $item) {
-                    $item->icon('fa fa-bars');
-                    $item->authorize($this->auth->hasAccess('inv.reports'));
-                    $item->item('Sales', function (Item $item) {
-                        $item->icon('fa fa-cart-arrow-down');
-                        $item->route('inventory.reports.sales');
-                        // $item->authorize($this->auth->hasAccess('inventory.Reports.View Sales Reports'));
-                    }); //Sales
-
-                    $item->item('Product Sales', function (Item $item) {
-                        $item->icon('fa fa-gift');
-                        $item->route('inventory.reports.sales.product');
-                        //$item->authorize($this->auth->hasAccess('inventory.Reports.View Product Sales Report'));
-                    }); //Sales
-
-                    $item->item('Stock Report', function (Item $item) {
-                        $item->icon('fa fa-hourglass-half');
-                        $item->route('inventory.reports.stocks');
-                        // $item->authorize($this->auth->hasAccess('inventory.Reports.View Stock Report'));
-                    }); //stock Reports
-
-                    $item->item('Stock Movement', function (Item $item) {
-                        $item->icon('fa fa-arrows');
-                        $item->route('inventory.reports.stocks.movement');
-                        //$item->authorize($this->auth->hasAccess('inventory.Reports.View Stock Movement Report'));
-                    }); //stock Reports
-
-
-                    $item->item('Item Expiry', function (Item $item) {
-                        $item->icon('fa fa-calendar');
-                        $item->route('inventory.reports.stocks.expiry');
-                        // $item->authorize($this->auth->hasAccess('inventory.Reports.View Item Expiry Report'));
-                    }); //stock Reports
-                });
-
                 $item->item('Suppliers', function(Item $item) {
                     $item->icon('fa fa-tty');
                     $item->authorize($this->auth->hasAccess('inv.sales'));
