@@ -119,6 +119,23 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                         $item->authorize($this->auth->hasAccess('inv.purchases'));
                     });
 
+                    $item->item('Orders via Collabmed', function (Item $item) {
+                        $item->icon('fa fa-circle-thin');
+                        // $item->route('inventory.collabmed.orders');
+                        //$item->authorize($this->auth->hasAccess('inv.purchases'));
+
+                        $item->item('Orders', function (Item $item) {
+                            $item->icon('fa fa-cart-arrow-down');
+                            $item->route('inventory.collabmed.orders');
+                            //$item->authorize($this->auth->hasAccess('inv.purchases'));
+                        });
+
+                        $item->item('Quotations', function (Item $item) {
+                            $item->icon('fa fa-unsorted');
+                            $item->route('inventory.collabmed.quotations.view');
+                            //$item->authorize($this->auth->hasAccess('inv.purchases'));
+                        });
+                    });
 
                     $item->item('Create LPO', function (Item $item) {
                         $item->icon('fa fa-hand-pointer-o');
