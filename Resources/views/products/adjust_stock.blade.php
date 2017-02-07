@@ -32,7 +32,7 @@ $product = $data['product'];
                         <dt>Product Category</dt>
                         <dd>{{$product->categories?$product->categories->name:'None'}}</dd>
                         <dt>Unit of measurement</dt>
-                        <dd>{{$product->units->name}}</dd>
+                        <dd>{{$product->units?$product->units->name:''}}</dd>
                         <dt>Current Stock</dt>
                         <dd>{{$product->stocks ?$product->stocks->quantity: '0'}}</dd>
                         <dt>Last stock update</dt>

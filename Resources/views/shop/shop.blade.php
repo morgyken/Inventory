@@ -40,7 +40,15 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="direct">
                         {!! Form::open(['class'=>'form-horizontal']) !!}
-                        @include('inventory::shop.payments')
+                        <div class="col-md-4 col-lg-6">
+                            <div class="form-group {{ $errors->has('patient') ? ' has-error' : '' }}">
+                                {!! Form::label('patient', 'Patient',['class'=>'control-label col-md-4']) !!}
+                                <div class="col-md-8">
+                                    <select name="patient" id="patient_select" class="form-control" style="width:100%;" required=""></select>
+                                    {!! $errors->first('patient', '<span class="help-block">:message</span>') !!}
+                                </div>
+                            </div>
+                        </div>
                         <table class="items table  table-striped table-condensed" id="tab_logic">
                             <thead>
                                 <tr>
@@ -120,15 +128,7 @@
                         <table class="table" id="customer">
                             <tr>
                                 <td>
-                                    <i class="fa fa-user-plus"></i> Customer Info <b>(Optional)</b>
                                 </td>
-                                <td>
-                                    <input type="text" placeholder="Phone Number" value="" id="phone" name="phone" autocomplete="off" class="form-control"/>
-                                    <div id="suggesstion-box"></div>
-                                </td>
-                                <td><input type="text" id="fname" value="" placeholder="First Name" name="first_name" autocomplete="off" class="form-control"></td>
-                                <td><input type="text" id="lname" value="" placeholder="Last Name" name="last_name" autocomplete="off" class="form-control"></td>
-                                <td><input type="email" id="email" value="" placeholder="Email Address" autocomplete="off" name="email" class="form-control"></td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -157,7 +157,7 @@
 
                         <div class="pull-right">
                             <button type="submit" id="save" class="btn btn-success">
-                                <i class="fa fa-send"></i> Complete
+                                <i class="fa fa-send"></i> Bill
                             </button>
                         </div>
                         {!! Form::close() !!}
@@ -186,7 +186,9 @@
     var PRODUCTS_URL = "{{route('api.inventory.get.products')}}";
     var SCHEMES_URL = "{{route('api.settings.get_schemes')}}";
     var PHONE_URL = "{{route('api.inventory.cust.get')}}";
+    var PATIENTS_URL = "{{route('api.reception.suggest_patients')}}";
     var CREDIT_URL = "{{route('api.inventory.credit.rate')}}";
 </script>
 <script src="{!! m_asset('inventory:js/shopfront.js') !!}"></script>
+<script src="{{m_asset('reception:js/appointments.min.js')}}"></script>
 @endsection
