@@ -54,8 +54,21 @@ class InventoryBatchProductSales extends Model {
         return $this->belongsTo(Customer::class, 'customer');
     }
 
+    public function patient() {
+        return $this->belongsTo(\Ignite\Reception\Entities\Patients::class, 'patient');
+    }
+
     public function insuranceses() {
         return $this->belongsTo(InventoryInsuranceDetails::class, 'insurance');
+    }
+
+    public function getAmountAttribute() {
+        $amount = 0;
+        foreach ($this->goodies as $d) {
+            $total = $d->quantity * $d->price;
+            $amount+=$total;
+        }
+        return $amount;
     }
 
 }

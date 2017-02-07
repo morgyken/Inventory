@@ -47,6 +47,7 @@ use Ignite\Inventory\Entities\RequisitionDetails;
 use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\InternalOrderDetails;
 use Ignite\Core\Entities\Notification;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Description of InventoryFunctions
@@ -303,66 +304,61 @@ class InventoryFunctions implements InventoryRepository {
      */
     public function record_sales($id = null) {
         DB::beginTransaction();
-        try {
-            $receipt = config('system.receipt_prefix') . mt_rand(1000, 9000) . '-' . date('d/m/y');
-            $stack = self::order_item_stack(array_keys($this->request->all()));
-            if ($this->request->first_name || $this->request->phone) {
-                $customer = Customer::firstOrNew(['phone' => $this->request->phone]);
-                $customer->first_name = $this->request->first_name;
-                $customer->last_name = $this->request->last_name;
-                $customer->email = $this->request->email;
-                $customer->phone = $this->request->phone;
-                $customer->save();
-            }
-            $sales = new InventoryBatchProductSales;
-            $sales->user = $this->request->user()->id;
-            if (isset($customer->id)) {
-                $sales->customer = $customer->id;
-            }
-            $sales->payment_mode = $this->request->payment_mode;
-
-            $sales->receipt = strtoupper($receipt);
-            $sales->paid = ($sales->payment_mode != 'insurance');
-            $sales->save();
-            foreach ($stack as $index) {
-                $item = 'item' . $index;
-                $price = 'price' . $index;
-                $batch = 'batch' . $index;
-                $quantity = 'qty' . $index;
-                $discount = 'dis' . $index;
-                if ($this->request->has($item) && $this->request->has($price) && $this->request->has($quantity)) {
-                    $sale = new InventoryDispensing;
-                    $sale->batch = $sales->id;
-                    $sale->product = $this->request->$item;
-                    $sale->price = $this->request->$price;
-                    $sale->quantity = $this->request->$quantity;
-                    $sale->discount = $this->request->$discount;
+        // try {
+        $patient = $this->request->patient;
+        $receipt = config('system.receipt_prefix') . mt_rand(1000, 9000) . '-' . date('d/m/y');
+        $stack = self::order_item_stack(array_keys($this->request->all()));
+        $sales = new InventoryBatchProductSales;
+        $sales->user = $this->request->user()->id;
+        $sales->patient = $patient;
+        $visit = \Ignite\Evaluation\Entities\Visit::wherePatient($patient)
+                        ->get()->last();
+        $sales->visit = $visit['id'];
+        //$sales->payment_mode = $this->request->payment_mode;
+        $sales->receipt = strtoupper($receipt);
+        //$sales->paid = ($sales->payment_mode != 'insurance');
+        $sales->save();
+        foreach ($stack as $index) {
+            $item = 'item' . $index;
+            $price = 'price' . $index;
+            $batch = 'batch' . $index;
+            $quantity = 'qty' . $index;
+            $discount = 'dis' . $index;
+            if ($this->request->has($item) && $this->request->has($price) && $this->request->has($quantity)) {
+                $sale = new InventoryDispensing;
+                $sale->batch = $sales->id;
+                $sale->product = $this->request->$item;
+                $sale->price = $this->request->$price;
+                $sale->quantity = $this->request->$quantity;
+                $sale->discount = $this->request->$discount;
 //move items in queue
-                    $stock = InventoryStock::where('product', '=', $this->request->$item)->first();
-                    if ($stock->quantity < $this->request->$quantity) {
-                        DB::rollback();
-                        flash()->error("An item you tried to sell is unfortunately out of stock...");
-                        redirect()->back();
-                    }
-                    if ($this->request->$batch > 0) {
-                        $this->update_queue($sale->product, $this->request->$batch, $sale->quantity);
-                    }
-                    $sale->save();
+                $stock = InventoryStock::where('product', '=', $this->request->$item)->first();
+                if ($stock->quantity < $this->request->$quantity) {
+                    DB::rollback();
+                    flash()->error("An item you tried to sell is unfortunately out of stock...");
+                    redirect()->back();
                 }
+                if ($this->request->$batch > 0) {
+                    $this->update_queue($sale->product, $this->request->$batch, $sale->quantity);
+                }
+                $sale->save();
             }
-            $this->take_products($sales); //notify stock
-            $this->record_payments($receipt, $this->request->payment_mode);
-            session(['receipt_id' => $sales->id]);
-            if (isset($this->request->pharmacy)) {
-                //save dispense
-                $this->saveEvaluationDispense($this->request, $sales->id);
-            }
-            DB::commit();
-            return true;
-        } catch (\Exception $e) {
-            DB::rollback();
-            flash()->warning("Ooops! something went wrong... Be sure any product added to cart is in the system (<a target='blank' href='/inventory/goods/receive'>was received</a>)");
-        }//Catch
+        }
+        $this->take_products($sales); //notify stock
+        //$this->record_payments($receipt, $this->request->payment_mode);
+        session(['receipt_id' => $sales->id]);
+        if (isset($this->request->pharmacy)) {
+            //save dispense
+            $this->saveEvaluationDispense($this->request, $sales->id);
+        }
+        DB::commit();
+        return true;
+        /*
+          } catch (\Exception $e) {
+          DB::rollback();
+          flash()->warning("Ooops! something went wrong... Be sure any product added to cart is in the system (<a target='blank' href='/inventory/goods/receive'>was received</a>)");
+          }//Catch
+         */
     }
 
     public static function saveEvaluationDispense($request, $batch) {
