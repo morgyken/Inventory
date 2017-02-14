@@ -9,104 +9,46 @@
     </div>
 </div>
 <div id="wrapper1">
-    <div class="col-md-12">
-        <fieldset>
-            <legend> Find Client  </legend>
-
-            <div class="form-group row">
-                <label class="col-xs-4 col-form-label">Search Client</label>
-                <div class="col-xs-8">
-                    <input type="text" id="client" class="form-control" name="client" placeholder="Search Patient By Name">
-                    <table class="table table-condensed" id="fbk">
-                        <thead class="theader">
-                            <tr>
-                                <th>Firstname</th>
-                                <th>Lastname</th>
-                                <th>Phone</th>
-                            </tr>
-                        </thead>
-                        <tbody id="clients"></tbody>
-                    </table>
-
+    <div class="col-md-12" id="ins">
+        {!! Form::open(['class'=>'form-horizontal']) !!}
+        <div class="col-md-4 col-lg-6">
+            <div class="form-group {{ $errors->has('patient') ? ' has-error' : '' }}">
+                {!! Form::label('patient', 'Patient',['class'=>'control-label col-md-4']) !!}
+                <div class="col-md-8">
+                    <select name="patient" id="patient_select" class="form-control" style="width:100%;" required=""></select>
+                    {!! $errors->first('patient', '<span class="help-block">:message</span>') !!}
                 </div>
             </div>
-            <input type="hidden" class="clientID" name="customer_id">
-            <div class="form-group row">
-                <label class="col-xs-4 col-form-label">Insurance Company:</label>
-                <div class="col-xs-8">
-                    {!! Form::select('company',get_insurance_companies(), null, ['id' => 'company','class' => 'form-control company', 'placeholder' => 'Choose...']) !!}
-                </div>
-            </div>
+        </div>
 
-            <div class="form-group row">
-                <label class="col-xs-4 col-form-label">Insurance Scheme:</label>
-                <div class="col-xs-8">
-                    <select name="scheme" id="scheme" class="form-control scheme">
+        <div class="col-md-4 col-lg-6" id="scheme_area">
+            <div class="form-group {{ $errors->has('scheme') ? ' has-error' : '' }}" id="schemes">
+                {!! Form::label('scheme', 'Insurance Scheme',['class'=>'control-label col-md-4']) !!}
+                <div class="col-md-8" id="options">
+                    <select name="scheme" id="patient_scheme" class="form-control" style="width:100%;" required="">
+
                     </select>
+                    {!! $errors->first('scheme', '<span class="help-block">:message</span>') !!}
                 </div>
             </div>
-
-            <div class="form-group row">
-                <label class="col-xs-4 col-form-label">Policy Number</label>
-                <div class="col-xs-8">
-                    <input type="text" name="policy"autocomplete="off"id="policy" class="form-control" >
-
-                    <table class="table table-condensed" id="fbk2">
-                        <thead class="theader2">
-                            <tr>
-                                <th>Policy Number</th>
-                                <th>Scheme</th>
-                                <th>Company</th>
-                            </tr>
-                        </thead>
-                        <tbody id="plns"></tbody>
-                    </table>
-
-                </div>
-            </div>
-        </fieldset>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
-
     $(document).ready(function () {
-        $('.theader').hide();
-        $('.theader2').hide();
-        $("#client").keyup(function () {
-            $('.theader').show();
-            var client = this.value;
+        $('#scheme_area').hide();
+        $("#ins").hover(function () {
+            var patient = $('#patient_select').val();
             $.ajax({
                 url: "{{route('api.inventory.clients')}}",
-                data: {'client': client},
+                data: {'patient': patient},
                 success: function (data) {
-                    $("#clients").html(data);
+                    $('#scheme_area').show();
+                    $("#patient_scheme").html(data);
                 }});
         });
 
-        $("#policy").keyup(function () {
-            $('.theader2').show();
-            var policy = this.value;
-            var firm = $('.company').val();
-            var scheme = $('.scheme').val();
-            var client = $('.clientID').val();
-            $.ajax({
-                url: "{{route('api.inventory.client.pln')}}",
-                data: {'policy': policy, 'firm': firm, 'scheme': scheme, 'client': client},
-                success: function (data) {
-                    $("#plns").html(data);
-                }});
-        });
     });
-
-    function appendInfo(client_id, fn, ln) {
-        $('.clientID').val(client_id);
-        $('#client').val(fn + ' ' + ln);
-        $('#fbk').hide();
-    }
-
-    function appendPLN(pln) {
-        $('#policy').val(pln);
-        $('#fbk2').hide();
-    }
-
+    var PATIENTS_URL = "{{route('api.reception.suggest_patients')}}";
 </script>
+<script src="{{m_asset('reception:js/appointments.min.js')}}"></script>

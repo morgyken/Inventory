@@ -4,7 +4,7 @@
  *
  * Collabmed Solutions Ltd
  * Project: iClinic
- * Author: Samuel Okoth <sodhiambo@collabmed.com>
+ * Author: Bravo Kiptoo
  *
  * =============================================================================
  */
@@ -12,8 +12,8 @@ $order = $data['order'];
 ?>
 
 @extends('layouts.app')
-@section('content_title','Manage LPO')
-@section('content_description','View order details')
+@section('content_title','Order Details')
+@section('content_description','')
 
 @section('content')
 <div class="box box-info">
@@ -21,9 +21,18 @@ $order = $data['order'];
         <h3 class="box-title">Order details</h3>
     </div>
     <div class="box-body">
+        {!! Form::open(['route'=>'inventory.collabmed.quotation','class'=>'form-horizontal'])!!}
         <dl class="dl-horizontal">
+            <dt>Order#:</dt>
+            <dd>{{$data['col_order']}}</dd>
             <dt>Supplier:</dt>
-            <dd>{{$order->suppliers->name}}</dd>
+            <dd>
+                <div class="col-md-4">
+                    {!! Form::select('supplier',get_suppliers(),$order->suppliers->id,['class'=>'form-control']) !!}
+                    {!! $errors->first('supplier', '<span class="help-block">:message</span>') !!}
+                </div>
+                <input type="hidden" name="order" value="{{$data['col_order']}}">
+            </dd>
             <dt>Delivery Date:</dt>
             <dd>{{smart_date($order->deliver_date)}}</dd>
             <dt>Order Date:</dt>
@@ -43,8 +52,14 @@ $order = $data['order'];
                 <tbody>
                     @foreach($order->details as $item)
                     <tr>
-                        <td>{{$item->products->name}}</td>
-                        <td>{{$item->quantity}}</td>
+                        <td>
+                            {{$item->products->name}}
+                            <input type="hidden" name="item[]" value="{{$item->id}}">
+                        </td>
+                        <td>
+                            {{$item->quantity}}
+                            <input type="hidden" name="required_units[]" value="{{$item->quantity}}">
+                        </td>
                         <td>{{number_format($item->price,2)}}</td>
                         <td>{{$item->total}}</td>
                     </tr>
@@ -58,23 +73,25 @@ $order = $data['order'];
                 </tfoot>
             </table>
         </div>
+
         <div class="box-footer">
             <div class="btn-group ">
-                @if($order->status != 0)
-                <a href="{{route('inventory.print_lpo',$order->id)}}" target="_blank" class="btn btn-primary">
-                    <i class="fa fa-print"></i> Print</a>
-                @endif
-                @if($order->status == 0)
-                <a href="{{route('inventory.approveLPO',$order->id)}}" class="btn btn-info">
-                    <i class="fa fa-check-circle-o"></i> Approve</a>
-                @elseif($order->status == 1)
-                <a href="{{route('inventory.to_collabmed',$order->id)}}" class="btn btn-warning">
-                    <i  class="fa fa-list"></i> Send to Collabmed</a>
-                <a href="{{route('inventory.receive_from_lpo',$order->id)}}" class="btn btn-success">
-                    <i  class="fa fa-hand-lizard-o"></i> Receive Goods</a>
-                @endif
+                <div class="form-group {{ $errors->has('supplier') ? ' has-error' : '' }} req">
+                    <button class="btn btn-warning"><i  class="fa fa-list"></i>Receive Quotation</button>
+                </div>
             </div>
         </div>
+        </form>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.table').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'pdf', 'print'
+            ]
+        });
+    });
+</script>
 @endsection

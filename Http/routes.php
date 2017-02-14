@@ -60,6 +60,17 @@ $router->get('purchase/lpo/requisition/{requisition}', ['uses' => 'InventoryCont
 $router->match(['get', 'post'], 'purchase/receive/{ref}', ['uses' => 'InventoryController@receive_lpo', 'as' => 'receive_from_lpo']);
 $router->match(['post', 'get'], 'purchase/direct/goods', ['uses' => 'InventoryController@receive_direct', 'as' => 'receive_direct']);
 $router->get('goods/receive', ['uses' => 'InventoryController@receive_goods', 'as' => 'receive_goods']);
+
+$router->get('order/collabmed/send/{order}', ['uses' => 'CollabmedController@sendToCollabmed', 'as' => 'to_collabmed']);
+$router->get('order/collabmed/order/{id?}', ['uses' => 'CollabmedController@orderDetails', 'as' => 'collabmed.order.view']);
+$router->get('order/collabmed/orders', ['uses' => 'CollabmedController@viewOrders', 'as' => 'collabmed.orders']);
+$router->post('order/collabmed/quotation', ['uses' => 'CollabmedController@Quotation', 'as' => 'collabmed.quotation']);
+$router->get('order/collabmed/quotations', ['uses' => 'CollabmedController@QuotationsView', 'as' => 'collabmed.quotations.view']);
+$router->get('order/collabmed/quotation/{id}/details', ['uses' => 'CollabmedController@QuotationDetails', 'as' => 'collabmed.quotation.details']);
+$router->post('order/collabmed/quotation/submit', ['uses' => 'CollabmedController@submitQuote', 'as' => 'collabmed.quotation.submit']);
+$router->get('order/collabmed/quotation/{id}/accept', ['uses' => 'CollabmedController@acceptQuote', 'as' => 'collabmed.quotation.accept']);
+$router->get('order/collabmed/quotation/{id}/reject', ['uses' => 'CollabmedController@rejectQuote', 'as' => 'collabmed.quotation.reject']);
+
 $router->get('goods/received/grns', ['uses' => 'InventoryController@grns', 'as' => 'grns']);
 $router->get('batch/{id}/details', ['uses' => 'InventoryController@batch_details', 'as' => 'batch.details']);
 $router->get('goods/delivered/{batch}', ['uses' => 'InventoryController@purchase_details', 'as' => 'purchase_details']);

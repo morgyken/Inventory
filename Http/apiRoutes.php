@@ -20,7 +20,7 @@ $router->get('customers/autofetch', ['uses' => 'ApiController@fetchCustomer', 'a
 $router->get('batch/amount', ['uses' => 'ApiController@fetchBatchAmount', 'as' => 'batch.amount']);
 $router->get('credit/rate', ['uses' => 'ApiController@creditSelling', 'as' => 'credit.rate']);
 $router->get('approve/adjustment', ['uses' => 'ApiController@approveStockAdjustment', 'as' => 'adj_approve']);
-$router->get('credit/clients', ['uses' => 'ApiController@creditClients', 'as' => 'clients']);
-$router->get('credit/client/pln', ['uses' => 'ApiController@creditClientPLN', 'as' => 'client.pln']);
+$router->get('pos/insurance', ['uses' => 'ApiController@get_patient_schemes', 'as' => 'clients']);
+//$router->get('credit/client/pln', ['uses' => 'ApiController@creditClientPLN', 'as' => 'client.pln']);
 $router->get('supplier/batches', ['uses' => 'ApiController@supplier_batches', 'as' => 'supplier.batch']);
 

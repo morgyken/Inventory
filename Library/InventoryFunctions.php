@@ -47,6 +47,7 @@ use Ignite\Inventory\Entities\RequisitionDetails;
 use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\InternalOrderDetails;
 use Ignite\Core\Entities\Notification;
+use Ignite\Inventory\Entities\OrderToCollabmed;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -913,6 +914,13 @@ class InventoryFunctions implements InventoryRepository {
         });
 
         return true;
+    }
+
+    public function sendOrderToCollabmed(Request $request) {
+        $order = new OrderToCollabmed();
+        $order->order = $request->order;
+        $order->client = config('practice.name');
+        return $order->save();
     }
 
 }

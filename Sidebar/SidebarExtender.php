@@ -119,6 +119,23 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                         $item->authorize($this->auth->hasAccess('inv.purchases'));
                     });
 
+                    $item->item('Orders via Collabmed', function (Item $item) {
+                        $item->icon('fa fa-circle-thin');
+                        // $item->route('inventory.collabmed.orders');
+                        //$item->authorize($this->auth->hasAccess('inv.purchases'));
+
+                        $item->item('Orders', function (Item $item) {
+                            $item->icon('fa fa-cart-arrow-down');
+                            $item->route('inventory.collabmed.orders');
+                            //$item->authorize($this->auth->hasAccess('inv.purchases'));
+                        });
+
+                        $item->item('Quotations', function (Item $item) {
+                            $item->icon('fa fa-unsorted');
+                            $item->route('inventory.collabmed.quotations.view');
+                            //$item->authorize($this->auth->hasAccess('inv.purchases'));
+                        });
+                    });
 
                     $item->item('Create LPO', function (Item $item) {
                         $item->icon('fa fa-hand-pointer-o');
@@ -182,41 +199,6 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                         $item->route('inventory.sales.return');
                         //$item->authorize($this->auth->hasAccess('inventory.Sales.Sales Return'));
                     });
-                });
-
-                $item->item('Reports', function(Item $item) {
-                    $item->icon('fa fa-bars');
-                    $item->authorize($this->auth->hasAccess('inv.reports'));
-                    $item->item('Sales', function (Item $item) {
-                        $item->icon('fa fa-cart-arrow-down');
-                        $item->route('inventory.reports.sales');
-                        // $item->authorize($this->auth->hasAccess('inventory.Reports.View Sales Reports'));
-                    }); //Sales
-
-                    $item->item('Product Sales', function (Item $item) {
-                        $item->icon('fa fa-gift');
-                        $item->route('inventory.reports.sales.product');
-                        //$item->authorize($this->auth->hasAccess('inventory.Reports.View Product Sales Report'));
-                    }); //Sales
-
-                    $item->item('Stock Report', function (Item $item) {
-                        $item->icon('fa fa-hourglass-half');
-                        $item->route('inventory.reports.stocks');
-                        // $item->authorize($this->auth->hasAccess('inventory.Reports.View Stock Report'));
-                    }); //stock Reports
-
-                    $item->item('Stock Movement', function (Item $item) {
-                        $item->icon('fa fa-arrows');
-                        $item->route('inventory.reports.stocks.movement');
-                        //$item->authorize($this->auth->hasAccess('inventory.Reports.View Stock Movement Report'));
-                    }); //stock Reports
-
-
-                    $item->item('Item Expiry', function (Item $item) {
-                        $item->icon('fa fa-calendar');
-                        $item->route('inventory.reports.stocks.expiry');
-                        // $item->authorize($this->auth->hasAccess('inventory.Reports.View Item Expiry Report'));
-                    }); //stock Reports
                 });
 
                 $item->item('Suppliers', function(Item $item) {
