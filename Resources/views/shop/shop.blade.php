@@ -29,11 +29,13 @@
                             Direct Payment
                         </a>
                     </li>
+                    <!--
                     <li role="presentation">
                         <a href="{{route('inventory.shopfront.credit')}}">
                             Insurance (Credit)
                         </a>
                     </li>
+                    -->
                 </ul>
                 <br>
                 <!-- Tab panes -->
