@@ -465,7 +465,7 @@ class InventoryFunctions implements InventoryRepository {
         $inv = new InsuranceInvoice;
         $inv->invoice_no = $receipt;
         $inv->receipt = $id;
-        $inv->status = 0;
+        $inv->status = 1;
         $inv->invoice_date = new \Date($date);
         $inv->save();
     }
