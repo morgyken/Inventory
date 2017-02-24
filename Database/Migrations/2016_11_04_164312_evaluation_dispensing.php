@@ -17,6 +17,7 @@ class EvaluationDispensing extends Migration {
             $column->integer('visit')->unsigned();
             $column->integer('user')->unsigned()->nullable();
             $column->boolean('payment_status')->default(0)->nullable();
+            $column->float('amount', 10, 2)->nullable();
             $column->timestamps();
 
             $column->foreign('user')

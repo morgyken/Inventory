@@ -41,7 +41,8 @@ class ApiController extends Controller {
             $batchp = InventoryBatchPurchases::whereProduct($item->id)
                     ->whereActive(TRUE)
                     ->first();
-            $this->data['item_prices'] = InventoryProductPrice::query()->where('product', '=', $item->id)->get();
+            $this->data['item_prices'] = InventoryProductPrice::query()
+                            ->where('product', '=', $item->id)->get();
             $active_price = 0.00;
             foreach ($this->data['item_prices'] as $product) {
                 if ($product->price > $active_price) {

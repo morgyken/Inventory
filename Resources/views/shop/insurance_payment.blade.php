@@ -26,7 +26,6 @@
                 {!! Form::label('scheme', 'Insurance Scheme',['class'=>'control-label col-md-4']) !!}
                 <div class="col-md-8" id="options">
                     <select name="scheme" id="patient_scheme" class="form-control" style="width:100%;" required="">
-
                     </select>
                     {!! $errors->first('scheme', '<span class="help-block">:message</span>') !!}
                 </div>
@@ -37,7 +36,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#scheme_area').hide();
-        $("#ins").hover(function () {
+        $("#patient_select").change(function () {
             var patient = $('#patient_select').val();
             $.ajax({
                 url: "{{route('api.inventory.clients')}}",

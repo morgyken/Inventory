@@ -23,6 +23,15 @@
     <div class="box-body">
         <div class="row">
             <div class="col-md-12">
+                <table class="table">
+                    <tr>
+                        <th>Sale ID: {{$data['sales']->id}}</th>
+                        <th>Receipt Number: {{$data['sales']->receipt}}</th>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><i><small>Give sale id to client and direct them to Cashier.</small></i></td>
+                    </tr>
+                </table>
                 <table class="table table-condensed">
                     <tbody>
                         @foreach($data['sales']->goodies as $item)
@@ -57,8 +66,10 @@
                         <i class="fa fa-print"></i> Print Insurance Invoice
                     </a>
                     @else
+                    <!--
                     <a href="{{route('inventory.sale.receipt.print',$data['sales']->id)}}" target="_blank" class="btn btn-primary">
                         <i class="fa fa-print"></i> Print Receipt</a>
+                    -->
                     @endif
                     <a href="{{route('inventory.shopfront')}}" class="btn btn-success">
                         <i class="fa fa-fast-forward"></i> Next Sales</a>

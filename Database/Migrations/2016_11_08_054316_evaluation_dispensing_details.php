@@ -18,6 +18,8 @@ class EvaluationDispensingDetails extends Migration {
             $table->integer('product')->unsigned();
             $table->integer('quantity')->default(1);
             $table->float('price', 10, 2);
+            $table->float('discount', 10, 2)->default(0);
+            $table->boolean('status')->default(0)->nullable();
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('product')->references('id')->on('inventory_products')
