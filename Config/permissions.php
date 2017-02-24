@@ -15,5 +15,6 @@ return [
         'expiry' => 'Item Expiry',
         'suppliers' => 'Suppliers',
         'clients' => 'Clients',
+        'approve_lpo' => 'Approve',
     ],
 ];

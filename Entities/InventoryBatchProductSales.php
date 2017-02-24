@@ -4,6 +4,7 @@ namespace Ignite\Inventory\Entities;
 
 use Ignite\Users\Entities\User;
 use Illuminate\Database\Eloquent\Model;
+use Ignite\Reception\Entities\Patients;
 
 /**
  * Ignite\Inventory\Entities\InventoryBatchProductSales
@@ -54,12 +55,12 @@ class InventoryBatchProductSales extends Model {
         return $this->belongsTo(Customer::class, 'customer');
     }
 
-    public function patient() {
-        return $this->belongsTo(\Ignite\Reception\Entities\Patients::class, 'patient');
+    public function patients() {
+        return $this->belongsTo(Patients::class, 'patient');
     }
 
     public function insuranceses() {
-        return $this->belongsTo(InventoryInsuranceDetails::class, 'insurance');
+        return $this->belongsTo(\Ignite\Reception\Entities\PatientInsurance::class, 'insurance');
     }
 
     public function getAmountAttribute() {
