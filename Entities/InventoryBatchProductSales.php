@@ -66,10 +66,10 @@ class InventoryBatchProductSales extends Model {
     public function getAmountAttribute() {
         $amount = 0;
         foreach ($this->goodies as $d) {
-            $total = $d->quantity * $d->price;
+            $total = $d->quantity * $d->price - ($d->discount / 100 * $d->quantity * $d->price);
             $amount+=$total;
         }
-        return $amount;
+        return ceil($amount);
     }
 
 }
