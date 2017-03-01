@@ -68,8 +68,10 @@ $order = $data['order'];
                 <a href="{{route('inventory.approveLPO',$order->id)}}" class="btn btn-info">
                     <i class="fa fa-check-circle-o"></i>Approve</a>
                 @elseif($order->status == 1)
+                <!--
                 <a href="{{route('inventory.to_collabmed',$order->id)}}" class="btn btn-warning">
                     <i  class="fa fa-list"></i> Send to Collabmed</a>
+                -->
                 <a href="{{route('inventory.receive_from_lpo',$order->id)}}" class="btn btn-success">
                     <i  class="fa fa-hand-lizard-o"></i> Receive Goods</a>
                 @endif

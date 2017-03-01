@@ -84,4 +84,14 @@ class InventoryProducts extends Model {
         return $active;
     }
 
+    public function getSellingPAttribute() {
+        $price = 0;
+        foreach ($this->prices as $p) {
+            if ($price > $p->price) {
+                $p = $price;
+            }
+        }
+        return $price;
+    }
+
 }
