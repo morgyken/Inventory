@@ -97,13 +97,21 @@ class InventoryFunctions implements InventoryRepository {
      * @return bool
      */
     public function add_product_category($id = null) {
-        $category = InventoryCategories::findOrNew($id);
-        $category->name = ucfirst($this->request->name);
-        $category->parent = $this->request->parent_category;
-        $category->credit_markup = $this->request->credit_markup;
-        $category->cash_markup = $this->request->cash_markup;
-        $result = $category->save();
-        return $result;
+        try {
+            $category = InventoryCategories::findOrNew($id);
+            $category->name = ucfirst($this->request->name);
+            $category->parent = $this->request->parent_category;
+            if ($this->request->credit_markup >= 0) {
+                $category->credit_markup = $this->request->credit_markup;
+            }
+            if ($this->request->cash_markup >= 0) {
+                $category->cash_markup = $this->request->cash_markup;
+            }
+            $result = $category->save();
+            return $result;
+        } catch (\Exception $e) {
+            flash()->error($e->errorInfo['2']);
+        }
     }
 
     /**
@@ -720,7 +728,7 @@ class InventoryFunctions implements InventoryRepository {
      * @param InventoryStockAdjustment $adj
      * @return bool
      */
-    private function adjust_stock(InventoryStockAdjustment $adj) {
+    public function adjust_stock(InventoryStockAdjustment $adj) {
         $stock = InventoryStock::firstOrNew(['product' => $adj->product]);
         $curr = $stock->quantity;
         if (empty($stock->quantity)) {
