@@ -15,8 +15,8 @@ class CreateInventoryCategoriesTable extends Migration {
             $table->increments('id');
             $table->string('name');
             $table->integer('parent')->unsigned()->nullable();
-            $table->float('cash_markup')->nullable();
-            $table->float('credit_markup')->nullable();
+            $table->float('cash_markup')->default(0);
+            $table->float('credit_markup')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
