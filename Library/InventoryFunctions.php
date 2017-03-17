@@ -315,6 +315,7 @@ class InventoryFunctions implements InventoryRepository {
         DB::beginTransaction();
         try {
             $patient = $this->request->patient;
+
             $receipt = config('system.receipt_prefix') . mt_rand(1000, 9000) . '-' . date('d/m/y');
             $stack = self::order_item_stack(array_keys($this->request->all()));
             $sales = new InventoryBatchProductSales;
@@ -378,7 +379,12 @@ class InventoryFunctions implements InventoryRepository {
             return true;
         } catch (\Exception $e) {
             DB::rollback();
-            flash()->warning("Ooops! something went wrong... Be sure any product added to cart is in the system (<a target='blank' href='/inventory/goods/receive'>was received</a>)");
+            flash()->error("Something is went wrong<br/>1. Be sure you selected an existing patient, select \"Walkin Patient\" for random client <br/>"
+                    . "<i>If 'walkin patient' account does not exist, it can be created at RECEPTION </i>"
+                    . " <br>2. Trying to sell a product/drug that is out of stock will throw this exception"
+                    . "<br/><i>Go to Inventory>>Products>>Items in Store to adjust item stock, or Inventory>>Purchases>>Receive Goods</i>");
+            //return back();
+            //flash()->warning("Ooops! something went wrong... Be sure any product added to cart is in the system (<a target='blank' href='/inventory/goods/receive'>was received</a>)");
         }//Catch
     }
 
