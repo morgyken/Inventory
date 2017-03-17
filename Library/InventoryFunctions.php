@@ -379,7 +379,7 @@ class InventoryFunctions implements InventoryRepository {
             return true;
         } catch (\Exception $e) {
             DB::rollback();
-            flash()->error("Something is went wrong<br/>1. Be sure you selected an existing patient, select \"Walkin Patient\" for random client <br/>"
+            flash()->error("Something went wrong<br/>1. Be sure you selected an existing patient, select \"Walkin Patient\" for random client <br/>"
                     . "<i>If 'walkin patient' account does not exist, it can be created at RECEPTION </i>"
                     . " <br>2. Trying to sell a product/drug that is out of stock will throw this exception"
                     . "<br/><i>Go to Inventory>>Products>>Items in Store to adjust item stock, or Inventory>>Purchases>>Receive Goods</i>");
