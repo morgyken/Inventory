@@ -31,10 +31,11 @@ $end = Illuminate\Support\Facades\Input::get('end');
         <table id="cashier" class="table table-borderless">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th>Receipt No.</th>
                     <th>Cashier</th>
                     <th>Amount</th>
-                    <th>Mode</th>
+                    <th>Mode(S)</th>
                     <th>Date</th>
                 </tr>
             </thead>
@@ -43,33 +44,18 @@ $end = Illuminate\Support\Facades\Input::get('end');
                 $cash_amnt = $cheq_amnt = $mpesa_amnt = $card_amnt = $insurance = 0;
                 ?>
                 @foreach($records as $record)
+                <?php
+                $cash_amnt+=$record->payment->cash ? $record->payment->cash->amount : 0;
+                $cheq_amnt+=$record->payment->cheque ? $record->payment->cheque->amount : 0;
+                $mpesa_amnt+=$record->payment->mpesa ? $record->payment->mpesa->amount : 0;
+                $card_amnt+=$record->payment->card ? $record->payment->card->amount : 0;
+                ?>
                 <tr>
-                    <td>{{$record->receipt}}</td>
+                    <td>{{$loop->iteration}}</td>
+                    <td>{{$record->payment?$record->payment->receipt:''}}</td>
                     <td>{{$record->users->profile->full_name}}</td>
-
-
-                    @if($record->payment_mode=='cash')
-                    <td>{{$record->amountpaid->CashAmount}}</td>
-                    <?php $cash_amnt +=$record->amountpaid->CashAmount ?>
-
-                    @elseif($record->payment_mode=='mpesa')
-                    <td>{{$record->amountpaid->MpesaAmount}}</td>
-                    <?php $mpesa_amnt +=$record->amountpaid->MpesaAmount ?>
-
-                    @elseif($record->payment_mode=='cheque')
-                    <td>{{$record->amountpaid->ChequeAmount}}</td>
-                    <?php $cheq_amnt +=$record->amountpaid->ChequeAmount ?>
-
-                    @elseif($record->payment_mode=='card')
-                    <td>{{$record->amountpaid->CardAmount}}</td>
-                    <?php $card_amnt +=$record->amountpaid->CardAmount ?>
-
-                    @elseif($record->payment_mode=='insurance')
-                    <td>{{$record->amountpaid->InsuranceAmount}}</td>
-                    <?php $insurance +=$record->amountpaid->InsuranceAmount ?>
-                    @endif
-
-                    <td>{{$record->payment_mode}}</td>
+                    <td>{{$record->payment?$record->payment->amount:''}}</td>
+                    <td>{{$record->payment?$record->payment->modes:''}}</td>
                     <td>{{(new Date($record->created_at))->format('jS M Y')}}</td>
                 </tr>
                 @endforeach
@@ -79,11 +65,11 @@ $end = Illuminate\Support\Facades\Input::get('end');
             <hr/>
             <h4>Sales Summary</h4>
             <table class='table'>
-                <tr><td>Cash:</td><td>{{number_format($cash_amnt,2)}}</td></tr>
-                <tr><td>MPESA:</td><td>{{number_format($mpesa_amnt,2)}}</td></tr>
-                <tr><td>Cheque:</td><td>{{number_format($cheq_amnt,2)}}</td></tr>
-                <tr><td>Card:</td><td>{{number_format($card_amnt,2)}}</td></tr>
-                <tr><td>Total Sales:</td><td>{{number_format($card_amnt+$cheq_amnt+$mpesa_amnt+$cash_amnt,2)}}</td></tr>
+                <tr><td>Cash:</td><td style="text-align: left">{{number_format($cash_amnt,2)}}</td></tr>
+                <tr><td>MPESA:</td><td style="text-align: left">{{number_format($mpesa_amnt,2)}}</td></tr>
+                <tr><td>Cheque:</td><td style="text-align: left">{{number_format($cheq_amnt,2)}}</td></tr>
+                <tr><td>Card:</td><td style="text-align: left">{{number_format($card_amnt,2)}}</td></tr>
+                <tr><td>Total Sales:</td><td style="text-align: left">{{number_format($card_amnt+$cheq_amnt+$mpesa_amnt+$cash_amnt,2)}}</td></tr>
             </table>
         </div>
     </div>
