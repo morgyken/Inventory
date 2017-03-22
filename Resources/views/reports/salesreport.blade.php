@@ -17,11 +17,12 @@ $end = Illuminate\Support\Facades\Input::get('end');
 <div class="box box-info">
     <div class="box-header">
         <div class="pull-right">
-            {!! Form::open()!!}
-            From: <input type="text" id="date1" name="start" value="{{$start}}"/>
-            To: <input type="text" id="date2" name="end" value="{{$end}}"/>
-            <button  type="submit" id="clearBtn" class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
-            {!! Form::close()!!}
+            <form method="post" action="{{route('analytics.inventory.sales')}}">
+                <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+                From: <input type="text" id="date1" name="start" value="{{$start}}"/>
+                To: <input type="text" id="date2" name="end" value="{{$end}}"/>
+                <button  type="submit" id="clearBtn" class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
+                {!! Form::close()!!}
         </div>
     </div>
     <div class="box-body">
@@ -45,10 +46,12 @@ $end = Illuminate\Support\Facades\Input::get('end');
                 ?>
                 @foreach($records as $record)
                 <?php
-                $cash_amnt+=$record->payment->cash ? $record->payment->cash->amount : 0;
-                $cheq_amnt+=$record->payment->cheque ? $record->payment->cheque->amount : 0;
-                $mpesa_amnt+=$record->payment->mpesa ? $record->payment->mpesa->amount : 0;
-                $card_amnt+=$record->payment->card ? $record->payment->card->amount : 0;
+                if (isset($record->payment)) {
+                    $cash_amnt+=$record->payment->cash ? $record->payment->cash->amount : 0;
+                    $cheq_amnt+=$record->payment->cheque ? $record->payment->cheque->amount : 0;
+                    $mpesa_amnt+=$record->payment->mpesa ? $record->payment->mpesa->amount : 0;
+                    $card_amnt+=$record->payment->card ? $record->payment->card->amount : 0;
+                }
                 ?>
                 <tr>
                     <td>{{$loop->iteration}}</td>
