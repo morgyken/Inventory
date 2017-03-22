@@ -53,7 +53,7 @@ $end = Illuminate\Support\Facades\Input::get('end');
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$record->payment?$record->payment->receipt:''}}</td>
-                    <td>{{$record->users->profile->full_name}}</td>
+                    <td>{{$record->payment->users->profile->full_name}}</td>
                     <td>{{$record->payment?$record->payment->amount:''}}</td>
                     <td>{{$record->payment?$record->payment->modes:''}}</td>
                     <td>{{(new Date($record->created_at))->format('jS M Y')}}</td>
