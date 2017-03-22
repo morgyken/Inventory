@@ -47,6 +47,10 @@ class InventoryBatchProductSales extends Model {
         return $this->belongsTo(User::class, 'user');
     }
 
+    public function payment() {
+        return $this->hasOne(\Ignite\Finance\Entities\EvaluationPayments::class, 'sale');
+    }
+
     public function amountpaid() {
         return $this->hasOne(InventoryPayments::class, 'receipt', 'receipt');
     }
