@@ -23,16 +23,22 @@
     <div class="box-body">
         <div class="row">
             <div class="col-md-12">
-                <table class="table">
+                <table class="table table-striped">
                     <tr>
-                        <th>Sale ID: {{$data['sales']->id}}</th>
-                        <th>Receipt Number: {{$data['sales']->receipt}}</th>
+                        <th>Sale ID</th>
+                        <th>Receipt Number</th>
+                        <th>Client</th>
                     </tr>
                     <tr>
-                        <td colspan="2"><i><small>Give sale id to client and direct them to Cashier.</small></i></td>
+                        <td>{{$data['sales']->id}}</td>
+                        <td>{{$data['sales']->receipt}}</td>
+                        <td>{{$data['sales']->patients?$data['sales']->patients->full_name:'Not Selected'}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><i><u>Give sale id to client and direct them to Cashier.</u></i></td>
                     </tr>
                 </table>
-                <table class="table table-condensed">
+                <table class="table table-striped table-condensed">
                     <tbody>
                         @foreach($data['sales']->goodies as $item)
                         <tr>
