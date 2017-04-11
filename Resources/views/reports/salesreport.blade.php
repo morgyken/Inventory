@@ -7,6 +7,7 @@
 $records = $data['records'];
 $start = Illuminate\Support\Facades\Input::get('start');
 $end = Illuminate\Support\Facades\Input::get('end');
+$n = 0;
 ?>
 
 @extends('layouts.app')
@@ -17,7 +18,7 @@ $end = Illuminate\Support\Facades\Input::get('end');
 <div class="box box-info">
     <div class="box-header">
         <div class="pull-right">
-            <form method="post" action="{{route('analytics.inventory.sales')}}">
+            <form method="post" action="{{route('reports.inventory.sales')}}">
                 <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                 From: <input type="text" id="date1" name="start" value="{{$start}}"/>
                 To: <input type="text" id="date2" name="end" value="{{$end}}"/>
@@ -54,7 +55,7 @@ $end = Illuminate\Support\Facades\Input::get('end');
                 }
                 ?>
                 <tr>
-                    <td>{{$loop->iteration}}</td>
+                    <td>{{$n+=1}}</td>
                     <td>{{$record->payment?$record->payment->receipt:''}}</td>
                     <td>{{$record->payment->users->profile->full_name}}</td>
                     <td>{{$record->payment?$record->payment->amount:''}}</td>
@@ -62,6 +63,14 @@ $end = Illuminate\Support\Facades\Input::get('end');
                     <td>{{(new Date($record->created_at))->format('jS M Y')}}</td>
                 </tr>
                 @endforeach
+                <tr>
+                    <td>{{$n+=1}}</td>
+                    <td>Cash:{{number_format($cash_amnt,2)}}</td>
+                    <td>MPesa:{{number_format($mpesa_amnt,2)}} </td>
+                    <td>Cheque:{{number_format($cheq_amnt,2)}}</td>
+                    <td>Card:{{number_format($card_amnt,2)}}</td>
+                    <td>Total:{{number_format($card_amnt+$cheq_amnt+$mpesa_amnt+$cash_amnt,2)}}</td>
+                </tr>
             </tbody>
         </table>
         <div>

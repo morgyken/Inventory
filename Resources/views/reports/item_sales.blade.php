@@ -58,15 +58,15 @@ $n = $total = $amount = 0;
                     <td>{{(new Date($record->created_at))->format('jS M Y')}}</td>
                 </tr>
                 @endforeach
-            <tfoot>
                 <tr>
-                <tr>
-                    <th colspan="4" style="text-align: right">Total</th>
-                    <th style="text-align: center">{{number_format($amount,2)}}</th>
-                    <th></th>
+                    <td>{{$n+=1}}</td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right"><strong>Total:</strong></td>
+                    <td style="text-align: center"><strong>{{number_format($amount,2)}}</strong></td>
+                    <td></td>
+                    <td></td>
                 </tr>
-                </tr>
-            </tfoot>
             </tbody>
         </table>
     </div>

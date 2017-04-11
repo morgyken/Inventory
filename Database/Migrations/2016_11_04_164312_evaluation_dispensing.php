@@ -15,6 +15,7 @@ class EvaluationDispensing extends Migration {
         Schema::create('inventory_evaluation_dispensing', function(Blueprint $column) {
             $column->increments('id');
             $column->integer('visit')->unsigned();
+            $column->integer('prescription')->unsigned()->nullable();
             $column->integer('user')->unsigned()->nullable();
             $column->boolean('payment_status')->default(0)->nullable();
             $column->float('amount', 10, 2)->nullable();
@@ -27,6 +28,11 @@ class EvaluationDispensing extends Migration {
 
             $column->foreign('visit')
                     ->references('id')->on('evaluation_visits')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
+
+            $column->foreign('prescription')
+                    ->references('id')->on('evaluation_prescriptions')
                     ->onUpdate('cascade')
                     ->onDelete('cascade');
         });
