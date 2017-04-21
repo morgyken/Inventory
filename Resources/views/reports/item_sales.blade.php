@@ -8,6 +8,15 @@ $records = $data['records'];
 $start = Illuminate\Support\Facades\Input::get('start');
 $end = Illuminate\Support\Facades\Input::get('end');
 $n = $total = $amount = 0;
+
+function amount_after_discount($discount, $amount) {
+    try {
+        $discounted = $amount - (($discount / 100) * $amount);
+        return $discounted;
+    } catch (\Exception $e) {
+        return $amount;
+    }
+}
 ?>
 
 @extends('layouts.app')
@@ -39,6 +48,7 @@ $n = $total = $amount = 0;
                     <th>Item</th>
                     <th style="text-align: center">Quantity</th>
                     <th style="text-align: center">Price</th>
+                    <th style="text-align: center">Discount(%)</th>
                     <th style="text-align: center">Amount</th>
                     <th>Date</th>
                 </tr>
@@ -47,19 +57,21 @@ $n = $total = $amount = 0;
                 @foreach($records as $record)
                 <?php
                 $total = $record->price * $record->quantity;
-                $amount+=$total;
+                $amount+=amount_after_discount($record->discount, $total);
                 ?>
                 <tr>
                     <td>{{$n+=1}}</td>
                     <td>{{$record->products->name}}{{$record->products->strength?'('.$record->products->strength.$record->products->units->name.')':''}}</td>
                     <td style="text-align: center">{{$record->quantity}}</td>
                     <td style="text-align: center">{{$record->price}}</td>
-                    <th style="text-align: center">{{number_format($total,2)}}</th>
+                    <td style="text-align: center">{{$record->discount}}</td>
+                    <th style="text-align: center">{{number_format(amount_after_discount($record->discount, $total),2)}}</th>
                     <td>{{(new Date($record->created_at))->format('jS M Y')}}</td>
                 </tr>
                 @endforeach
                 <tr>
                     <td>{{$n+=1}}</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td style="text-align: right"><strong>Total:</strong></td>

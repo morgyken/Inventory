@@ -8,6 +8,17 @@
  *
  * =============================================================================
  */
+
+function amount_after_discount($discount, $amount) {
+    try {
+        $discounted = $amount - (($discount / 100) * $amount);
+        return ceil($discounted);
+    } catch (\Exception $e) {
+        return $amount;
+    }
+}
+
+$total = 0;
 ?>
 
 @extends('layouts.app')
@@ -41,12 +52,16 @@
                 <table class="table table-striped table-condensed">
                     <tbody>
                         @foreach($data['sales']->goodies as $item)
+                        <?php
+                        $total+=amount_after_discount($item->discount, $item->total);
+                        ?>
                         <tr>
                             <td>{{$item->products->name}}</td>
                             <td>{{$item->quantity}}</td>
-                            <td>{{$item->discount}}</td>
                             <td>{{number_format($item->unit_cost,2)}}</td>
-                            <td>{{number_format($item->total,2)}}</td>
+                            <td>{{$item->discount}}</td>
+                            <td>{{number_format(amount_after_discount($item->discount, $item->unit_cost),2)}}</td>
+                            <td>{{number_format(amount_after_discount($item->discount, $item->total),2)}}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -54,15 +69,16 @@
                         <tr>
                             <th>Item</th>
                             <th>Quantity</th>
+                            <th>Unit Price</th>
                             <th>Discount (%)</th>
-                            <th>Unit Cost</th>
+                            <th>Amount</th>
                             <th>Total</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th colspan="4">Total</th>
-                            <th>{{number_format($data['sales']->goodies->sum('total'),2)}}</th>
+                            <th style="text-align:right" colspan="5">Total</th>
+                            <th>{{number_format($total,2)}}</th>
                         </tr>
                     </tfoot>
                 </table>
