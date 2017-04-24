@@ -76,4 +76,8 @@ class InventoryBatchProductSales extends Model {
         return ceil($amount);
     }
 
+    public function removed_bills() {
+        return $this->hasOne(\Ignite\Finance\Entities\RemovedBills::class, 'sale');
+    }
+
 }
