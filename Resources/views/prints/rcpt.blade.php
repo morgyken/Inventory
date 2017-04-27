@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Receipt: {{$data['sales']->receipt}}</title>
+        <title>RECEIPT</title>
 
         <style>
             .invoice-box{
