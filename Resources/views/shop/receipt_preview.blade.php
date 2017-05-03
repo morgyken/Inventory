@@ -53,15 +53,14 @@ $total = 0;
                     <tbody>
                         @foreach($data['sales']->goodies as $item)
                         <?php
-                        $total+=amount_after_discount($item->discount, $item->total);
+                        $total+=ceil($item->total);
                         ?>
                         <tr>
                             <td>{{$item->products->name}}</td>
                             <td>{{$item->quantity}}</td>
-                            <td>{{number_format($item->unit_cost,2)}}</td>
+                            <td>{{ceil(number_format($item->unit_cost,2))}}</td>
                             <td>{{$item->discount}}</td>
-                            <td>{{number_format(amount_after_discount($item->discount, $item->unit_cost),2)}}</td>
-                            <td>{{number_format(amount_after_discount($item->discount, $item->total),2)}}</td>
+                            <td>{{ceil($item->total)}}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -69,15 +68,14 @@ $total = 0;
                         <tr>
                             <th>Item</th>
                             <th>Quantity</th>
-                            <th>Unit Price</th>
+                            <th>Price</th>
                             <th>Discount (%)</th>
-                            <th>Amount</th>
                             <th>Total</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th style="text-align:right" colspan="5">Total</th>
+                            <th style="text-align:right" colspan="4">Total</th>
                             <th>{{number_format($total,2)}}</th>
                         </tr>
                     </tfoot>
