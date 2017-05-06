@@ -17,11 +17,12 @@
 
 @section('content')
 <div class="box box-info">
+    @include('inventory::add_supplier')
+
     <div class="box-header with-border">
-        <h3 class="box-title"><a class="btn btn-primary btn-xs" href="{{route('inventory.manage_suppliers')}}">
-                <i class="fa fa-plus-square"></i> Add supplier
-            </a> </h3>
+        <h3 class="box-title">Suppliers</h3>
     </div>
+
     <div class="box-body">
         <div class="row">
             <div class="col-md-12">
