@@ -51,20 +51,13 @@ class InventoryController extends AdminBaseController {
         return view('inventory::index');
     }
 
-    public function save_supplier(AddSupplierRequest $request) {
-        dd($request);
-        if ($this->inventoryRepository->add_supplier()) {
-            flash("Supplier details saved");
-            return redirect()->route('inventory.suppliers');
-        }
-    }
-
-    public function add_edit_suppliers($id = null) {
-        $this->data['supplier'] = InventorySupplier::findOrNew($id);
-        return view('inventory::add_supplier', ['data' => $this->data]);
-    }
-
     public function suppliers($id = null) {
+        if ($this->request->isMethod('post')) {
+            if ($this->inventoryRepository->add_supplier()) {
+                flash("Supplier details saved");
+                return redirect()->route('inventory.suppliers');
+            }
+        }
         $this->data['supplier'] = InventorySupplier::findOrNew($id);
         $this->data['suppliers'] = InventorySupplier::all();
         return view('inventory::suppliers', ['data' => $this->data]);

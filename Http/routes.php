@@ -81,8 +81,8 @@ $router->match(['post', 'get'], 'new/order/internal', ['uses' => 'InventoryContr
 $router->match(['post', 'get'], 'stores/', ['uses' => 'InventoryController@ManageStores', 'as' => 'stores']);
 $router->match(['post', 'get'], 'store/{id}', ['uses' => 'InventoryController@ManageStores', 'as' => 'store.manage']);
 //suppliers
-$router->match(['post', 'get'], 'suppliers/manage/{id?}', ['uses' => 'InventoryController@add_edit_suppliers', 'as' => 'manage_suppliers']);
-$router->get('suppliers/view/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);
+$router->match(['post', 'get'], 'suppliers/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);
+//$router->get('suppliers/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);
 $router->match(['post', 'get'], 'suppliers/invoice', ['uses' => 'InventoryController@supplier_invoice', 'as' => 'suppliers.invoice']);
 $router->match(['post', 'get'], 'supplier/invoice/view/{id}', ['uses' => 'InventoryController@supplier_invoice_details', 'as' => 'suppliers.invoice.details']);
 

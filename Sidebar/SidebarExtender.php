@@ -205,16 +205,13 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                 $item->item('Suppliers', function(Item $item) {
                     $item->icon('fa fa-tty');
                     $item->authorize($this->auth->hasAccess('inv.sales'));
-                    $item->item('Add Supplier', function (Item $item) {
-                        $item->icon('fa fa-plus');
-                        $item->route('inventory.manage_suppliers');
-                        //$item->authorize($this->auth->hasAccess('inventory.Suppliers.Add Supplier'));
-                    });
-                    $item->item('View Suppliers', function (Item $item) {
+
+                    $item->item('Manage Suppliers', function (Item $item) {
                         $item->icon('fa fa-list');
                         $item->route('inventory.suppliers');
                         //$item->authorize($this->auth->hasAccess('inventory.Suppliers.View Suppliers'));
                     });
+
                     $item->item('Receive Invoice', function (Item $item) {
                         $item->icon('fa fa-file-text-o');
                         $item->route('inventory.suppliers.invoice');
