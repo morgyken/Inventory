@@ -7,19 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\InventoryProductMarkup
  *
- * @property integer $id
- * @property integer $product
+ * @property int $id
+ * @property int $product
  * @property float $markup
- * @property boolean $active
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property int $active
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $products
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereProduct($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereMarkup($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereActive($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereMarkup($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereProduct($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProductMarkup whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class InventoryProductMarkup extends Model {

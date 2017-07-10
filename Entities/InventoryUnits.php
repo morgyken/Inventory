@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\InventoryUnits
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
- * @property string $symbol
- * @property string $description
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryUnits whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryUnits whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryUnits whereSymbol($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryUnits whereDescription($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryUnits whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryUnits whereUpdatedAt($value)
+ * @property string|null $symbol
+ * @property string|null $description
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryUnits whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryUnits whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryUnits whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryUnits whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryUnits whereSymbol($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryUnits whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class InventoryUnits extends Model {

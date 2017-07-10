@@ -7,20 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\RequisitionDetails
  *
- * @property integer $id
- * @property integer $requisition
- * @property integer $item
- * @property integer $quantity
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \Ignite\Inventory\Entities\Requisition $requisitions
+ * @property int $id
+ * @property int $requisition
+ * @property int $item
+ * @property int $quantity
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $items
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereRequisition($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereItem($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereQuantity($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereUpdatedAt($value)
+ * @property-read \Ignite\Inventory\Entities\Requisition $requisitions
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereItem($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereRequisition($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\RequisitionDetails whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class RequisitionDetails extends Model {

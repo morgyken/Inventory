@@ -7,27 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\InventoryDispensing
  *
- * @property integer $id
- * @property integer $batch
- * @property integer $product
+ * @property int $id
+ * @property int $batch
+ * @property int $product
  * @property float $price
  * @property float $discount
- * @property integer $quantity
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property int $quantity
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Ignite\Inventory\Entities\InventoryProducts $customers
  * @property-read mixed $original_price
  * @property-read mixed $total
  * @property-read mixed $unit_cost
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $products
- * @property-read \Ignite\Inventory\Entities\InventoryProducts $customers
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereBatch($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereProduct($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryDispensing wherePrice($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereDiscount($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereQuantity($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereBatch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereDiscount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereProduct($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class InventoryDispensing extends Model {

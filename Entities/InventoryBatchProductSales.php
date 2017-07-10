@@ -9,29 +9,37 @@ use Ignite\Reception\Entities\Patients;
 /**
  * Ignite\Inventory\Entities\InventoryBatchProductSales
  *
- * @property integer $id
+ * @property int $id
  * @property string $receipt
- * @property string $payment_mode
- * @property boolean $paid
- * @property integer $user
- * @property integer $insurance
- * @property integer $customer
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryDispensing[] $goodies
- * @property-read \Ignite\Users\Entities\User $users
+ * @property string|null $payment_mode
+ * @property int $paid
+ * @property int $user
+ * @property int|null $insurance
+ * @property int|null $customer
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int|null $patient
+ * @property int|null $visit
  * @property-read \Ignite\Inventory\Entities\InventoryPayments $amountpaid
- * @property-read \Ignite\Inventory\Entities\Customer $customers
- * @property-read \Ignite\Inventory\Entities\InventoryInsuranceDetails $insuranceses
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereReceipt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales wherePaymentMode($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales wherePaid($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereUser($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereInsurance($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCustomer($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereUpdatedAt($value)
+ * @property-read \Ignite\Inventory\Entities\Customer|null $customers
+ * @property-read mixed $amount
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryDispensing[] $goodies
+ * @property-read \Ignite\Reception\Entities\PatientInsurance|null $insuranceses
+ * @property-read \Ignite\Reception\Entities\Patients|null $patients
+ * @property-read \Ignite\Finance\Entities\EvaluationPayments $payment
+ * @property-read \Ignite\Finance\Entities\RemovedBills $removed_bills
+ * @property-read \Ignite\Users\Entities\User $users
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCustomer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereInsurance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales wherePaid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales wherePatient($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales wherePaymentMode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereReceipt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereUser($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereVisit($value)
  * @mixin \Eloquent
  */
 class InventoryBatchProductSales extends Model {

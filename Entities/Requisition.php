@@ -7,21 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\Requisition
  *
- * @property integer $id
- * @property integer $user
- * @property string $reason
- * @property boolean $status
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property-read \Illuminate\Foundation\Auth\User $users
+ * @property int $id
+ * @property int $user
+ * @property string|null $reason
+ * @property int $status
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\RequisitionDetails[] $details
  * @property-read mixed $item_count
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereUser($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereReason($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereStatus($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Requisition whereUpdatedAt($value)
+ * @property-read \Illuminate\Foundation\Auth\User $users
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Requisition whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Requisition whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Requisition whereReason($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Requisition whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Requisition whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Requisition whereUser($value)
  * @mixin \Eloquent
  */
 class Requisition extends Model {

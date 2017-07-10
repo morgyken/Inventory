@@ -7,39 +7,40 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\InventoryProducts
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
- * @property string $description
- * @property integer $category
- * @property integer $unit
- * @property integer $tax_category
- * @property integer $reorder_level
- * @property string $strength
- * @property string $label_type
- * @property string $formulation
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property string|null $description
+ * @property int $category
+ * @property int $unit
+ * @property int|null $tax_category
+ * @property int|null $reorder_level
+ * @property string|null $strength
+ * @property string|null $label_type
+ * @property string|null $formulation
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
  * @property-read \Ignite\Inventory\Entities\InventoryCategories $categories
- * @property-read \Ignite\Inventory\Entities\InventoryUnits $units
- * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductPrice[] $prices
- * @property-read \Ignite\Inventory\Entities\InventoryTaxCategory $taxgroups
  * @property-read \Ignite\Inventory\Entities\InventoryProductDiscount $discounts
- * @property-read mixed $product_code
- * @property-read \Ignite\Inventory\Entities\InventoryStock $stocks
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductExclusion[] $exclusions
  * @property-read mixed $count_active_batch
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereDescription($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereCategory($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereUnit($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereTaxCategory($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereReorderLevel($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereStrength($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereLabelType($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereFormulation($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\InventoryProducts whereUpdatedAt($value)
+ * @property-read mixed $product_code
+ * @property-read mixed $selling_p
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductPrice[] $prices
+ * @property-read \Ignite\Inventory\Entities\InventoryStock $stocks
+ * @property-read \Ignite\Inventory\Entities\InventoryTaxCategory|null $taxgroups
+ * @property-read \Ignite\Inventory\Entities\InventoryUnits $units
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereCategory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereFormulation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereLabelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereReorderLevel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereStrength($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereTaxCategory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereUnit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class InventoryProducts extends Model {

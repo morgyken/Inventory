@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\Store
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
- * @property string $description
- * @property integer $clinic
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Store whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Store whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Store whereDescription($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Store whereClinic($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Store whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Ignite\Inventory\Entities\Store whereUpdatedAt($value)
+ * @property string|null $description
+ * @property int|null $clinic
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereClinic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Store extends Model {

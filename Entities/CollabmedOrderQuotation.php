@@ -5,11 +5,25 @@ namespace Ignite\Inventory\Entities;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Ignite\Inventory\Entities\InventoryPurchaseOrders
+ * Ignite\Inventory\Entities\CollabmedOrderQuotation
  *
- * @property integer $id
- * @property integer $order
- * @property string $client
+ * @property int $id
+ * @property int $supplier
+ * @property int $order
+ * @property string|null $status
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\CollabmedOrderQuotationDetails[] $details
+ * @property-read mixed $totals
+ * @property-read \Ignite\Inventory\Entities\OrderToCollabmed $orders
+ * @property-read \Ignite\Inventory\Entities\InventorySupplier $suppliers
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\CollabmedOrderQuotation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\CollabmedOrderQuotation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\CollabmedOrderQuotation whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\CollabmedOrderQuotation whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\CollabmedOrderQuotation whereSupplier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\CollabmedOrderQuotation whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class CollabmedOrderQuotation extends Model {
 
