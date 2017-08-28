@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $clinic
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property-read mixed $desc
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereClinic($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereDescription($value)
@@ -21,9 +22,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Store extends Model {
+class Store extends Model
+{
 
     protected $fillable = [];
     public $table = 'inventory_stores';
+
+    public function getDescAttribute()
+    {
+        return $this->name . ' - ' . $this->description;
+    }
 
 }

@@ -444,7 +444,7 @@ class InventoryController extends AdminBaseController {
         if ($this->request->isMethod('post')) {
             $store = new Store;
             $store->name = $this->request->name;
-            $store->description = $this->request->description;
+            $store->description = $this->request->desc;
             $store->save();
         }
         $this->data['stores'] = Store::all();
