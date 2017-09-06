@@ -70,7 +70,6 @@ class ApiController extends Controller {
         $term = $this->request->term['term'];
         if (!empty($term)) {
             $found = InventoryProducts::with(['prices' => function($query) {
-
                                 }, 'taxgroups'])
                             //  ->select('id', 'name', 'strength')
                             ->where('name', 'like', "%$term%")->get();
@@ -275,7 +274,6 @@ class ApiController extends Controller {
 
         $deficit = (($cat->credit_markup - $cat->cash_markup) + 100) / 100;
 
-
         return $pricex * $deficit;
     }
 
@@ -283,7 +281,6 @@ class ApiController extends Controller {
         $adj = InventoryStockAdjustment::find($request->id);
         $adj->approved = 'yes';
         $adj->save();
-
         return "<i class='fa fa-check' style='color:green'>approved</i>";
     }
 
