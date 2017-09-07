@@ -46,7 +46,7 @@
                             <div class="form-group {{ $errors->has('patient') ? ' has-error' : '' }}">
                                 {!! Form::label('patient', 'Patient',['class'=>'control-label col-md-4']) !!}
                                 <div class="col-md-8">
-                                    <select name="patient" id="patient_select" class="form-control" style="width:100%;" required=""></select>
+                                    <select name="patient" id="patient_select" class="form-control" style="width:100%;" data-placeholder="Search Patient Name, ID Number or Roll Number" required></select>
                                     {!! $errors->first('patient', '<span class="help-block">:message</span>') !!}
                                 </div>
                             </div>
@@ -182,6 +182,10 @@
             console.log(scheme_id);
         });
     });
+
+    $('#patient_select').keyup(function (){
+       get_patient_suggestions(this.value)
+    });
     var INSURANCE = false;
     var STOCK_URL = "{{route('api.inventory.getstock')}}";
     var PRODUCTS_URL = "{{route('api.inventory.get.products')}}";
@@ -189,6 +193,16 @@
     var PHONE_URL = "{{route('api.inventory.cust.get')}}";
     var PATIENTS_URL = "{{route('api.reception.suggest_patients')}}";
     var CREDIT_URL = "{{route('api.inventory.credit.rate')}}";
+
+    function get_patient_suggestions(term) {
+        $.ajax({
+            url: PATIENTS_URL,
+            data: {'term': term},
+            success: function (data) {
+                $('.results').html(data);
+            }
+        });
+    }
 </script>
 <script src="{!! m_asset('inventory:js/shopfront.js') !!}"></script>
 <script src="{{m_asset('reception:js/appointments.min.js')}}"></script>
