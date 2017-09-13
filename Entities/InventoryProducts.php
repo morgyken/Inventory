@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $formulation
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property int $consumable
  * @property-read \Ignite\Inventory\Entities\InventoryCategories $categories
  * @property-read \Ignite\Inventory\Entities\InventoryProductDiscount $discounts
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductExclusion[] $exclusions
@@ -30,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Ignite\Inventory\Entities\InventoryTaxCategory|null $taxgroups
  * @property-read \Ignite\Inventory\Entities\InventoryUnits $units
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereCategory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereConsumable($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereFormulation($value)

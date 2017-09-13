@@ -55,7 +55,8 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @author Samuel Dervis <samueldervis@gmail.com>
  */
-class InventoryFunctions implements InventoryRepository {
+class InventoryFunctions implements InventoryRepository
+{
 
     /**
      * @var Request
@@ -66,7 +67,8 @@ class InventoryFunctions implements InventoryRepository {
      * InventoryFunctions constructor.
      * @param Request $request
      */
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         $this->request = $request;
     }
 
@@ -76,7 +78,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function add_supplier($id = null) {
+    public function add_supplier($id = null)
+    {
         $supplier = InventorySupplier::findOrNew($id);
         $supplier->name = ucfirst($this->request->name);
         $supplier->address = $this->request->address;
@@ -96,7 +99,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function add_product_category($id = null) {
+    public function add_product_category($id = null)
+    {
         try {
             $category = InventoryCategories::findOrNew($id);
             $category->name = ucfirst($this->request->name);
@@ -120,7 +124,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return mixed
      */
-    public function add_tax_category($id = null) {
+    public function add_tax_category($id = null)
+    {
         $category = InventoryTaxCategory::findOrNew($id);
         $category->name = ucfirst($this->request->name);
         $category->rate = $this->request->rate;
@@ -133,7 +138,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return mixed
      */
-    public function add_unit_of_measure($id = null) {
+    public function add_unit_of_measure($id = null)
+    {
         $unit = InventoryUnits::findOrNew($id);
         $unit->name = ucfirst($this->request->name);
         $unit->description = $this->request->description;
@@ -141,12 +147,14 @@ class InventoryFunctions implements InventoryRepository {
     }
 
     /**
-     * @param Request $request
      * @param int|null $id
      * @return bool
+     * @throws \Exception
      */
-    public function add_product($id = null) {
-        DB::transaction(function () use ( $id) {
+    public function add_product($id = null)
+    {
+        DB::transaction(function () use ($id) {
+            /** @var InventoryProducts $product */
             $product = InventoryProducts::firstOrNew(['id' => $id]);
             $product->name = ucfirst($this->request->name);
             $product->description = $this->request->description;
@@ -157,6 +165,9 @@ class InventoryFunctions implements InventoryRepository {
             $product->formulation = $this->request->formulation;
             $product->label_type = $this->request->label_type;
             $product->strength = $this->request->strength;
+            if (\Schema::hasColumn('inventory_products', 'consumable')) {
+                $product->consumable = $this->request->has('consumable');
+            }
             $product->save();
         });
         return true;
@@ -168,7 +179,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function add_payment_term($id = null) {
+    public function add_payment_term($id = null)
+    {
         $term = InventoryPaymentTerms::findOrNew($id);
         $term->terms = $this->request->terms;
         $term->description = $this->request->description;
@@ -181,8 +193,9 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function add_new_order($id = null) {
-        DB::transaction(function () use ( $id) {
+    public function add_new_order($id = null)
+    {
+        DB::transaction(function () use ($id) {
             $order = new InventoryPurchaseOrders();
             $order->supplier = $this->request->supplier;
             $order->deliver_date = new \Date($this->request->delivery_date);
@@ -219,7 +232,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param $keys
      * @return array
      */
-    private function order_item_stack($keys) {
+    private function order_item_stack($keys)
+    {
         $stack = [];
         foreach ($keys as $one) {
             if (substr($one, 0, 4) == 'item') {
@@ -233,7 +247,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function saveProdPrice() {
+    public function saveProdPrice()
+    {
         foreach ($this->request->products as $index => $product_id) {
             $product_price = InventoryProductPrice::firstOrNew(['product' => $product_id]);
             $product_price->product = $this->request->products[$index];
@@ -243,7 +258,8 @@ class InventoryFunctions implements InventoryRepository {
         return 'saved';
     }
 
-    public function updateProdPrice() {
+    public function updateProdPrice()
+    {
         foreach ($this->request->id as $index => $id) {
             $price = InventoryProductPrice::find($id);
             $price->price = $this->request->price[$index];
@@ -256,7 +272,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function saveProdDiscount() {
+    public function saveProdDiscount()
+    {
         foreach ($this->request->products as $index => $product_id) {
             $product_discount = InventoryProductDiscount::firstOrNew(['product' => $product_id]);
             $product_discount->product = $this->request->products[$index];
@@ -271,7 +288,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function markup() {
+    public function markup()
+    {
         foreach ($this->request->product as $index => $product_id) {
             $markup = InventoryProductMarkup::firstOrNew(['product' => $product_id]);
             $markup->product = $this->request->product[$index];
@@ -285,7 +303,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function saveCatPrice() {
+    public function saveCatPrice()
+    {
         foreach ($this->request->cats as $index => $cat_id) {
             $cat_price = InventoryCategoryPrice::firstOrNew(['category' => $cat_id]);
             $cat_price->category = $this->request->cats[$index];
@@ -299,7 +318,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param $id
      * @return bool
      */
-    public function approveLPO($id) {
+    public function approveLPO($id)
+    {
         $this_LPO = InventoryPurchaseOrders::find($id);
         $this_LPO->status = 1;
         return $this_LPO->save();
@@ -311,7 +331,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param int|null $id
      * @return bool
      */
-    public function record_sales($id = null) {
+    public function record_sales($id = null)
+    {
         DB::beginTransaction();
         try {
             $patient = $this->request->patient;
@@ -323,8 +344,8 @@ class InventoryFunctions implements InventoryRepository {
             $sales->patient = $patient;
 
             $visit = \Ignite\Evaluation\Entities\Visit::wherePatient($patient)
-                    ->get()
-                    ->last();
+                ->get()
+                ->last();
             $sales->visit = $visit['id'];
 
 
@@ -380,15 +401,16 @@ class InventoryFunctions implements InventoryRepository {
         } catch (\Exception $e) {
             DB::rollback();
             flash()->error("Something went wrong<br/>1. Be sure you selected an existing patient, select \"Walkin Patient\" for random client <br/>"
-                    . "<i>If 'walkin patient' account does not exist, it can be created at RECEPTION </i>"
-                    . " <br>2. Trying to sell a product/drug that is out of stock will throw this exception"
-                    . "<br/><i>Go to Inventory>>Products>>Items in Store to adjust item stock, or Inventory>>Purchases>>Receive Goods</i>");
+                . "<i>If 'walkin patient' account does not exist, it can be created at RECEPTION </i>"
+                . " <br>2. Trying to sell a product/drug that is out of stock will throw this exception"
+                . "<br/><i>Go to Inventory>>Products>>Items in Store to adjust item stock, or Inventory>>Purchases>>Receive Goods</i>");
             //return back();
             //flash()->warning("Ooops! something went wrong... Be sure any product added to cart is in the system (<a target='blank' href='/inventory/goods/receive'>was received</a>)");
         }//Catch
     }
 
-    public static function saveEvaluationDispense($request, $batch) {
+    public static function saveEvaluationDispense($request, $batch)
+    {
         $sale = InventoryBatchProductSales::find($batch);
         $sale->paid = false;
         $sale->update();
@@ -402,7 +424,8 @@ class InventoryFunctions implements InventoryRepository {
         return $dispense->save();
     }
 
-    public static function saveEvaluationPayment($request, $rcpt) {
+    public static function saveEvaluationPayment($request, $rcpt)
+    {
         $payment = new EvaluationPayments();
         $payment->receipt = $rcpt;
         $payment->patient = $request->patient_id;
@@ -417,7 +440,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param $payment_mode
      * @return bool
      */
-    private function record_payments($receipt, $payment_mode) {
+    private function record_payments($receipt, $payment_mode)
+    {
         $pay = new InventoryPayments;
         $pay->receipt = strtoupper($receipt); //$receipt;
 //user and patient
@@ -452,8 +476,8 @@ class InventoryFunctions implements InventoryRepository {
                 $pay->InsuranceAmount = $this->request->amount;
                 $customer = $this->request->customer_id; //Client
                 $details = InventoryInsuranceDetails::where('customer', '=', $customer)
-                        ->where('policy_no', '=', $this->request->policy)
-                        ->first(); //Credit Details
+                    ->where('policy_no', '=', $this->request->policy)
+                    ->first(); //Credit Details
                 $sale = InventoryBatchProductSales::query()->where('receipt', '=', $receipt)->first(); //update sale
                 $sale->customer = $customer;
                 $sale->insurance = $details->id;
@@ -475,7 +499,8 @@ class InventoryFunctions implements InventoryRepository {
     /**
      * @param save_insurance_invoice $sale
      */
-    private function save_insurance_invoice($id, $receipt, $date) {
+    private function save_insurance_invoice($id, $receipt, $date)
+    {
         $inv = new InsuranceInvoice;
         $inv->invoice_no = $receipt;
         $inv->receipt = $id;
@@ -487,7 +512,8 @@ class InventoryFunctions implements InventoryRepository {
     /**
      * @param InventoryBatchProductSales $sale
      */
-    private function take_products(InventoryBatchProductSales $sale) {
+    private function take_products(InventoryBatchProductSales $sale)
+    {
         foreach ($sale->goodies as $vending) {
             $adj = new InventoryStockAdjustment;
             $adj->quantity = $vending->quantity;
@@ -502,7 +528,8 @@ class InventoryFunctions implements InventoryRepository {
         }
     }
 
-    public function take_dispensed_products($dispense) {
+    public function take_dispensed_products($dispense)
+    {
         $vending = $dispense;
         $adj = new InventoryStockAdjustment;
         $adj->quantity = $vending->quantity;
@@ -521,7 +548,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param InventoryBatch $incoming
      * @return bool
      */
-    public function apply_markup(InventoryBatch $incoming) {
+    public function apply_markup(InventoryBatch $incoming)
+    {
         DB::transaction(function () use ($incoming) {
             foreach ($incoming->products as $item) {
                 $markup = $item->products->categories->cash_markup;
@@ -537,49 +565,53 @@ class InventoryFunctions implements InventoryRepository {
         return true;
     }
 
-    public function enQueueProductBatch($batch, $product) {
+    public function enQueueProductBatch($batch, $product)
+    {
         $in_q = InventoryBatchPurchases::query()
-                ->where('product', '=', $product)
-                ->where('active', '=', TRUE)
-                ->first();
+            ->where('product', '=', $product)
+            ->where('active', '=', TRUE)
+            ->first();
         if (isset($in_q->id)) {
             $q = InventoryBatchPurchases::query()
-                    ->where('product', '=', $product)
-                    ->where('batch', '=', $batch)
-                    ->first();
+                ->where('product', '=', $product)
+                ->where('batch', '=', $batch)
+                ->first();
             $q->active = FALSE;
         } else {
             $q = InventoryBatchPurchases::query()
-                    ->where('product', '=', $product)
-                    ->where('batch', '=', $batch)
-                    ->first();
+                ->where('product', '=', $product)
+                ->where('batch', '=', $batch)
+                ->first();
             $q->active = TRUE;
         }
         return $q->save();
     }
 
-    public function deQueueProductBatch($batch, $product) {
+    public function deQueueProductBatch($batch, $product)
+    {
         $q = InventoryBatchPurchases::query()
-                ->where('product', '=', $product)
-                ->where('batch', '=', $batch)
-                ->first();
+            ->where('product', '=', $product)
+            ->where('batch', '=', $batch)
+            ->first();
         $q->active = FALSE;
         return $q->save();
     }
 
-    public function activateQueue($batch, $product) {
+    public function activateQueue($batch, $product)
+    {
         $q = InventoryBatchPurchases::query()
-                ->where('product', '=', $product)
-                ->where('batch', '=', $batch)
-                ->first();
+            ->where('product', '=', $product)
+            ->where('batch', '=', $batch)
+            ->first();
         $q->active = TRUE;
         return $q->save();
     }
 
-    public function update_queue($product, $batch, $qty) {
+    public function update_queue($product, $batch, $qty)
+    {
         $b_purchase = InventoryBatchPurchases::where('product', '=', $product)
-                ->where('batch', '=', $batch)
-                ->first();
+            ->where('batch', '=', $batch)
+            ->first();
         $batch_qty = $b_purchase->quantity * $b_purchase->package_size;
         $qty_sold = $b_purchase->qty_sold;
         $batch_items_remaining = $batch_qty - $qty_sold;
@@ -588,8 +620,8 @@ class InventoryFunctions implements InventoryRepository {
             $surplus = $qty - $batch_items_remaining;
 
             $next = InventoryBatchPurchases::whereProduct($b_purchase->product)
-                    ->where('id', '>', $b_purchase->id)
-                    ->first();
+                ->where('id', '>', $b_purchase->id)
+                ->first();
 
             $this->deQueueProductBatch($b_purchase->batch, $b_purchase->product);
             if (isset($next)) {
@@ -608,7 +640,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function receive_goods_direct() {
+    public function receive_goods_direct()
+    {
         DB::transaction(function () {
             $stack = self::order_item_stack(array_keys($this->request->all()));
             $order = new InventoryBatch;
@@ -657,7 +690,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function receive_from_lpo() {
+    public function receive_from_lpo()
+    {
         DB::transaction(function () {
             $stack = self::order_item_stack(array_keys($this->request->all()));
             $order = new InventoryBatch;
@@ -706,7 +740,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param bool $direct
      * @return bool
      */
-    public function update_stock_from_lpo(InventoryBatch $batch, $direct = false) {
+    public function update_stock_from_lpo(InventoryBatch $batch, $direct = false)
+    {
         DB::transaction(function () use ($batch, $direct) {
             foreach ($batch->products as $product) {
                 $to_add = $product->package_size * $product->quantity + $product->bonus;
@@ -734,7 +769,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param InventoryStockAdjustment $adj
      * @return bool
      */
-    public function adjust_stock(InventoryStockAdjustment $adj) {
+    public function adjust_stock(InventoryStockAdjustment $adj)
+    {
         $stock = InventoryStock::firstOrNew(['product' => $adj->product]);
         $curr = $stock->quantity;
         if (empty($stock->quantity)) {
@@ -745,7 +781,8 @@ class InventoryFunctions implements InventoryRepository {
         $this->StockNotification($stock->quantity, $adj->product);
     }
 
-    public function StockNotification($stock, $item) {
+    public function StockNotification($stock, $item)
+    {
         $product = InventoryProducts::find($item);
         if (isset($product->reorder_level)) {
             if ($stock < $product->reorder_level) {
@@ -764,7 +801,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param $id
      * @return bool
      */
-    public function set_stock_value() {
+    public function set_stock_value()
+    {
         DB::transaction(function () {
             $id = $this->request->id;
             $curr = InventoryStock::firstOrNew(['product' => $id])->quantity;
@@ -786,7 +824,8 @@ class InventoryFunctions implements InventoryRepository {
         return true;
     }
 
-    public function openingStock($item) {
+    public function openingStock($item)
+    {
         $stock = InventoryStock::where('product', '=', $item)->first();
         if ($stock) {
             return $stock->quantity;
@@ -799,7 +838,8 @@ class InventoryFunctions implements InventoryRepository {
      * @param Request $request
      * @return bool
      */
-    public function sales_return() {
+    public function sales_return()
+    {
         DB::beginTransaction();
         try {
             $sreturn = new InventorySalesReturn;
@@ -841,7 +881,8 @@ class InventoryFunctions implements InventoryRepository {
     /**
      * @param Request $request
      */
-    public function supplier_invoice() {
+    public function supplier_invoice()
+    {
         $inv = new InventoryInvoice;
         $inv->creditor = $this->request->creditor;
         $inv->amount = $this->request->amount;
@@ -854,7 +895,8 @@ class InventoryFunctions implements InventoryRepository {
         $inv->save();
     }
 
-    public function save_client() {
+    public function save_client()
+    {
         try {
 //Client information
             $client = new Customer();
@@ -881,7 +923,8 @@ class InventoryFunctions implements InventoryRepository {
         }
     }
 
-    public function purge_client($id) {
+    public function purge_client($id)
+    {
         try {
             $client = Customer::find($id);
             $client->delete();
@@ -892,7 +935,8 @@ class InventoryFunctions implements InventoryRepository {
         }
     }
 
-    public function SaveRequisition() {
+    public function SaveRequisition()
+    {
         DB::transaction(function () {
             $stack = self::order_item_stack(array_keys($this->request->all()));
             $req = new Requisition;
@@ -913,13 +957,15 @@ class InventoryFunctions implements InventoryRepository {
         return true;
     }
 
-    public function CancelRequisition($id) {
+    public function CancelRequisition($id)
+    {
         $req = Requisition::find($id);
         $req->status = 1;
         return $req->save();
     }
 
-    public function SaveInternalOrder() {
+    public function SaveInternalOrder()
+    {
         DB::transaction(function () {
             $stack = self::order_item_stack(array_keys($this->request->all()));
             $order = new InternalOrder;
@@ -942,7 +988,8 @@ class InventoryFunctions implements InventoryRepository {
         return true;
     }
 
-    public function sendOrderToCollabmed(Request $request) {
+    public function sendOrderToCollabmed(Request $request)
+    {
         $order = new OrderToCollabmed();
         $order->order = $request->order;
         $order->client = config('practice.name');

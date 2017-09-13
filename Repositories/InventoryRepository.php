@@ -13,10 +13,14 @@
 namespace Ignite\Inventory\Repositories;
 
 /**
- * Description of InventoryRepository
- *
- * @author samuel
+ * Interface InventoryRepository
+ * @package Ignite\Inventory\Repositories
  */
-interface InventoryRepository {
-//put your code here
+interface InventoryRepository
+{
+    /**
+     * @param int|null $id
+     * @return mixed
+     */
+    public function add_product($id = null);
 }
