@@ -45,53 +45,64 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProducts whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class InventoryProducts extends Model {
+class InventoryProducts extends Model
+{
 
     protected $fillable = ['name', 'description', 'category', 'unit', 'tax_category', 'strength', 'label_type', 'formulation'];
     public $table = 'inventory_products';
 
-    public function categories() {
+    public function categories()
+    {
         return $this->belongsTo(InventoryCategories::class, 'category', 'id');
     }
 
-    public function units() {
+    public function units()
+    {
         return $this->belongsTo(InventoryUnits::class, 'unit');
     }
 
-    public function prices() {
+    public function prices()
+    {
         return $this->hasMany(InventoryProductPrice::class, 'product');
     }
 
-    public function taxgroups() {
+    public function taxgroups()
+    {
         return $this->belongsTo(InventoryTaxCategory::class, 'tax_category');
     }
 
-    public function discounts() {
+    public function discounts()
+    {
         return $this->hasOne(InventoryProductDiscount::class, 'product', 'id');
     }
 
-    public function getProductCodeAttribute() {
+    public function getProductCodeAttribute()
+    {
         return (1000 + $this->id);
     }
 
-    public function stocks() {
+    public function stocks()
+    {
         return $this->hasOne(InventoryStock::class, 'product');
     }
 
-    public function exclusions() {
+    public function exclusions()
+    {
         return $this->hasMany(InventoryProductExclusion::class, 'product');
     }
 
-    public function getCountActiveBatchAttribute() {
+    public function getCountActiveBatchAttribute()
+    {
         $active = InventoryBatchPurchases::where('product', '=', $this->id)->count();
         return $active;
     }
 
-    public function getSellingPAttribute() {
+    public function getSellingPAttribute()
+    {
         $price = 0;
         foreach ($this->prices as $p) {
-            if ($price > $p->price) {
-                $p = $price;
+            if ($price <= $p->price) {
+                $price = $p->price;
             }
         }
         return $price;
