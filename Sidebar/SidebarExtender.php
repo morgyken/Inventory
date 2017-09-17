@@ -27,6 +27,7 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
 
     public function extendWith(Menu $menu) {
         $menu->group('Dashboard', function (Group $group) {
+
             if(!m_setting('inventory.no_pos')) {
                 $group->item('Point of Sale', function (Item $item) {
                     $item->icon('fa fa-cart-arrow-down');
