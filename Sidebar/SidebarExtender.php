@@ -27,13 +27,13 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
 
     public function extendWith(Menu $menu) {
         $menu->group('Dashboard', function (Group $group) {
-
-            $group->item('Point of Sale', function (Item $item) {
-                $item->icon('fa fa-cart-arrow-down');
-                $item->route('inventory.shopfront');
-                $item->authorize($this->auth->hasAccess('inv.*'));
-            });
-
+            if(!m_setting('inventory.no_pos')) {
+                $group->item('Point of Sale', function (Item $item) {
+                    $item->icon('fa fa-cart-arrow-down');
+                    $item->route('inventory.shopfront');
+                    $item->authorize($this->auth->hasAccess('inv.*'));
+                });
+            }
 
             $group->item('Inventory', function (Item $item) {
                 $item->weight(3);
