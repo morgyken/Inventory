@@ -14,7 +14,7 @@ class AddFlagToEvaluationReferenceRangeTable extends Migration
     public function up()
     {
         Schema::table('evaluation_reference_range', function (Blueprint $table) {
-            $table->string('flag')->nullable()->after('lg_value');
+            //$table->string('flag')->nullable()->after('lg_value');
         });
     }
 
