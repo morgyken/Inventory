@@ -55,6 +55,8 @@ try{
                         @else
                             <input type="hidden" id="is_shop" value="0">
                         @endif
+
+                        @if(!$is_shop)
                         <div class="col-md-4 col-lg-6">
                             <div class="form-group {{ $errors->has('patient') ? ' has-error' : '' }}">
                                 {!! Form::label('patient', 'Patient',['class'=>'control-label col-md-4']) !!}
@@ -64,6 +66,7 @@ try{
                                 </div>
                             </div>
                         </div>
+                        @endif
                         <table class="items table  table-striped table-condensed" id="tab_logic">
                             <thead>
                                 <tr>
