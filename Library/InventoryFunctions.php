@@ -343,9 +343,14 @@ class InventoryFunctions implements InventoryRepository
             $sales->user = $this->request->user()->id;
             $sales->patient = $patient;
 
+            if(isset($this->request->is_shop)){
+                $sales->shop = true;
+            }
+
             $visit = \Ignite\Evaluation\Entities\Visit::wherePatient($patient)
                 ->get()
                 ->last();
+
             $sales->visit = $visit['id'];
 
 

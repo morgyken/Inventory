@@ -8,6 +8,14 @@
  *
  * =============================================================================
  */
+$is_shop = false;
+try{
+    if($data['is_shop']){
+        $is_shop = true;
+    }
+}catch (\Exception $e){
+
+}
 ?>
 @extends('layouts.app')
 @section('content_title','Point of sale')
@@ -15,7 +23,6 @@
 
 @section('content')
 <div class="box box-info">
-
     <div class="box-header with-border">
     </div>
     <div class="box-body">
@@ -42,6 +49,12 @@
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="direct">
                         {!! Form::open(['class'=>'form-horizontal']) !!}
+                        @if($is_shop)
+                            <input type="hidden" id="is_shop" value="1">
+                            <input type="hidden" name="is_shop" value="1">
+                        @else
+                            <input type="hidden" id="is_shop" value="0">
+                        @endif
                         <div class="col-md-4 col-lg-6">
                             <div class="form-group {{ $errors->has('patient') ? ' has-error' : '' }}">
                                 {!! Form::label('patient', 'Patient',['class'=>'control-label col-md-4']) !!}
@@ -159,7 +172,12 @@
 
                         <div class="pull-right">
                             <button type="submit" id="save" class="btn btn-success">
-                                <i class="fa fa-send"></i> Bill
+                                <i class="fa fa-send"></i>
+                                @if($is_shop)
+                                    Complete Sale
+                                @else
+                                    Bill
+                                @endif
                             </button>
                         </div>
                         {!! Form::close() !!}

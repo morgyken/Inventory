@@ -44,6 +44,9 @@ class SalesController extends AdminBaseController {
             }
         }
         $this->data['schemes'] = Schemes::all();
+        if($this->request->shop){
+            $this->data['is_shop'] = true;
+        }
         return view('inventory::shop.shop', ['data' => $this->data]);
     }
 

@@ -29,9 +29,16 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
         $menu->group('Dashboard', function (Group $group) {
 
             if(!m_setting('inventory.no_pos')) {
-                $group->item('Point of Sale', function (Item $item) {
+
+                $group->item('Pharmacy POS', function (Item $item) {
                     $item->icon('fa fa-cart-arrow-down');
-                    $item->route('inventory.shopfront');
+                    $item->route('inventory.shopfront',['shop'=>false]);
+                    $item->authorize($this->auth->hasAccess('inv.*'));
+                });
+
+                $group->item('Shop POS', function (Item $item) {
+                    $item->icon('fa fa-shopping-basket');
+                    $item->route('inventory.shopfront',['shop'=>true]);
                     $item->authorize($this->auth->hasAccess('inv.*'));
                 });
             }
@@ -191,11 +198,11 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                 $item->item('Sales', function(Item $item) {
                     $item->icon('fa fa-money');
                     $item->authorize($this->auth->hasAccess('inv.sales'));
-                    $item->item('Point of Sale', function (Item $item) {
-                        $item->icon('fa fa-cart-arrow-down');
-                        $item->route('inventory.shopfront');
-                        //$item->authorize($this->auth->hasAccess('inventory.Sales.Point of Sale'));
-                    });
+//                    $item->item('Point of Sale', function (Item $item) {
+//                        $item->icon('fa fa-cart-arrow-down');
+//                        $item->route('inventory.shopfront');
+//                        //$item->authorize($this->auth->hasAccess('inventory.Sales.Point of Sale'));
+//                    });
                     $item->item('Sales Return', function (Item $item) {
                         $item->icon('fa fa-hand-lizard-o');
                         $item->route('inventory.sales.return');
