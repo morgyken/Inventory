@@ -13,9 +13,13 @@ class AddOtherToEvaluationReferenceRangeTable extends Migration
      */
     public function up()
     {
-        Schema::table('evaluation_reference_range', function (Blueprint $table) {
-            //$table->string('other_type')->after('flag')->nullable();
-        });
+        try{
+             Schema::table('evaluation_reference_range', function (Blueprint $table) {
+                $table->string('other_type')->after('flag')->nullable();
+             });
+        }catch (\Exception $e){
+
+        }
     }
 
     /**

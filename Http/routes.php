@@ -5,6 +5,7 @@ $router->get('/', ['uses' => 'InventoryController@index', 'as' => 'index']);
 //sales
 #POS
 $router->match(['post', 'get'], 'shopfront/{shop?}', ['uses' => 'SalesController@shopfront', 'as' => 'shopfront']);
+$router->match(['post', 'get'], 'shop/import', ['uses' => 'SalesController@import_shop_items', 'as' => 'importshop']);
 
 $router->get('requisition/', ['uses' => 'InventoryController@Requisition', 'as' => 'requisition']);
 $router->post('requisition/save', ['uses' => 'InventoryController@SaveRequisition', 'as' => 'requisition.save']);
