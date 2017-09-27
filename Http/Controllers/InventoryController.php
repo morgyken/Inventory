@@ -23,13 +23,15 @@ use Ignite\Inventory\Entities\InventoryTaxCategory;
 use Ignite\Inventory\Entities\InventoryUnits;
 use Ignite\Inventory\Entities\InventoryBatch;
 use Ignite\Inventory\Http\Requests\AddSupplierRequest;
+use Ignite\Inventory\Http\Requests\AdjustStockRequest;
 use Ignite\Inventory\Repositories\InventoryRepository;
 use Illuminate\Http\Request;
 use Ignite\Inventory\Entities\InventoryBatchPurchases;
 use Ignite\Inventory\Entities\Requisition;
 use Ignite\Inventory\Entities\RequisitionDetails;
 
-class InventoryController extends AdminBaseController {
+class InventoryController extends AdminBaseController
+{
 
     /**
      * @var Request Incoming HTTP request
@@ -41,17 +43,20 @@ class InventoryController extends AdminBaseController {
      */
     protected $inventoryRepository;
 
-    public function __construct(Request $request, InventoryRepository $inventoryRepository) {
+    public function __construct(Request $request, InventoryRepository $inventoryRepository)
+    {
         parent::__construct();
         $this->request = $request;
         $this->inventoryRepository = $inventoryRepository;
     }
 
-    public function index() {
+    public function index()
+    {
         return view('inventory::index');
     }
 
-    public function suppliers($id = null) {
+    public function suppliers($id = null)
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->add_supplier()) {
                 flash("Supplier details saved");
@@ -63,7 +68,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::suppliers', ['data' => $this->data]);
     }
 
-    public function supplier_invoice($id = null) {
+    public function supplier_invoice($id = null)
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->supplier_invoice($this->request)) {
                 flash('Invoice Saved');
@@ -77,7 +83,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::supplier_invoice', ['data' => $this->data]);
     }
 
-    public function supplier_invoice_details($id) {
+    public function supplier_invoice_details($id)
+    {
         $this->data['accounts'] = BankAccount::all();
         $this->data['inv'] = InventoryInvoice::find($id);
         $this->data['batch'] = InventoryBatch::where('id', '=', $this->data['inv']->grn)->first();
@@ -94,7 +101,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::supplier_invoice_details', ['data' => $this->data]);
     }
 
-    public function product_cat($id = null) {
+    public function product_cat($id = null)
+    {
         if ($this->request->isMethod('post')) {
             //$this->validate(Validation::add_product_category());
             if ($this->inventoryRepository->add_product_category($id)) {
@@ -107,7 +115,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::products.product_categories', ['data' => $this->data]);
     }
 
-    public function tax_categories($id = null) {
+    public function tax_categories($id = null)
+    {
         if ($this->request->isMethod('post')) {
             //$this->validate(Validation::add_tax_category());
             if ($this->inventoryRepository->add_tax_category($id)) {
@@ -120,7 +129,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::tax_categories', ['data' => $this->data]);
     }
 
-    public function units_of_measurement($id = null) {
+    public function units_of_measurement($id = null)
+    {
         if ($this->request->isMethod('post')) {
             //$this->validate(Validation::add_unit_of_measure());
             if ($this->inventoryRepository->add_unit_of_measure($id)) {
@@ -133,7 +143,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::units_of_measure', ['data' => $this->data]);
     }
 
-    public function add_product($id = null) {
+    public function add_product($id = null)
+    {
         if ($this->request->isMethod('post')) {
             // //$this->validate(Validation::add_product());
             if ($this->inventoryRepository->add_product($this->request->id)) {
@@ -146,35 +157,50 @@ class InventoryController extends AdminBaseController {
         return view('inventory::products.add_product', ['data' => $this->data]);
     }
 
-    public function products($id = null) {
+    public function products($id = null)
+    {
         $this->data['products'] = InventoryProducts::all();
         return view('inventory::products', ['data' => $this->data]);
     }
 
-    public function view_stock() {
+    public function view_stock()
+    {
         $this->data['products'] = InventoryProducts::all();
         return view('inventory::products.view_stocks', ['data' => $this->data]);
     }
 
-    public function adjust_stock_do(\Ignite\Inventory\Http\Requests\AdjustStockRequest $request) {
+    public function adjust_stock_do(AdjustStockRequest $request, $red = false)
+    {
         if ($this->inventoryRepository->set_stock_value()) {
-            flash('Stock adjusted');
-            return redirect()->route('inventory.view_stock');
+            if (!$red) {
+                flash('Stock adjusted');
+                return redirect()->route('inventory.view_stock');
+            }
+            return response()->json(['saved' => true]);
         }
     }
 
-    public function adjust_stock($id) {
+    public function stockTake()
+    {
+        $this->data['products'] = InventoryProducts::all();
+        return view('inventory::products.take_stocks', ['data' => $this->data]);
+    }
+
+    public function adjust_stock($id)
+    {
         $this->data['product'] = InventoryProducts::find($id);
         $this->data['adjustments'] = InventoryStockAdjustment::all();
         return view('inventory::products.adjust_stock', ['data' => $this->data]);
     }
 
-    public function stock_adjustments() {
+    public function stock_adjustments()
+    {
         $this->data['adjustments'] = InventoryStockAdjustment::all();
         return view('inventory::products.stock_adjustments', ['data' => $this->data]);
     }
 
-    public function payment_terms($id = null) {
+    public function payment_terms($id = null)
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->add_payment_term($id)) {
                 flash('Product saved');
@@ -186,7 +212,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::payment_terms', ['data' => $this->data]);
     }
 
-    public function add_lpo($id = null) {
+    public function add_lpo($id = null)
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->add_new_order($id)) {
                 $x = \Session::get('last_order');
@@ -204,24 +231,28 @@ class InventoryController extends AdminBaseController {
         return view('inventory::new_purchase_order', ['data' => $this->data]);
     }
 
-    public function purchase_orders() {
+    public function purchase_orders()
+    {
         $this->data['orders'] = InventoryPurchaseOrders::all();
         $this->data['suppliers'] = InventoryPurchaseOrders::all();
         return view('inventory::product_orders', ['data' => $this->data]);
     }
 
-    public function order_details($id) {
+    public function order_details($id)
+    {
         $this->data['order'] = InventoryPurchaseOrders::findOrFail($id);
         return view('inventory::order_details', ['data' => $this->data]);
     }
 
-    public function setProductDiscount() {
+    public function setProductDiscount()
+    {
         $this->data['products'] = InventoryProducts::all();
         $this->data['discount'] = InventoryProductDiscount::all();
         return view('inventory::set_product_discount', ['data' => $this->data]);
     }
 
-    public function delProductDiscount() {
+    public function delProductDiscount()
+    {
         $id = $this->request->id;
         $this_dis = InventoryProductDiscount::find($id);
         $this_dis->delete();
@@ -231,7 +262,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::set_product_discount', ['data' => $this->data]);
     }
 
-    public function markup() {
+    public function markup()
+    {
         $this->data['products'] = InventoryProducts::all();
         $this->data['markup'] = InventoryProductMarkup::all();
         if ($this->request->isMethod('post')) {
@@ -243,14 +275,16 @@ class InventoryController extends AdminBaseController {
         return view('inventory::set_product_markup', ['data' => $this->data]);
     }
 
-    public function delMarkup() {
+    public function delMarkup()
+    {
         InventoryProductMarkup::find($this->request->id)->delete();
         $this->data['products'] = InventoryProducts::all();
         $this->data['markup'] = InventoryProductMarkup::all();
         return redirect()->route('inventory.product.markup', ['data' => $this->data]);
     }
 
-    public function saveProductDiscount() {
+    public function saveProductDiscount()
+    {
         $this->data['products'] = InventoryProducts::all();
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->saveProdDiscount($this->request)) {
@@ -264,13 +298,15 @@ class InventoryController extends AdminBaseController {
         }
     }
 
-    public function setProductPrice() {
+    public function setProductPrice()
+    {
         $this->data['price'] = InventoryProductPrice::all();
         $this->data['products'] = InventoryProducts::all();
         return view('inventory::products.set_product_price', ['data' => $this->data]);
     }
 
-    public function delProductPrice() {
+    public function delProductPrice()
+    {
         InventoryProductPrice::find($this->request->id)->delete();
         $this->data['products'] = InventoryProducts::all();
         $this->data['price'] = InventoryProductPrice::all();
@@ -278,7 +314,8 @@ class InventoryController extends AdminBaseController {
         return redirect()->route('inventory.product.price', ['data' => $this->data]);
     }
 
-    public function editProductPrice() {
+    public function editProductPrice()
+    {
         if ($this->inventoryRepository->updateProdPrice($this->request)) {
             flash('Item price(s) updated successfully');
             return redirect()->route('inventory.product.price', ['data' => $this->data]);
@@ -289,7 +326,8 @@ class InventoryController extends AdminBaseController {
         return redirect()->route('inventory.product.price', ['data' => $this->data]);
     }
 
-    public function saveItemPrices() {
+    public function saveItemPrices()
+    {
         $this->data['products'] = InventoryProducts::all();
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->saveProdPrice($this->request)) {
@@ -303,22 +341,25 @@ class InventoryController extends AdminBaseController {
         }
     }
 
-    public function setCategoryPrice() {
+    public function setCategoryPrice()
+    {
         $this->data['price'] = InventoryCategoryPrice::all();
         $this->data['product_categories'] = InventoryCategories::all();
         return view('inventory::set_category_prices', ['data' => $this->data]);
     }
 
-    public function delCategoryPrice() {
+    public function delCategoryPrice()
+    {
         InventoryCategoryPrice::find($this->request->id)->delete();
         $this->data['price'] = InventoryCategoryPrice::all();
         $this->data['product_categories'] = InventoryCategories::all();
         flash('Category price deleted');
         return view('inventory::set_category_prices')
-                        ->with('data', $this->data);
+            ->with('data', $this->data);
     }
 
-    public function saveCategoryPrice() {
+    public function saveCategoryPrice()
+    {
         $this->data['product_categories'] = InventoryCategories::all();
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->saveCatPrice($this->request)) {
@@ -332,7 +373,8 @@ class InventoryController extends AdminBaseController {
         }
     }
 
-    public function approveLPO($id) {
+    public function approveLPO($id)
+    {
         $this->data['order'] = InventoryPurchaseOrders::findOrFail($id);
         if ($this->inventoryRepository->approveLPO($id)) {
             flash('LPO Approved Successfully');
@@ -343,18 +385,21 @@ class InventoryController extends AdminBaseController {
         }
     }
 
-    public function receive_goods() {
+    public function receive_goods()
+    {
         $this->data['lpos'] = InventoryPurchaseOrders::approved()->get();
         $this->data['deliveries'] = InventoryBatch::all();
         return view('inventory::receive_goods', ['data' => $this->data]);
     }
 
-    public function grns() {
+    public function grns()
+    {
         $this->data['deliveries'] = InventoryBatch::all();
         return view('inventory::grns', ['data' => $this->data]);
     }
 
-    public function receive_lpo($id) {
+    public function receive_lpo($id)
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->receive_from_lpo($this->request)) {
                 $batch_id = \Session::get('last_receive');
@@ -367,14 +412,16 @@ class InventoryController extends AdminBaseController {
         return view('inventory::receive_lpo_goods', ['data' => $this->data]);
     }
 
-    public function purchase_details($batch) {
+    public function purchase_details($batch)
+    {
         $this->data['batch'] = $batch;
         $this->data['bought'] = InventoryBatchPurchases::where('batch', '=', $batch)->get();
         return view('inventory::after_receive')
-                        ->with('data', $this->data);
+            ->with('data', $this->data);
     }
 
-    public function receive_direct() {
+    public function receive_direct()
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->receive_goods_direct($this->request)) {
                 $batch_id = \Session::get('last_receive');
@@ -386,7 +433,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::receive_direct_goods', ['data' => $this->data]);
     }
 
-    public function batch_details($id) {
+    public function batch_details($id)
+    {
         $this->data['del'] = InventoryBatch::find($id);
         //dd($id);
         $this->data['accounts'] = BankAccount::all();
@@ -395,18 +443,21 @@ class InventoryController extends AdminBaseController {
         return view('inventory::batch_details', ['data' => $this->data]);
     }
 
-    public function Requisition() {
+    public function Requisition()
+    {
         return view('inventory::new_requisition', ['data' => $this->data]);
     }
 
-    public function SaveRequisition() {
+    public function SaveRequisition()
+    {
         if ($this->inventoryRepository->SaveRequisition($this->request)) {
             flash('Your item requisition was successfully placed');
             return redirect()->back(); //route('inventory.purchase_details', $batch_id);
         }
     }
 
-    public function ViewRequisitions() {
+    public function ViewRequisitions()
+    {
         $this->data['requisitions'] = Requisition::all()->sortByDesc("id");
         if (isset($this->request->id)) {
             $this->data['clicked'] = Requisition::find($this->request->id);
@@ -415,7 +466,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::requisitions', ['data' => $this->data]);
     }
 
-    public function CancelRequisition() {
+    public function CancelRequisition()
+    {
         $req = Requisition::find($this->request->id);
         $req->status = 1;
         $req->save();
@@ -423,12 +475,14 @@ class InventoryController extends AdminBaseController {
         return redirect()->back(); //route('inventory.purchase_details', $batch_id);
     }
 
-    public function ViewInternalOrders() {
+    public function ViewInternalOrders()
+    {
         $this->data['orders'] = InternalOrder::all();
         return view('inventory::internalorders_all', ['data' => $this->data]);
     }
 
-    public function ManageInternalOrders() {
+    public function ManageInternalOrders()
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->SaveInternalOrder($this->request)) {
                 flash('Internal Order placed successfully');
@@ -440,7 +494,8 @@ class InventoryController extends AdminBaseController {
         return view('inventory::internalorders', ['data' => $this->data]);
     }
 
-    public function ManageStores() {
+    public function ManageStores()
+    {
         if ($this->request->isMethod('post')) {
             $store = new Store;
             $store->name = $this->request->name;

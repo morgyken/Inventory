@@ -17,18 +17,21 @@ use Maatwebsite\Sidebar\Menu;
 use Maatwebsite\Sidebar\Item;
 use Maatwebsite\Sidebar\Group;
 
-class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
+class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender
+{
 
     protected $auth;
 
-    public function __construct(Authentication $auth) {
+    public function __construct(Authentication $auth)
+    {
         $this->auth = $auth;
     }
 
-    public function extendWith(Menu $menu) {
+    public function extendWith(Menu $menu)
+    {
         $menu->group('Dashboard', function (Group $group) {
 
-            if(!m_setting('inventory.no_pos')) {
+            if (!m_setting('inventory.no_pos')) {
                 $group->item('Point of Sale', function (Item $item) {
                     $item->icon('fa fa-cart-arrow-down');
                     $item->route('inventory.shopfront');
@@ -49,7 +52,7 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                         $item->route('inventory.product_cat');
                         $item->authorize($this->auth->hasAccess('inv.cats'));
                     });
-                    $item->item('Add Product', function(Item $item) {
+                    $item->item('Add Product', function (Item $item) {
                         $item->route('inventory.add_product');
                         $item->icon('fa fa-plus-circle');
                         $item->authorize($this->auth->hasAccess('inv.prod'));
@@ -67,6 +70,11 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                     $item->item('Stock Adjustments', function (Item $item) {
                         $item->icon('fa fa-pencil-square');
                         $item->route('inventory.stock.adjustments');
+                        $item->authorize($this->auth->hasAccess('inv.prod'));
+                    });
+                    $item->item('Stock Take', function (Item $item) {
+                        $item->icon('fa fa-puzzle-piece');
+                        $item->route('inventory.stock_take');
                         $item->authorize($this->auth->hasAccess('inv.prod'));
                     });
                     $item->item('Adjust Product Price', function (Item $item) {
@@ -101,7 +109,7 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                         $item->authorize($this->auth->hasAccess('inv.prod'));
                     });
                 });
-                $item->item('Purchases', function(Item $item) {
+                $item->item('Purchases', function (Item $item) {
                     $item->icon('fa fa-euro');
                     $item->authorize($this->auth->hasAccess('inv.purchases'));
 
@@ -172,7 +180,7 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                     });
                 });
 
-                $item->item('Internal Orders', function(Item $item) {
+                $item->item('Internal Orders', function (Item $item) {
                     $item->icon('fa fa-list');
                     $item->authorize($this->auth->hasAccess('inv.internal_orders'));
                     $item->item('Stores', function (Item $item) {
@@ -188,7 +196,7 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                     });
                 });
 
-                $item->item('Sales', function(Item $item) {
+                $item->item('Sales', function (Item $item) {
                     $item->icon('fa fa-money');
                     $item->authorize($this->auth->hasAccess('inv.sales'));
                     $item->item('Point of Sale', function (Item $item) {
@@ -203,7 +211,7 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                     });
                 });
 
-                $item->item('Suppliers', function(Item $item) {
+                $item->item('Suppliers', function (Item $item) {
                     $item->icon('fa fa-tty');
                     $item->authorize($this->auth->hasAccess('inv.sales'));
 
@@ -220,7 +228,7 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender {
                     });
                 });
 
-                $item->item('Clients', function(Item $item) {
+                $item->item('Clients', function (Item $item) {
                     $item->icon('fa fa-user');
                     //$item->authorize($this->auth->hasAccess('inventory.Clients.Manage Clients'));
                     $item->item('New Insurance Client', function (Item $item) {
