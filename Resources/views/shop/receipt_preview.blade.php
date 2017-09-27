@@ -8,7 +8,7 @@
  *
  * =============================================================================
  */
-
+extract($data);
 function amount_after_discount($discount, $amount) {
     try {
         $discounted = $amount - (($discount / 100) * $amount);
@@ -29,7 +29,13 @@ $total = 0;
 @section('content')
 <div class="box box-info">
     <div class="box-header with-border">
-        <h3 class="box-title">Items dispensed</h3>
+        <h3 class="box-title">
+            @if($sales->shop)
+                Items Sold
+            @else
+                Items dispensed
+            @endif
+        </h3>
     </div>
     <div class="box-body">
         <div class="row">
@@ -45,9 +51,11 @@ $total = 0;
                         <td>{{$data['sales']->receipt}}</td>
                         <td>{{$data['sales']->patients?$data['sales']->patients->full_name:'Not Selected'}}</td>
                     </tr>
+                    @if(!$sales->shop)
                     <tr>
                         <td colspan="3"><i><u>Give sale id to client and direct them to Cashier.</u></i></td>
                     </tr>
+                    @endif
                 </table>
                 <table class="table table-striped table-condensed">
                     <tbody>
@@ -56,6 +64,7 @@ $total = 0;
                         $total+=ceil($item->total);
                         ?>
                         <tr>
+                            <td>{{$loop->iteration}}</td>
                             <td>{{$item->products->name}}</td>
                             <td>{{$item->quantity}}</td>
                             <td>{{ceil(number_format($item->unit_cost,2))}}</td>
@@ -66,6 +75,7 @@ $total = 0;
                     </tbody>
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Item</th>
                             <th>Quantity</th>
                             <th>Price</th>
@@ -86,10 +96,10 @@ $total = 0;
                         <i class="fa fa-print"></i> Print Insurance Invoice
                     </a>
                     @else
-                    <!--
-                    <a href="{{route('inventory.sale.receipt.print',$data['sales']->id)}}" target="_blank" class="btn btn-primary">
-                        <i class="fa fa-print"></i> Print Receipt</a>
-                    -->
+                        @if($sales->shop)
+                            <a href="{{route('inventory.sale.receipt.print',$data['sales']->id)}}" target="_blank" class="btn btn-primary">
+                                <i class="fa fa-print"></i> Print Receipt</a>
+                        @endif
                     @endif
                     <a href="{{route('inventory.shopfront')}}" class="btn btn-success">
                         <i class="fa fa-fast-forward"></i> Next Sales</a>

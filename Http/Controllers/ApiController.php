@@ -29,12 +29,21 @@ class ApiController extends Controller {
         $ret = [];
         $term = $this->request->term['term'];
         if (!empty($term)) {
-            $found = InventoryProducts::with(['prices' => function($query) {
+            if($this->request->shop==1){
+                //Get for shop only
+                $found = InventoryProducts::with(['prices' => function($query) {
+                }])->with(['stocks' => function($query) {
+                }])->where('name', 'like', "%$term%")->whereHas('categories',function ($qc){
+                    $qc->whereName('Shop');
+                })->get();
+            }else{
+                $found = InventoryProducts::with(['prices' => function($query) {
 
-                                }])->with(['stocks' => function($query) {
+                }])->with(['stocks' => function($query) {
 
-                                }])
-                            ->where('name', 'like', "%$term%")->get();
+                }])
+                    ->where('name', 'like', "%$term%")->get();
+            }
         }
         $build = [];
         foreach ($found as $item) {

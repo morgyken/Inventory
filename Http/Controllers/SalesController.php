@@ -4,6 +4,10 @@ namespace Ignite\Inventory\Http\Controllers;
 
 use Ignite\Core\Http\Controllers\AdminBaseController;
 use Ignite\Inventory\Entities\InventoryBatchProductSales;
+use Ignite\Inventory\Entities\InventoryCategories;
+use Ignite\Inventory\Entities\InventoryProductPrice;
+use Ignite\Inventory\Entities\InventoryProducts;
+use Ignite\Inventory\Entities\ShopItems;
 use Ignite\Inventory\Repositories\InventoryRepository;
 use Ignite\Settings\Entities\Schemes;
 use Illuminate\Http\Request;
@@ -44,6 +48,9 @@ class SalesController extends AdminBaseController {
             }
         }
         $this->data['schemes'] = Schemes::all();
+        if($this->request->shop){
+            $this->data['is_shop'] = true;
+        }
         return view('inventory::shop.shop', ['data' => $this->data]);
     }
 
@@ -129,6 +136,28 @@ class SalesController extends AdminBaseController {
         $this->data['dispenses'] = InventoryDispensing::all();
         $this->data['returns'] = InventorySalesReturn::all();
         return view('inventory::shop.goods_return', ['data' => $this->data]);
+    }
+
+
+    public function import_shop_items(){
+        $items = ShopItems::all();
+        $cat = InventoryCategories::whereName('Shop')->get()->first();
+        $n =0;
+        foreach ($items as $item){
+            $p = new InventoryProducts();
+            $p->name = $item->name;
+            $p->category = $cat->id;
+            $p->unit = 5;
+            $p->save();
+
+            $price = new InventoryProductPrice();
+            $price->price = $item->price;
+            $price->selling = $item->price;
+            $price->product = $p->id;
+            $price->save();
+            $n+=1;
+        }
+        echo $n.' Shop Items Imported';
     }
 
 }

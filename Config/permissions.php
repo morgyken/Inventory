@@ -16,5 +16,6 @@ return [
         'suppliers' => 'Suppliers',
         'clients' => 'Clients',
         'approve_lpo' => 'Approve',
+        'stock_take' => 'Stock Take'
     ],
 ];
