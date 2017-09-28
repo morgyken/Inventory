@@ -35,6 +35,7 @@
                                         <input type="text" name="stock{{$product->id}}"
                                                stock="{{$product->stocks?$product->stocks->quantity : '0'}}"
                                                product="{{$product->id}}"
+                                               pname="{{$product->name}}"
                                                value="{{$product->stocks?$product->stocks->quantity : '0'}}"/>
                                     </td>
                                 </tr>
@@ -72,16 +73,26 @@
                     old_stock: parseInt($(this).attr('stock')),
                     quantity: parseInt($(this).val()),
                     reason: 'Stock take',
-                    _token: "{{csrf_token()}}"
+                    _token: "{{csrf_token()}}",
+                    product: $(this).attr('pname')
                 };
-                if (data.quantity !== data.old_stock) {
-                    $.ajax({
-                        type: 'post',
-                        url: "{{route('inventory.adjust_stock.do','mine')}}",
-                        data: data,
-                        dataType: 'json'
-                    });
-                }
+                $.ajax({
+                    type: 'post',
+                    url: "{{route('inventory.adjust_stock.do','mine')}}",
+                    data: data,
+                    dataType: 'json',
+                    success: function (resp) {
+//                            if (resp.saved) {
+//                                swal('Set stock to ' + data.quantity + ' for ' + data.product);
+//                            } else {
+//                                swal(
+//                                    'Oops...',
+//                                    'Something went wrong!',
+//                                    'error'
+//                                )
+//                            }
+                    }
+                });
             });
         });
     </script>

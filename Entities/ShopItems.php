@@ -11,6 +11,11 @@ namespace Ignite\Inventory\Entities;
 use Illuminate\Database\Eloquent\Model;
 
 #Temporary model to import shop items with their prices
+/**
+ * Ignite\Inventory\Entities\ShopItems
+ *
+ * @mixin \Eloquent
+ */
 class ShopItems extends Model
 {
     protected $fillable = [];
