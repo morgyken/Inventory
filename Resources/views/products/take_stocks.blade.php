@@ -63,11 +63,7 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            try {
-                $('table').dataTable();
-            } catch (e) {
-            }
-            $('input[type=text]').blur(function () {
+            $('input[type=text]').change(function () {
                 var data = {
                     id: $(this).attr('product'),
                     old_stock: parseInt($(this).attr('stock')),
@@ -82,18 +78,14 @@
                     data: data,
                     dataType: 'json',
                     success: function (resp) {
-//                            if (resp.saved) {
-//                                swal('Set stock to ' + data.quantity + ' for ' + data.product);
-//                            } else {
-//                                swal(
-//                                    'Oops...',
-//                                    'Something went wrong!',
-//                                    'error'
-//                                )
-//                            }
+                        console.log(data);
                     }
                 });
             });
+            try {
+                $('table').dataTable();
+            } catch (e) {
+            }
         });
     </script>
 @endsection
