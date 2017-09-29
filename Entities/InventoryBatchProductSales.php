@@ -20,6 +20,7 @@ use Ignite\Reception\Entities\Patients;
  * @property \Carbon\Carbon|null $updated_at
  * @property int|null $patient
  * @property int|null $visit
+ * @property int $shop
  * @property-read \Ignite\Inventory\Entities\InventoryPayments $amountpaid
  * @property-read \Ignite\Inventory\Entities\Customer|null $customers
  * @property-read mixed $amount
@@ -37,6 +38,7 @@ use Ignite\Reception\Entities\Patients;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales wherePatient($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales wherePaymentMode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereReceipt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereShop($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereUser($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereVisit($value)

@@ -56,6 +56,12 @@ class InventoryProducts extends Model
         return $this->belongsTo(InventoryCategories::class, 'category', 'id');
     }
 
+    public function getDescAttribute()
+    {
+        $extra = $this->strength ? '(' . $this->strength . $this->units->name . ')' : '(' . $this->categories->name . ')';
+        return $this->name . ' ' . $extra;
+    }
+
     public function units()
     {
         return $this->belongsTo(InventoryUnits::class, 'unit');
