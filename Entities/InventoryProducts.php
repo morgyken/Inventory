@@ -23,7 +23,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Ignite\Inventory\Entities\InventoryCategories $categories
  * @property-read \Ignite\Inventory\Entities\InventoryProductDiscount $discounts
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductExclusion[] $exclusions
+ * @property-read mixed $cash_price
  * @property-read mixed $count_active_batch
+ * @property-read mixed $credit_price
+ * @property-read mixed $desc
  * @property-read mixed $product_code
  * @property-read mixed $selling_p
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductPrice[] $prices
@@ -111,7 +114,17 @@ class InventoryProducts extends Model
                 $price = $p->price;
             }
         }
-        return $price;
+        return ceil($price);
+    }
+
+    public function getCreditPriceAttribute()
+    {
+        return ceil((($this->categories->credit_markup + 100) * $this->selling_p) / 100);
+    }
+
+    public function getCashPriceAttribute()
+    {
+        return ceil((($this->categories->cash_markup + 100) * $this->selling_p) / 100);
     }
 
 }
