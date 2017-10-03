@@ -45,7 +45,8 @@
                                     <th>Item Code</th>
                                     <th>Batch</th>
                                     <th>Item</th>
-                                    <th style="text-align: center">Price</th>
+                                    <th style="text-align: center">Cash Price</th>
+                                    <th style="text-align: center">Insurance Price</th>
                                     <th style="text-align: center">Edit</th>
                                     <th style="text-align: center">Delete</th>
                                 </tr>
@@ -57,7 +58,10 @@
                                             <td>{{$m->batch?$m->batch:''}}</td>
                                             <td>{{$m->products->desc}}</td>
                                             <td>
-                                                <center><?php echo ceil($m->price) ?></center>
+                                                <center>{{$m->cash_price}}</center>
+                                            </td>
+                                            <td>
+                                                <center>{{$m->insurance_price}}</center>
                                             </td>
                                             <td style="text-align: center">
                                                 <a href="#demo{{$m->id}}" data-toggle="collapse"><i

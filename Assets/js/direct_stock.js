@@ -1,4 +1,3 @@
-
 $('table').hide();
 $(document).ready(function () {
     $('body').on('focus', ".datepicker", function () {
@@ -7,10 +6,11 @@ $(document).ready(function () {
             minDate: 0
         });
     });
+
     function calculate_total() {
         var SUM = 0;
         var items = [];
-        $('#tab_logic tbody tr').each(function (i, row_get) {
+        $('#tab_logic').find('tbody tr').each(function (i, row_get) {
             var row = $(row_get);
             var qty = parseInt(row.find('input[name=qty' + i + ']').val());
             var price = parseFloat(row.find('input[name=price' + i + ']').val());
@@ -34,27 +34,32 @@ $(document).ready(function () {
                     discount_rate = 0;
                 }
                 var at_price = parseFloat(total + taxable - (discount_rate * total));
-                $("#total" + i).html(at_price);
+                $("#total" + i).val(at_price);
                 items.push({qty: qty, price: price, total: total, rate: discount_rate, net: at_price});
                 SUM += at_price;
-                console.log(SUM);
             }
         });
         $('#total').html(SUM);
         $('#amount').val(SUM);
-        console.info(items);
     }
-    $('#tab_logic input').keyup(function () {
+
+    $('#tab_logic').find('input:not(.xt)').change(function () {
         calculate_total();
     });
     var i = 1;
     $("#add_row").click(function () {
-        var to_add = "<td><select name='item" + i + "' class='select2-single' style='width: 100%'></select></td><td><input type='text' name='package" + i + "' value='1' placeholder='Packaging' size='2'/></td><td><input type='text' name='qty" + i + "' size='2' value='1'/></td><td><input type='text' name='bonus" + i + "' value='0' size='2'/></td><td><input class='datepicker' type='text' id='expiry" + i + "' name='expiry" + i + "' placeholder='Expiry Date'/></td><td><input type='text' name='price" + i + "' size='4'/></td><td><input type='text' name='dis" + i + "' value='0' size='2'/></td><td><input type='text' name='tax" + i + "' placeholder='eg VAT' value='0' size='3'/></td><td><span id='total" + i + "'>0</span></td>";
+        var to_add = "<td><select name='item" + i + "' class='select2-single' style='width: 100%'></select></td><td><input type='text' name='package" + i + "' value='1' placeholder='Packaging' size='2'/></td><td><input type='text' name='qty" + i + "' size='2' value='1'/></td><td><input type='text' name='bonus" + i + "' value='0' size='2'/></td><td><input class='datepicker' type='text' id='expiry" + i + "' name='expiry" + i + "' placeholder='Expiry Date'/></td><td><input type='text' name='price" + i + "' size='4'/></td><td><input type='text' name='dis" + i + "' value='0' size='2'/></td><td><input type='text' name='tax" + i + "' placeholder='eg VAT' value='0' size='3'/></td><td><input type='text' value='0'  class='xt' name='total" + i + "' id='total" + i + "'/></td>";
         $('#addr' + i).html(to_add);
         $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
         map_select2(i);
         i++;
     });
+    $('#tab_logic').on('click', ".remove", function (e) {
+        e.preventDefault();
+        $(this).closest('tr').remove();
+        calculate_total();
+    });
+
     function map_select2(i) {
         $('#addr' + i + ' select').select2({
             "theme": "classic",
@@ -96,19 +101,9 @@ $(document).ready(function () {
         $('#addr' + i + ' select').on('select2:select', function (evt) {
             var selected = $(this).find('option:selected');
             var rate = selected.data().data.tax;
-
-            $('input[name=tax' + i + ']').val(rate);
-            calculate_total();
-        });
-        $('#addr' + i + ' input').keyup(function () {
-            calculate_total();
-        });
-        $(".remove").click(function (e) {
-            e.preventDefault();
-            $(this).closest('tr').remove();
-            calculate_total();
         });
     }
+
     map_select2(0);
     $('table').show();
 });
