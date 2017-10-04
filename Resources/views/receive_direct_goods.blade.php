@@ -78,10 +78,11 @@
                             <td><input type="text" name='qty0' placeholder='Quantity' value="1" size="2"/></td>
                             <td><input type="text" name='bonus0' placeholder='Bonus' value="0" size="2"/></td>
                             <td><input type="text" name='expiry0' placeholder='Expiry Date' class="datepicker"/></td>
-                            <td><input type="text" name='price0' placeholder='Price' size="4" value=""/></td>
+                            <td><input type="text" name='price0' total="false" placeholder='Price' size="4" value=""/>
+                            </td>
                             <td><input type="text" name='dis0' placeholder='eg. 2' value="0" size="2"/></td>
                             <td><input type="text" name='tax0' placeholder='' value="0" size="3"/></td>
-                            <td><input type="text" name="total0" id="total0" class="xt" value="0"/></td>
+                            <td><input type="text" name="total0" id="total0" c="0" class="xt" value="0"/></td>
                         </tr>
                         <tr id='addr1'></tr>
                         </tbody>

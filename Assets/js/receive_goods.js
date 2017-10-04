@@ -6,20 +6,6 @@
 
 
 $(document).ready(function () {
-    /* function calculate_total() {
-     var SUM = 0;
-     $('#tab_logic tbody tr').each(function (i, row) {
-     var row = $(row);
-     var qty = row.find('input[name=qty' + i + ']').val();
-     var price = row.find('input[name=price' + i + ']').val();
-     var total = qty * price;
-     if (total) {
-     SUM = SUM + total;
-     $("#total" + i).html(total.toFixed(2));
-     }
-     });
-     $('#total').html(SUM.toFixed(2));
-     }*/
     function calculate_total() {
         var SUM = 0;
         var DISCOUNT = 0;
@@ -52,6 +38,7 @@ $(document).ready(function () {
         $('#sum').html(SUM.toFixed(2));
         $('#amount').val(SUM);
     }
+
     $('#tab_logic input').keyup(function () {
         calculate_total();
     });

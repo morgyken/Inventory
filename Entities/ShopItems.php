@@ -14,12 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Ignite\Inventory\Entities\ShopItems
  *
- * @property int $id
- * @property string $name
- * @property string|null $price
- * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\ShopItems whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\ShopItems whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\ShopItems wherePrice($value)
  * @mixin \Eloquent
  */
 class ShopItems extends Model

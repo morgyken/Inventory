@@ -58,12 +58,12 @@ extract($data);
                                         <td style="text-align: right">
                                             <input type="text" name="cash{{$m->id}}"
                                                    pid="{{$m->id}}"
-                                                   value="{{$m->selling_p}}"/>
+                                                   value="{{number_format($m->selling_p,2)}}"/>
                                         </td>
                                         <td style="text-align: right">
                                             <input type="text" name="insurance{{$m->id}}"
                                                    pid="{{$m->id}}"
-                                                   value="{{$m->insurance_p}}"/>
+                                                   value="{{number_format($m->insurance_p,2)}}"/>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -91,10 +91,11 @@ extract($data);
                     arrIndex[object.product] = index;
                 }
                 data[index] = object;
+                console.log(data);
             }
 
             $('#datatable').dataTable();
-            $('input[type=text]').keyup(function () {
+            $(document).on('keyup', 'input[type=text]', function () {
                 var product = $(this).attr('pid');
                 var update = {
                     product: product,
