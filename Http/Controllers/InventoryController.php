@@ -300,7 +300,7 @@ class InventoryController extends AdminBaseController
 
     public function setProductPrice()
     {
-        $this->data['price'] = InventoryProductPrice::all();
+//        $this->data['price'] = InventoryProductPrice::all();
         $this->data['products'] = InventoryProducts::all();
         return view('inventory::products.set_product_price', ['data' => $this->data]);
     }

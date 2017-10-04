@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property int $consumable
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryBatchPurchases[] $batches
  * @property-read \Ignite\Inventory\Entities\InventoryCategories $categories
  * @property-read \Ignite\Inventory\Entities\InventoryProductDiscount $discounts
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductExclusion[] $exclusions
@@ -27,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read mixed $count_active_batch
  * @property-read mixed $credit_price
  * @property-read mixed $desc
+ * @property-read mixed $insurance_p
  * @property-read mixed $product_code
  * @property-read mixed $selling_p
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryProductPrice[] $prices
@@ -100,21 +102,24 @@ class InventoryProducts extends Model
         return $this->hasMany(InventoryProductExclusion::class, 'product');
     }
 
+    public function batches()
+    {
+        return $this->hasMany(InventoryBatchPurchases::class, 'product');
+    }
+
     public function getCountActiveBatchAttribute()
     {
-        $active = InventoryBatchPurchases::where('product', '=', $this->id)->count();
-        return $active;
+        return $this->batches->count();
     }
 
     public function getSellingPAttribute()
     {
-        $price = 0;
-        foreach ($this->prices as $p) {
-            if ($price <= $p->price) {
-                $price = $p->price;
-            }
-        }
-        return ceil($price);
+        return ceil($this->prices->max('price'));
+    }
+
+    public function getInsurancePAttribute()
+    {
+        return ceil($this->prices->max('ins_price'));
     }
 
     public function getCreditPriceAttribute()

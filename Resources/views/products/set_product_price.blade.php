@@ -8,6 +8,7 @@
  *
  * =============================================================================
  */
+extract($data);
 ?>
 @extends('layouts.app')
 @section('content_title','Set Product Price')
@@ -36,69 +37,43 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    @if(!$data['price']->isEmpty())
+                    @if(!$products->isEmpty())
                         <form method="post" action="{{route('inventory.product.price.edit')}}">
                             {!! Form::token() !!}
                             <table class="table table-striped" id="datatable">
                                 <thead>
                                 <tr>
                                     <th>Item Code</th>
-                                    <th>Batch</th>
                                     <th>Item</th>
-                                    <th style="text-align: center">Cash Price</th>
-                                    <th style="text-align: center">Insurance Price</th>
+                                    <th>Cost Price</th>
+                                    <th style="text-align: right">Cash Price</th>
+                                    <th style="text-align: right">Insurance Price</th>
                                     <th style="text-align: center">Edit</th>
-                                    <th style="text-align: center">Delete</th>
                                 </tr>
                                 </thead>
-                                @foreach($data['price'] as $m)
-                                    @if(!empty($m->products))
-                                        <tr>
-                                            <td>{{$m->products->product_code}}</td>
-                                            <td>{{$m->batch?$m->batch:''}}</td>
-                                            <td>{{$m->products->desc}}</td>
-                                            <td>
-                                                <center>{{$m->cash_price}}</center>
-                                            </td>
-                                            <td>
-                                                <center>{{$m->insurance_price}}</center>
-                                            </td>
-                                            <td style="text-align: center">
-                                                <a href="#demo{{$m->id}}" data-toggle="collapse"><i
-                                                            class="fa fa-pencil"></i></a>
-
-                                                <div id="demo{{$m->id}}" class="collapse">
-                                                    <input type="hidden" name="id[]" value="{{$m->id}}">
-                                                    <input type="text" name="price[]" value="{{$m->price}}"
-                                                           placeholder='New Price '/>
-                                                </div>
-                                            </td>
-                                            <td style="text-align: center">
-                                                <a href="{{route('inventory.product.price.del', $m->id)}}">
-                                                    <i style="color: red" class="fa fa-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endif
+                                @foreach($products as $m)
+                                    <tr>
+                                        <td>{{$m->product_code}}</td>
+                                        <td>{{$m->desc}}</td>
+                                        <td>{{$m->batches->last()->unit_cost??0}}</td>
+                                        <td style="text-align: right">
+                                            <input type="text" name="cash{{$m->id}}"
+                                                   pid="{{$m->id}}" ptp="cash"
+                                                   value="{{$m->selling_p}}" class="item"/>
+                                        </td>
+                                        <td style="text-align: right">
+                                            <input type="text" name="insurance{{$m->id}}"
+                                                   pid="{{$m->id}}" ptp="insurance"
+                                                   value="{{$m->insurance_p}}" class="item"/>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-xs edit" pid="{{$m->id}}">
+                                                Save
+                                            </button>
+                                        </td>
+                                    </tr>
                                 @endforeach
-                                <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td style="text-align: center">
-
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                </tfoot>
                             </table>
-                            <div class="pull-right">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Save Changes
-                                </button>
-                            </div>
                         </form>
                     @endif
                 </div>
@@ -108,7 +83,15 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#datatable').dataTable();
+            $('#datatable').dataTable({responsive: true});
+            $('.edit').click(function () {
+                var product = $(this).attr('pid');
+                var data = {
+                    cash: $('input[name=cash' + product + ']'),
+                    insurance: $('input[name=insurance' + product + ']'),
+                };
+                console.log(data);
+            });
         });
     </script>
 @endsection
