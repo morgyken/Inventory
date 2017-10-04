@@ -260,12 +260,14 @@ class InventoryFunctions implements InventoryRepository
 
     public function updateProdPrice()
     {
-        foreach ($this->request->id as $index => $id) {
-            $price = InventoryProductPrice::find($id);
-            $price->price = $this->request->price[$index];
+        $update = $this->request->data;
+        foreach ($update as $item) {
+            $price = InventoryProductPrice::firstOrNew(['product' => $item['product']]);
+            $price->price = $item['cash'];
+            $price->ins_price = $item['insurance'];
             $price->save();
         }
-        return 'saved';
+        return ['saved' => true];
     }
 
     /**
@@ -343,7 +345,7 @@ class InventoryFunctions implements InventoryRepository
             $sales->user = $this->request->user()->id;
             $sales->patient = $patient;
 
-            if(isset($this->request->is_shop)){
+            if (isset($this->request->is_shop)) {
                 $sales->shop = true;
             }
 

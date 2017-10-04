@@ -45,7 +45,6 @@ $router->get('product/discount/{id}/delete', ['uses' => 'InventoryController@del
 
 $router->get('product/price', ['uses' => 'InventoryController@setProductPrice', 'as' => 'product.price']);
 $router->get('product/price/{id}/delete', ['uses' => 'InventoryController@delProductPrice', 'as' => 'product.price.del']);
-$router->post('product/price/edit', ['uses' => 'InventoryController@editProductPrice', 'as' => 'product.price.edit']);
 
 $router->get('category/price', ['uses' => 'InventoryController@setCategoryPrice', 'as' => 'category.price']);
 $router->get('category/price/{id}/delete', ['uses' => 'InventoryController@delCategoryPrice', 'as' => 'category.price.del']);

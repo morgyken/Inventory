@@ -25,4 +25,6 @@ interface InventoryRepository
     public function add_product($id = null);
 
     public function set_stock_value();
+
+    public function updateProdPrice();
 }

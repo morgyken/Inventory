@@ -38,7 +38,7 @@ extract($data);
             <div class="row">
                 <div class="col-md-12">
                     @if(!$products->isEmpty())
-                        <form method="post" action="{{route('inventory.product.price.edit')}}">
+                        <form method="post" id="myForm">
                             {!! Form::token() !!}
                             <table class="table table-striped" id="datatable">
                                 <thead>
@@ -48,7 +48,6 @@ extract($data);
                                     <th>Cost Price</th>
                                     <th style="text-align: right">Cash Price</th>
                                     <th style="text-align: right">Insurance Price</th>
-                                    <th style="text-align: center">Edit</th>
                                 </tr>
                                 </thead>
                                 @foreach($products as $m)
@@ -58,22 +57,22 @@ extract($data);
                                         <td>{{$m->batches->last()->unit_cost??0}}</td>
                                         <td style="text-align: right">
                                             <input type="text" name="cash{{$m->id}}"
-                                                   pid="{{$m->id}}" ptp="cash"
-                                                   value="{{$m->selling_p}}" class="item"/>
+                                                   pid="{{$m->id}}"
+                                                   value="{{$m->selling_p}}"/>
                                         </td>
                                         <td style="text-align: right">
                                             <input type="text" name="insurance{{$m->id}}"
-                                                   pid="{{$m->id}}" ptp="insurance"
-                                                   value="{{$m->insurance_p}}" class="item"/>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary btn-xs edit" pid="{{$m->id}}">
-                                                Save
-                                            </button>
+                                                   pid="{{$m->id}}"
+                                                   value="{{$m->insurance_p}}"/>
                                         </td>
                                     </tr>
                                 @endforeach
                             </table>
+                            <td>
+                                <button type="button" class="btn btn-primary" id="save">
+                                    Save
+                                </button>
+                            </td>
                         </form>
                     @endif
                 </div>
@@ -83,14 +82,45 @@ extract($data);
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#datatable').dataTable({responsive: true});
-            $('.edit').click(function () {
+            var data = [], arrIndex = {};
+
+            function addOrReplace(object) {
+                var index = arrIndex[object.product];
+                if (index === undefined) {
+                    index = data.length;
+                    arrIndex[object.product] = index;
+                }
+                data[index] = object;
+            }
+
+            $('#datatable').dataTable();
+            $('input[type=text]').keyup(function () {
                 var product = $(this).attr('pid');
-                var data = {
-                    cash: $('input[name=cash' + product + ']'),
-                    insurance: $('input[name=insurance' + product + ']'),
+                var update = {
+                    product: product,
+                    cash: $('input[name=cash' + product + ']').val(),
+                    insurance: $('input[name=insurance' + product + ']').val()
                 };
-                console.log(data);
+                addOrReplace(update);
+            });
+            $('#save').click(function () {
+                $.ajax({
+                    url: "{{route('api.inventory.product.price.edit')}}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{csrf_token()}}",
+                        data: data
+                    },
+                    dataType: "json",
+                    success: function () {
+                        alertify.success("Updates saved");
+                        data = [];
+                        arrIndex = {};
+                    },
+                    error: function () {
+                        alertify.error("An error occurred");
+                    }
+                });
             });
         });
     </script>

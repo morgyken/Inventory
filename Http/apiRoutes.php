@@ -10,7 +10,7 @@
  * =============================================================================
  */
 
-
+/** @var \Illuminate\Routing\Router $router */
 //AJAX ONLY routes
 $router->get('products', ['uses' => 'ApiController@get_products', 'as' => 'get_products']);
 $router->get('sales/receipt/data', ['uses' => 'ApiController@sale_recipt', 'as' => 'sales.sale.details']);
@@ -23,4 +23,6 @@ $router->get('approve/adjustment', ['uses' => 'ApiController@approveStockAdjustm
 $router->get('pos/insurance', ['uses' => 'ApiController@get_patient_schemes', 'as' => 'clients']);
 //$router->get('credit/client/pln', ['uses' => 'ApiController@creditClientPLN', 'as' => 'client.pln']);
 $router->get('supplier/batches', ['uses' => 'ApiController@supplier_batches', 'as' => 'supplier.batch']);
+$router->post('product/price/edit', ['uses' => 'ApiController@editProductPrice', 'as' => 'product.price.edit']);
+
 
