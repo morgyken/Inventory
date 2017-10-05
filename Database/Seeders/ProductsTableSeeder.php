@@ -11,14 +11,16 @@ use Ignite\Inventory\Entities\InventoryUnits;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
-class ProductsTableSeeder extends Seeder {
+class ProductsTableSeeder extends Seeder
+{
 
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
         $product_categories = ['Drugs', 'Eye-wear', 'Minerals'];
         foreach ($product_categories as $category) {
             $in = new InventoryCategories;
@@ -54,9 +56,11 @@ class ProductsTableSeeder extends Seeder {
             $in->unit = $faker->numberBetween(1, count($uom));
             $in->tax_category = 1;
             $in->save();
+            /** @var InventoryProductPrice $price */
             $price = InventoryProductPrice::firstOrNew(['product' => $in->id]);
             $price->price = $faker->numberBetween(10, 400);
             $price->selling = $price->price * 1.11;
+            $price->ins_price = $price->selling + mt_rand(1, $price->selling);
             $price->save();
         }
     }
