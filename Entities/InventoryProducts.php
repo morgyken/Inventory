@@ -119,7 +119,7 @@ class InventoryProducts extends Model
 
     public function getInsurancePAttribute()
     {
-        return ceil($this->prices->max('ins_price'));
+        return ceil($this->prices->max('ins_price') ?? $this->selling_p);
     }
 
     public function getCreditPriceAttribute()
@@ -131,5 +131,4 @@ class InventoryProducts extends Model
     {
         return ceil((($this->categories->cash_markup + 100) * $this->selling_p) / 100);
     }
-
 }

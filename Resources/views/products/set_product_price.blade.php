@@ -23,20 +23,6 @@ extract($data);
         <div class="box-body">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-success alert-dismissable">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <strong>How to adjust price!</strong> <br/>
-                        <ol>
-                            <li>Search for the product in table below</li>
-                            <li>Select edit in the row</li>
-                            <li>Click the save button below</li>
-                        </ol>
-                    </div>
-                </div>
-                <br/>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
                     @if(!$products->isEmpty())
                         <form method="post" id="myForm">
                             {!! Form::token() !!}
