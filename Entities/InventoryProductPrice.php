@@ -28,35 +28,32 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryProductPrice whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class InventoryProductPrice extends Model {
+class InventoryProductPrice extends Model
+{
 
     protected $guarded = [];
     public $table = 'inventory_product_price';
     public $appends = ['cash_price', 'credit_price'];
 
-    public function getSellingAttribute($value) {
-        return ceil($value);
-    }
 
-    public function getPriceAttribute($value) {
-        return ceil($value);
-    }
-
-    public function getCashPriceAttribute() {
+    public function getCashPriceAttribute()
+    {
         if (empty($this->products->categories)) {
             return $this->selling;
         }
-        return ceil(($this->products->categories->cash_markup + 100) / 100 * $this->price);
+        return ($this->products->categories->cash_markup + 100) / 100 * $this->price;
     }
 
-    public function getCreditPriceAttribute() {
+    public function getCreditPriceAttribute()
+    {
         if (empty($this->products->categories)) {
             return $this->selling;
         }
-        return ceil(($this->products->categories->credit_markup + 100) / 100 * $this->price);
+        return ( $this->products->categories->credit_markup + 100) / 100 * $this->price;
     }
 
-    public function products() {
+    public function products()
+    {
         return $this->belongsTo(InventoryProducts::class, 'product');
     }
 

@@ -69,9 +69,9 @@ class ApiController extends Controller
                 'text' => $item->name . '  - ' . $stock_text . $strngth_text . $expiry,
                 'id' => $item->id,
                 'batch' => empty($batchp->batch) ? 0 : $batchp->batch,
-                'cash_price' => ceil(($item->categories->cash_markup + 100) / 100 * $active_price), //$item->prices->credit_price
-                'credit_price' => ceil(($item->categories->credit_markup + 100) / 100 * $active_price),
-                'o_price' => ceil($active_price),
+                'cash_price' => ($item->categories->cash_markup + 100) / 100 * $active_price, //$item->prices->credit_price
+                'credit_price' =>($item->categories->credit_markup + 100) / 100 * $active_price,
+                'o_price' => $active_price,
                 'available' => empty($item->stocks) ? 0 : $item->stocks->quantity];
         }
         $ret['results'] = $build;

@@ -91,7 +91,7 @@ $(document).ready(function () {
         });
         $('#addr' + i + ' select').on('select2:select', function (evt) {
             var selected = $(this).find('option:selected');
-            var price = selected.data().data.cash_price;
+            var price = selected.data().data.cash_price.toFixed(2);
             var in_stock = selected.data().data.available;
             var batch = selected.data().data.batch;
             if (INSURANCE) {
@@ -101,7 +101,7 @@ $(document).ready(function () {
             $('#fb' + i).attr('available', in_stock);
             $('input[name=price' + i + ']').val(price);
             $('input[name=batch' + i + ']').val(batch);
-            $('#original' + i).html(selected.data().data.o_price);
+            $('#original' + i).html(selected.data().data.o_price.toFixed(2));
             calculate_total();
         });
 
