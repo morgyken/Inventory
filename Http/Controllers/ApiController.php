@@ -30,7 +30,6 @@ class ApiController extends Controller
     public function products()
     {
         $found = collect();
-        $ret = [];
         $term = $this->request->term['term'];
         if (!empty($term)) {
             if ($this->request->shop == 1) {
@@ -70,37 +69,37 @@ class ApiController extends Controller
                 'id' => $item->id,
                 'batch' => empty($batchp->batch) ? 0 : $batchp->batch,
                 'cash_price' => ($item->categories->cash_markup + 100) / 100 * $active_price, //$item->prices->credit_price
-                'credit_price' =>($item->categories->credit_markup + 100) / 100 * $active_price,
+                'credit_price' => ($item->categories->credit_markup + 100) / 100 * $active_price,
                 'o_price' => $active_price,
-                'available' => empty($item->stocks) ? 0 : $item->stocks->quantity];
+                'available' => empty($item->stocks) ? 0 : $item->stocks->quantity,
+                'disabled' => empty($item->stocks),
+            ];
         }
-        $ret['results'] = $build;
-        return json_encode($ret);
+        return response()->json(['results' => $build]);
     }
 
     public function get_products()
     {
-        $ret = [];
         $term = $this->request->term['term'];
+        $new_array = [];
         if (!empty($term)) {
+            /** @var InventoryProducts[] $found */
             $found = InventoryProducts::with(['prices' => function ($query) {
             }, 'taxgroups'])
                 //  ->select('id', 'name', 'strength')
                 ->where('name', 'like', "%$term%")->get();
-            $new_array = [];
             foreach ($found as $item) {
                 $str = $item->strength ? '(' . $item->strength . ' ' . $item->units->name . ')' : '';
                 $text = $item->name . ' ' . $str;
                 $new_array[] = [
                     'text' => $text,
                     'id' => $item->id,
-                    'tax' => $item->taxgroups ? $item->taxgroups->rate : 0
+                    'tax' => $item->taxgroups ? $item->taxgroups->rate : 0,
+//                    'disabled' => true
                 ];
             }
         }
-
-        $ret['results'] = $new_array;
-        return json_encode($ret);
+        return response()->json(['results' => $new_array]);
     }
 
     public function editProductPrice(InventoryRepository $inventoryRepository)

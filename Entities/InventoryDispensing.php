@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read mixed $total
  * @property-read mixed $unit_cost
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $products
+ * @property-read \Ignite\Inventory\Entities\InventoryBatchProductSales $sale
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereBatch($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereDiscount($value)
@@ -30,28 +31,39 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryDispensing whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class InventoryDispensing extends Model {
+class InventoryDispensing extends Model
+{
 
     protected $fillable = [];
     public $table = 'inventory_dispensing';
 
-    public function getOriginalPriceAttribute() {
+    public function sale()
+    {
+        return $this->belongsTo(InventoryBatchProductSales::class, 'batch');
+    }
+
+    public function getOriginalPriceAttribute()
+    {
         return $this->product * $this->price * $this->quantity;
     }
 
-    public function getTotalAttribute() {
+    public function getTotalAttribute()
+    {
         return $this->unit_cost * $this->quantity;
     }
 
-    public function getUnitCostAttribute() {
+    public function getUnitCostAttribute()
+    {
         return empty($this->discount) ? $this->price : $this->price - ($this->discount * $this->price / 100);
     }
 
-    public function products() {
+    public function products()
+    {
         return $this->belongsTo(InventoryProducts::class, 'product');
     }
 
-    public function customers() {
+    public function customers()
+    {
         return $this->belongsTo(InventoryProducts::class, 'customer');
     }
 
