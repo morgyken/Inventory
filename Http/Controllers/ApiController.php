@@ -62,7 +62,8 @@ class ApiController extends Controller
                 }
             }
             $expiry = empty($batchp->expiry_date) ? '' : ' |expiry: ' . $batchp->expiry_date;
-            $stock_text = empty($item->stocks) ? '  Out of stock' : $item->stocks->quantity . ' in stock';
+            $stock_text = (empty($item->stocks) || $item->stocks->quantity) ?
+                '  Out of stock' : $item->stocks->quantity . ' in stock';
             $strngth_text = empty($item->strength) ? '' : ' | ' . $item->strength . $item->units->name;
             $build[] = [
                 'text' => $item->name . '  - ' . $stock_text . $strngth_text . $expiry,
@@ -72,7 +73,7 @@ class ApiController extends Controller
                 'credit_price' => ($item->categories->credit_markup + 100) / 100 * $active_price,
                 'o_price' => $active_price,
                 'available' => empty($item->stocks) ? 0 : $item->stocks->quantity,
-                'disabled' => empty($item->stocks),
+                'disabled' => empty($item->stocks) || empty($item->stocks->quantity),
             ];
         }
         return response()->json(['results' => $build]);
