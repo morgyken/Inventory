@@ -62,7 +62,7 @@ class ApiController extends Controller
                 }
             }
             $expiry = empty($batchp->expiry_date) ? '' : ' |expiry: ' . $batchp->expiry_date;
-            $stock_text = (empty($item->stocks) || $item->stocks->quantity) ?
+            $stock_text = (empty($item->stocks) || empty($item->stocks->quantity)) ?
                 '  Out of stock' : $item->stocks->quantity . ' in stock';
             $strngth_text = empty($item->strength) ? '' : ' | ' . $item->strength . $item->units->name;
             $build[] = [
