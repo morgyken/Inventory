@@ -1,28 +1,31 @@
 <table>
     <tbody>
-        <tr>
-        <td>
-            <p style="font-size: 90%;">
-           <!--  {{config('practice.building')?config('practice.building').',':''}}
-            {{config('practice.street')?config('practice.street').',':''}}
-            {{config('practice.town')}}<br>
-            {{config('practice.telephone')?'Call Us:- '.config('practice.telephone'):''}} -->
-            <div>{{config('practice.name')}}</div>
-                <div>{{config('practice.building')}},<br /> {{config('practice.street')}}, {{config('practice.town')}}</div>
-                <div>Telephone:{{config('practice.telephone')}}</div>
-                <div>P.O BOX: {{config('practice.address')}}<br></div>
-                <div>Email:<a href="mailto:{{config('practice.email')}}">{{config('practice.email')}}</a></div>
-
-                    </p>
-
-        </td>    
-
-
-      <!--   <td>
-            <img  src="{{realpath(base_path('/public/reciept.jpg'))}}" alt="Company Logo">
-        
-
-        </td> -->    
-        </tr>
+    <tr>
+        <td style="text-align: center;">
+            <?php try{ ?>
+            <img style="width: 800%" src="{{realpath(base_path(get_logo()))}}"/>
+            <?php }catch(\Exception $e){} ?>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center">
+            <p style="font-size: 90%; <?php if (!isset($a4)) { ?> text-align: center<?php } ?>">
+                @if(!empty($clinic->address))
+                    P.O Box {{$clinic->address}}, {{$clinic->town}}.<br/>
+                    Visit us: {{$clinic->location}}<br>
+                    {{$clinic->street}}<br>
+                    Email: {{$clinic->email}}<br>
+                    Call Us: {{$clinic->mobile}}
+                    <br/> {{$clinic->telephone?"Or: ".$clinic->telephone:''}}<br>
+                @else
+                    P.O Box {{config('practice.address')}}, {{config('practice.town')}}.<br/>
+                    Visit us: {{config('practice.building')?config('practice.building').'.':''}}<br>
+                    {{config('practice.street')?config('practice.street').'.':''}}<br>
+                    Email: {{config('practice.email')}}<br>
+                    {{config('practice.telephone')?'Call Us:- '.config('practice.telephone'):''}}<br>
+                @endif
+            </p>
+        </td>
+    </tr>
     </tbody>
 </table>
