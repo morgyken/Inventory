@@ -60,8 +60,9 @@ class ProductsTableSeeder extends Seeder
             $price = InventoryProductPrice::firstOrNew(['product' => $in->id]);
             $price->price = $faker->numberBetween(10, 400);
             $price->selling = $price->price * 1.11;
-            $price->ins_price = $price->selling + mt_rand(1, $price->selling);
+            $price->ins_price = $price->selling + random_int(1, $price->selling);
             $price->save();
+            $in->stocks()->create(['quantity' => random_int(500, 20000)]);
         }
     }
 
