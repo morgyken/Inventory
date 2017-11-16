@@ -14,7 +14,7 @@ $(document).ready(function () {
     var is_shop = $('#is_shop').val();
     var i = 3;
     $("#add_row").click(function () {
-        var to_add = "<td><select name=\"item" + i + "\"  id=\"item_" + i + "\" class=\" select2-single\" style=\"width: 100%\"></select></td><td><input type=\"text\" name='qty" + i + "' id='item_qty_" + i + "'  placeholder='Quantity' value=\"0\" class=\"quantities\"/><input type='hidden' name='batch" + i + "'><span id='fb" + i + "'></span></td><td><input type=\"text\" name='price" + i + "' placeholder='Price'/></td> <td><input type=\"text\" name='dis" + i + "' placeholder='Discount' value=\"0\"/></td></td><td><span id=\"total" + i + "\">0.00</span></td><td><button class=\"btn btn-xs btn-danger remove\"><i class=\"fa fa-trash-o\"></i></button></td>";
+        var to_add = "<td><select name=\"item" + i + "\"  id=\"item_" + i + "\" class=\" select2-single\" style=\"width: 100%\"></select></td><td><input type=\"text\" name='qty" + i + "' id='item_qty_" + i + "'  placeholder='Quantity' value=\"1\" class=\"quantities\"/><input type='hidden' name='batch" + i + "'><span id='fb" + i + "'></span></td><td><input type=\"text\" name='price" + i + "' placeholder='Price'/></td> <td><input type=\"text\" name='dis" + i + "' placeholder='Discount' value=\"0\"/></td></td><td><span id=\"total" + i + "\">0.00</span></td><td><button class=\"btn btn-xs btn-danger remove\"><i class=\"fa fa-trash-o\"></i></button></td>";
         $('#addr' + i).html(to_add);
         $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
         map_select2(i);

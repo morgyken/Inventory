@@ -25,4 +25,6 @@ $router->get('pos/insurance', ['uses' => 'ApiController@get_patient_schemes', 'a
 $router->get('supplier/batches', ['uses' => 'ApiController@supplier_batches', 'as' => 'supplier.batch']);
 $router->post('product/price/edit', ['uses' => 'ApiController@editProductPrice', 'as' => 'product.price.edit']);
 
+$router->get('today/sold/{shop?}', ['as' => 'sales.today', 'uses' => 'APIController@todaySales']);
+
 

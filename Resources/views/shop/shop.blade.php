@@ -9,33 +9,33 @@
  * =============================================================================
  */
 $is_shop = false;
-try{
-    if($data['is_shop']){
+try {
+    if ($data['is_shop']) {
         $is_shop = true;
     }
-}catch (\Exception $e){
-
+} catch (\Exception $e) {
 }
+extract($data);
 ?>
 @extends('layouts.app')
 @section('content_title','Point of sale')
 @section('content_description','Add items to cart')
 
 @section('content')
-<div class="box box-info">
-    <div class="box-header with-border">
-    </div>
-    <div class="box-body">
-        <div class="row">
+    <div class="box box-info">
+        <div class="box-header with-border">
+        </div>
+        <div class="box-body">
+            <div class="row">
 
-            <div class="col-md-12">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#direct" aria-controls="home" role="tab" data-toggle="tab">
-                            Direct Payment
-                        </a>
-                    </li>
+                <div class="col-md-12">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#direct" aria-controls="home" role="tab" data-toggle="tab">
+                                Direct Payment
+                            </a>
+                        </li>
                     <!--
                     <li role="presentation">
                         <a href="{{route('inventory.shopfront.credit')}}">
@@ -43,32 +43,35 @@ try{
                         </a>
                     </li>
                     -->
-                </ul>
-                <br>
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="direct">
-                        {!! Form::open(['class'=>'form-horizontal']) !!}
-                        @if($is_shop)
-                            <input type="hidden" id="is_shop" value="1">
-                            <input type="hidden" name="is_shop" value="1">
-                        @else
-                            <input type="hidden" id="is_shop" value="0">
-                        @endif
+                    </ul>
+                    <br>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="direct">
+                            {!! Form::open(['class'=>'form-horizontal']) !!}
+                            @if($is_shop)
+                                <input type="hidden" id="is_shop" value="1">
+                                <input type="hidden" name="is_shop" value="1">
+                            @else
+                                <input type="hidden" id="is_shop" value="0">
+                            @endif
 
-                        @if(!$is_shop)
-                        <div class="col-md-4 col-lg-6">
-                            <div class="form-group {{ $errors->has('patient') ? ' has-error' : '' }}">
-                                {!! Form::label('patient', 'Patient',['class'=>'control-label col-md-4']) !!}
-                                <div class="col-md-8">
-                                    <select name="patient" id="patient_select" class="form-control" style="width:100%;" data-placeholder="Search Patient Name, ID Number or Roll Number" required></select>
-                                    {!! $errors->first('patient', '<span class="help-block">:message</span>') !!}
+                            @if(!$is_shop)
+                                <div class="col-md-4 col-lg-6">
+                                    <div class="form-group {{ $errors->has('patient') ? ' has-error' : '' }}">
+                                        {!! Form::label('patient', 'Patient',['class'=>'control-label col-md-4']) !!}
+                                        <div class="col-md-8">
+                                            <select name="patient" id="patient_select" class="form-control"
+                                                    style="width:100%;"
+                                                    data-placeholder="Search Patient Name, ID Number or Roll Number"
+                                                    required></select>
+                                            {!! $errors->first('patient', '<span class="help-block">:message</span>') !!}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        @endif
-                        <table class="items table  table-striped table-condensed" id="tab_logic">
-                            <thead>
+                            @endif
+                            <table class="items table  table-striped table-condensed" id="tab_logic">
+                                <thead>
                                 <tr>
                                     <th style="width: 20%;">Item</th>
                                     <th class="text-center" style="width: 10%;">Quantity</th>
@@ -78,12 +81,14 @@ try{
                                     <th style="width: 12%;">Total</th>
                                     <th></th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 <tr id='addr0'>
-                                    <td><select name="item0"   id="item_0" class="select2-single" style="width: 100%" required=""></select></td>
+                                    <td><select name="item0" id="item_0" class="select2-single" style="width: 100%"
+                                                required=""></select></td>
                                     <td>
-                                        <input type="text" id="item_qty_0" autocomplete="off"  name='qty0' placeholder='Quantity' value="0"
+                                        <input type="text" id="item_qty_0" autocomplete="off" name='qty0'
+                                               placeholder='Quantity' value="0"
                                                class="quantities"/>
                                         <input type="hidden" name="batch0">
                                         <span id="fb0"></span>
@@ -93,13 +98,16 @@ try{
                                     <td><input type="text" name='dis0' placeholder='Discount' value="0"/></td>
                                     <td><span id="total0">0.00</span></td>
                                     <td>
-                                        <button class="btn btn-xs btn-danger remove"><i class="fa fa-trash-o"></i></button>
+                                        <button class="btn btn-xs btn-danger remove"><i class="fa fa-trash-o"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr id='addr1'>
-                                    <td><select name="item1"   id="item_1" class=" select2-single" style="width: 100%"></select></td>
+                                    <td><select name="item1" id="item_1" class=" select2-single"
+                                                style="width: 100%"></select></td>
                                     <td>
-                                        <input type="text"  name='qty1' id="item_qty_1" autocomplete="off"  placeholder='Quantity' value="0"
+                                        <input type="text" name='qty1' id="item_qty_1" autocomplete="off"
+                                               placeholder='Quantity' value="0"
                                                class="quantities"/>
                                         <input type="hidden" name="batch1">
                                         <span id="fb1"></span>
@@ -109,13 +117,16 @@ try{
                                     <td><input type="text" name='dis1' placeholder='Discount' value="0"/></td>
                                     <td><span id="total1">0.00</span></td>
                                     <td>
-                                        <button class="btn btn-xs btn-danger remove"><i class="fa fa-trash-o"></i></button>
+                                        <button class="btn btn-xs btn-danger remove"><i class="fa fa-trash-o"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr id='addr2'>
-                                    <td><select name="item2"  id="item_2" class=" select2-single" style="width: 100%"></select></td>
+                                    <td><select name="item2" id="item_2" class=" select2-single"
+                                                style="width: 100%"></select></td>
                                     <td>
-                                        <input type="text" name='qty2' id="item_qty_2" autocomplete="off"  placeholder='Quantity' value="0" class="quantities"/>
+                                        <input type="text" name='qty2' id="item_qty_2" autocomplete="off"
+                                               placeholder='Quantity' value="0" class="quantities"/>
                                         <span id="fb2"></span>
                                         <input type="hidden" name="batch2">
                                     </td>
@@ -124,13 +135,14 @@ try{
                                     <td><input type="text" name='dis2' placeholder='Discount' value="0"/></td>
                                     <td><span id="total2">0.00</span></td>
                                     <td>
-                                        <button class="btn btn-xs btn-danger remove"><i class="fa fa-trash-o"></i></button>
+                                        <button class="btn btn-xs btn-danger remove"><i class="fa fa-trash-o"></i>
+                                        </button>
                                     </td>
 
                                 </tr>
                                 <tr id='addr3'></tr>
-                            </tbody>
-                            <tfoot>
+                                </tbody>
+                                <tfoot>
                                 <tr>
                                     <td>
                                         <a id="add_row" class="btn btn-primary btn-sm pull-left">
@@ -141,90 +153,91 @@ try{
                                     <td><strong id="total">0.00</strong></td>
                                     <td></td>
                                 </tr>
-                            </tfoot>
-                        </table>
-                        <table class="table" id="customer">
-                            <tr>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>
-                            <dt>Total Cost</dt>
-                            <dd><strong id="sum"></strong></dd></td>
-                            <td>
-                            <dt>Discount</dt>
-                            <dd><strong id="discount"></strong></dd></td>
-                            <td>
-                            <dt>Net amount</dt>
-                            <dd><strong id="net" class="text-success"></strong></dd>
-                            </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td><label class="control-label col-md-4">Amount</label></td>
-                                <td>
-                                    <input name="amount" type="text" id="amnt" class="form-control" required/>
-                                </td>
-                            </tr>
-                        </table>
+                                </tfoot>
+                            </table>
+                            <table class="table" id="customer">
+                                <tr>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <dt>Total Cost</dt>
+                                        <dd><strong id="sum"></strong></dd>
+                                    </td>
+                                    <td>
+                                        <dt>Discount</dt>
+                                        <dd><strong id="discount"></strong></dd>
+                                    </td>
+                                    <td>
+                                        <dt>Net amount</dt>
+                                        <dd><strong id="net" class="text-success"></strong></dd>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><label class="control-label col-md-4">Amount</label></td>
+                                    <td>
+                                        <input name="amount" type="text" id="amnt" class="form-control" required/>
+                                    </td>
+                                </tr>
+                            </table>
 
-                        <div class="pull-right">
-                            <button type="submit" id="save" class="btn btn-success">
-                                <i class="fa fa-send"></i>
-                                @if($is_shop)
-                                    Complete Sale
-                                @else
-                                    Bill
-                                @endif
-                            </button>
-                        </div>
-                        {!! Form::close() !!}
-                    </div><!--End of Direct-->
-                </div><!--End of tab content -->
+                            <div class="pull-right">
+                                <button type="submit" id="save" class="btn btn-success">
+                                    <i class="fa fa-send"></i>
+                                    @if($is_shop)
+                                        Complete Sale
+                                    @else
+                                        Bill
+                                    @endif
+                                </button>
+                            </div>
+                            {!! Form::close() !!}
+                        </div><!--End of Direct-->
+                    </div><!--End of tab content -->
 
+                </div>
             </div>
+            @include('inventory::shop.sales')
         </div>
-
     </div>
-</div>
-</div>
 
-<script>
-    // AJAX call for autocomplete
-    $(document).ready(function () {
-        var scheme_id = 0;
-        $('#scheme').change(function () {
-            scheme_id = $(this).val();
-            console.log(scheme_id);
+    <script>
+        // AJAX call for autocomplete
+        $(document).ready(function () {
+            var scheme_id = 0;
+            $('#scheme').change(function () {
+                scheme_id = $(this).val();
+                console.log(scheme_id);
+            });
         });
-    });
 
-    $('#patient_select').keyup(function (){
-       get_patient_suggestions(this.value)
-    });
-    var INSURANCE = false;
-    var STOCK_URL = "{{route('api.inventory.getstock')}}";
-    var PRODUCTS_URL = "{{route('api.inventory.get.products')}}";
-    var SCHEMES_URL = "{{route('api.settings.get_schemes')}}";
-    var PHONE_URL = "{{route('api.inventory.cust.get')}}";
-    var PATIENTS_URL = "{{route('api.reception.suggest_patients')}}";
-    var CREDIT_URL = "{{route('api.inventory.credit.rate')}}";
-
-    function get_patient_suggestions(term) {
-        $.ajax({
-            url: PATIENTS_URL,
-            data: {'term': term},
-            success: function (data) {
-                $('.results').html(data);
-            }
+        $('#patient_select').keyup(function () {
+            get_patient_suggestions(this.value)
         });
-    }
-</script>
-<script src="{!! m_asset('inventory:js/shopfront.js') !!}"></script>
-<script src="{{m_asset('reception:js/appointments.min.js')}}"></script>
+        var INSURANCE = false;
+        var STOCK_URL = "{{route('api.inventory.getstock')}}";
+        var PRODUCTS_URL = "{{route('api.inventory.get.products')}}";
+        var SCHEMES_URL = "{{route('api.settings.get_schemes')}}";
+        var PHONE_URL = "{{route('api.inventory.cust.get')}}";
+        var PATIENTS_URL = "{{route('api.reception.suggest_patients')}}";
+        var CREDIT_URL = "{{route('api.inventory.credit.rate')}}";
+
+        function get_patient_suggestions(term) {
+            $.ajax({
+                url: PATIENTS_URL,
+                data: {'term': term},
+                success: function (data) {
+                    $('.results').html(data);
+                }
+            });
+        }
+    </script>
+    <script src="{!! m_asset('inventory:js/shopfront.js') !!}"></script>
+    <script src="{{m_asset('reception:js/appointments.min.js')}}"></script>
 @endsection

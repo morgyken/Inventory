@@ -21,12 +21,12 @@ class ProductsTableSeeder extends Seeder
      */
     public function run()
     {
-        $product_categories = ['Drugs', 'Eye-wear', 'Minerals'];
+        $product_categories = ['Drugs', 'Eye-wear', 'Minerals', 'Shop'];
         foreach ($product_categories as $category) {
             $in = new InventoryCategories;
             $in->name = $category;
-            $in->cash_markup = 34;
-            $in->credit_markup = 40;
+            $in->cash_markup = 0;
+            $in->credit_markup = 0;
             $in->save();
         }
         $tax_categories = ['None' => 0, 'VAT' => '0.16', 'Special' => '0.002'];

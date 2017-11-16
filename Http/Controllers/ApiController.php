@@ -377,4 +377,8 @@ class ApiController extends Controller
         }
     }
 
+    public function todaySales($shop = null)
+    {
+
+    }
 }

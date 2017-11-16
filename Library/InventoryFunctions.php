@@ -12,43 +12,44 @@
 
 namespace Ignite\Inventory\Library;
 
+use Carbon\Carbon;
+use Ignite\Core\Entities\Notification;
+use Ignite\Evaluation\Entities\Dispensing;
+use Ignite\Evaluation\Entities\Visit;
+use Ignite\Finance\Entities\EvaluationPayments;
+use Ignite\Finance\Entities\InsuranceInvoice;
+use Ignite\Inventory\Entities\Customer;
+use Ignite\Inventory\Entities\InternalOrder;
+use Ignite\Inventory\Entities\InternalOrderDetails;
 use Ignite\Inventory\Entities\InventoryBatch;
 use Ignite\Inventory\Entities\InventoryBatchProductSales;
 use Ignite\Inventory\Entities\InventoryBatchPurchases;
 use Ignite\Inventory\Entities\InventoryCategories;
 use Ignite\Inventory\Entities\InventoryDispensing;
+use Ignite\Inventory\Entities\InventoryInsuranceDetails;
+use Ignite\Inventory\Entities\InventoryInvoice;
 use Ignite\Inventory\Entities\InventoryPayments;
 use Ignite\Inventory\Entities\InventoryPaymentTerms;
+use Ignite\Inventory\Entities\InventoryProductDiscount;
+use Ignite\Inventory\Entities\InventoryProductMarkup;
 use Ignite\Inventory\Entities\InventoryProductPrice;
 use Ignite\Inventory\Entities\InventoryProducts;
-use Ignite\Inventory\Entities\Customer;
 use Ignite\Inventory\Entities\InventoryPurchaseOrderDetails;
 use Ignite\Inventory\Entities\InventoryPurchaseOrders;
+use Ignite\Inventory\Entities\InventorySalesReturn;
 use Ignite\Inventory\Entities\InventoryStock;
 use Ignite\Inventory\Entities\InventoryStockAdjustment;
-use Ignite\Inventory\Entities\InventoryProductMarkup;
-use Ignite\Inventory\Entities\InventoryInvoice;
 use Ignite\Inventory\Entities\InventorySupplier;
 use Ignite\Inventory\Entities\InventoryTaxCategory;
 use Ignite\Inventory\Entities\InventoryUnits;
-use Ignite\Inventory\Entities\InventoryProductDiscount;
-use Ignite\Inventory\Events\MarkupWasAdjusted;
-use Ignite\Inventory\Repositories\InventoryRepository;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Ignite\Inventory\Entities\InventorySalesReturn;
-use Ignite\Inventory\Entities\InventoryInsuranceDetails;
-use Ignite\Finance\Entities\InsuranceInvoice;
-use Ignite\Evaluation\Entities\Dispensing;
-use Ignite\Finance\Entities\EvaluationPayments;
-use Ignite\Finance\Entities\EvaluationPaymentsDetails;
+use Ignite\Inventory\Entities\OrderToCollabmed;
 use Ignite\Inventory\Entities\Requisition;
 use Ignite\Inventory\Entities\RequisitionDetails;
-use Ignite\Inventory\Entities\InternalOrder;
-use Ignite\Inventory\Entities\InternalOrderDetails;
-use Ignite\Core\Entities\Notification;
-use Ignite\Inventory\Entities\OrderToCollabmed;
-use Illuminate\Database\Eloquent\Model;
+use Ignite\Inventory\Events\MarkupWasAdjusted;
+use Ignite\Inventory\Repositories\InventoryRepository;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Description of InventoryFunctions
@@ -335,12 +336,11 @@ class InventoryFunctions implements InventoryRepository
      */
     public function record_sales($id = null)
     {
-        DB::beginTransaction();
+        \DB::beginTransaction();
         try {
             $patient = $this->request->patient;
-
-            $receipt = config('system.receipt_prefix') . mt_rand(1000, 9000) . '-' . date('d/m/y');
-            $stack = self::order_item_stack(array_keys($this->request->all()));
+            $receipt = config('system.receipt_prefix') . time();
+            $stack = $this->order_item_stack(array_keys($this->request->all()));
             $sales = new InventoryBatchProductSales;
             $sales->user = $this->request->user()->id;
             $sales->patient = $patient;
@@ -349,7 +349,7 @@ class InventoryFunctions implements InventoryRepository
                 $sales->shop = true;
             }
 
-            $visit = \Ignite\Evaluation\Entities\Visit::wherePatient($patient)
+            $visit = Visit::wherePatient($patient)
                 ->get()
                 ->last();
 
@@ -386,8 +386,8 @@ class InventoryFunctions implements InventoryRepository
 //move items in queue
                     $stock = InventoryStock::where('product', '=', $this->request->$item)->first();
                     if ($stock->quantity < $this->request->$quantity) {
-                        DB::rollback();
-                        flash()->error("An item you tried to sell is unfortunately out of stock...");
+                        \DB::rollback();
+                        flash()->error('An item you tried to sell is unfortunately out of stock...');
                         redirect()->back();
                     }
                     if ($this->request->$batch > 0) {
@@ -403,10 +403,10 @@ class InventoryFunctions implements InventoryRepository
                 //save dispense
                 $this->saveEvaluationDispense($this->request, $sales->id);
             }
-            DB::commit();
+            \DB::commit();
             return true;
         } catch (\Exception $e) {
-            DB::rollback();
+            \DB::rollback();
             flash()->error("Something went wrong<br/>1. Be sure you selected an existing patient, select \"Walkin Patient\" for random client <br/>"
                 . "<i>If 'walkin patient' account does not exist, it can be created at RECEPTION </i>"
                 . " <br>2. Trying to sell a product/drug that is out of stock will throw this exception"
@@ -1003,4 +1003,16 @@ class InventoryFunctions implements InventoryRepository
         return $order->save();
     }
 
+    /**
+     * @param bool $true
+     * @return mixed
+     */
+    public function getSales($true = false)
+    {
+        $sales = InventoryBatchProductSales::where('created_at', '>', Carbon::today());
+        if ($true) {
+            $sales = $sales->whereShop($true);
+        }
+        return $sales->get();
+    }
 }

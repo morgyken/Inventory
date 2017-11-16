@@ -2,6 +2,9 @@
 
 namespace Ignite\Inventory\Entities;
 
+use Ignite\Finance\Entities\EvaluationPayments;
+use Ignite\Finance\Entities\RemovedBills;
+use Ignite\Reception\Entities\PatientInsurance;
 use Ignite\Users\Entities\User;
 use Illuminate\Database\Eloquent\Model;
 use Ignite\Reception\Entities\Patients;
@@ -25,10 +28,10 @@ use Ignite\Reception\Entities\Patients;
  * @property-read \Ignite\Inventory\Entities\Customer|null $customers
  * @property-read mixed $amount
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryDispensing[] $goodies
- * @property-read \Ignite\Reception\Entities\PatientInsurance|null $insuranceses
+ * @property-read PatientInsurance|null $insuranceses
  * @property-read \Ignite\Reception\Entities\Patients|null $patients
- * @property-read \Ignite\Finance\Entities\EvaluationPayments $payment
- * @property-read \Ignite\Finance\Entities\RemovedBills $removed_bills
+ * @property-read EvaluationPayments $payment
+ * @property-read RemovedBills $removed_bills
  * @property-read \Ignite\Users\Entities\User $users
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCustomer($value)
@@ -44,50 +47,59 @@ use Ignite\Reception\Entities\Patients;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereVisit($value)
  * @mixin \Eloquent
  */
-class InventoryBatchProductSales extends Model {
+class InventoryBatchProductSales extends Model
+{
 
     protected $fillable = [];
     public $table = 'inventory_batch_sales';
 
-    public function goodies() {
+    public function goodies()
+    {
         return $this->hasMany(InventoryDispensing::class, 'batch');
     }
 
-    public function users() {
+    public function users()
+    {
         return $this->belongsTo(User::class, 'user');
     }
 
-    public function payment() {
-        return $this->hasOne(\Ignite\Finance\Entities\EvaluationPayments::class, 'sale');
+    public function payment()
+    {
+        return $this->hasOne(EvaluationPayments::class, 'sale');
     }
 
-    public function amountpaid() {
+    public function amountpaid()
+    {
         return $this->hasOne(InventoryPayments::class, 'receipt', 'receipt');
     }
 
-    public function customers() {
+    public function customers()
+    {
         return $this->belongsTo(Customer::class, 'customer');
     }
 
-    public function patients() {
+    public function patients()
+    {
         return $this->belongsTo(Patients::class, 'patient');
     }
 
-    public function insuranceses() {
-        return $this->belongsTo(\Ignite\Reception\Entities\PatientInsurance::class, 'insurance');
+    public function insuranceses()
+    {
+        return $this->belongsTo(PatientInsurance::class, 'insurance');
     }
 
-    public function getAmountAttribute() {
-        $amount = 0;
-        foreach ($this->goodies as $d) {
-            //$total = $d->quantity * $d->price - ($d->discount / 100 * $d->quantity * $d->price);
-            $amount+=$d->total;
-        }
-        return ceil($amount);
+    public function getAmountAttribute()
+    {
+        return ceil($this->goodies->sum('total'));
     }
 
-    public function removed_bills() {
-        return $this->hasOne(\Ignite\Finance\Entities\RemovedBills::class, 'sale');
+    public function removed_bills()
+    {
+        return $this->hasOne(RemovedBills::class, 'sale');
     }
 
+    public function getDescAttribute()
+    {
+        return ($this->shop ? 'SHOP' : 'PHARMACY') . $this->created_at;
+    }
 }
