@@ -15,7 +15,8 @@ use Ignite\Inventory\Entities\InventorySalesReturn;
 use Ignite\Inventory\Entities\InventoryDispensing;
 use Ignite\Inventory\Entities\InventoryInsuranceDetails;
 
-class SalesController extends AdminBaseController {
+class SalesController extends AdminBaseController
+{
 
     /**
      * @var InventoryRepository
@@ -27,13 +28,15 @@ class SalesController extends AdminBaseController {
      * @param InventoryRepository $repository
      * @param Request $request
      */
-    public function __construct(InventoryRepository $repository, Request $request) {
+    public function __construct(InventoryRepository $repository, Request $request)
+    {
         parent::__construct();
         $this->inventoryRepository = $repository;
         $this->request = $request;
     }
 
-    public function shopfront($id = null) {
+    public function shopfront($id = null)
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->record_sales($id)) {
                 $receipt = session('receipt_id');
@@ -48,13 +51,29 @@ class SalesController extends AdminBaseController {
             }
         }
         $this->data['schemes'] = Schemes::all();
-        if($this->request->shop){
-            $this->data['is_shop'] = true;
-        }
         return view('inventory::shop.shop', ['data' => $this->data]);
     }
 
-    public function shopfront_credit($id = null) {
+    public function shop($id = null)
+    {
+        $this->data['is_shop'] = true;
+        if ($this->request->isMethod('post')) {
+            if ($this->inventoryRepository->record_sales($id)) {
+                $receipt = session('receipt_id');
+                if (isset($this->request->pharmacy)) {
+                    flash('Drugs dispensed successfully');
+                    return redirect()->back();
+                }
+                flash('Transaction completed');
+                return redirect()->route('inventory.receipt', $receipt);
+            }
+        }
+        $this->data['schemes'] = Schemes::all();
+        return view('inventory::shop.shop', ['data' => $this->data]);
+    }
+
+    public function shopfront_credit($id = null)
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->record_sales($id)) {
                 $receipt = session('receipt_id');
@@ -70,7 +89,8 @@ class SalesController extends AdminBaseController {
      * @param type $id
      * @return type
      */
-    public function clients($id = null) {
+    public function clients($id = null)
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->save_client($id)) {
                 flash('Client Saved.. thank you');
@@ -88,7 +108,8 @@ class SalesController extends AdminBaseController {
      * @param type $id
      * @return type
      */
-    public function show_clients($id = null) {
+    public function show_clients($id = null)
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->save_client($id)) {
                 flash('Client Saved.. thank you');
@@ -99,7 +120,8 @@ class SalesController extends AdminBaseController {
         return view('inventory::clients', ['data' => $this->data]);
     }
 
-    public function purge_client($id = null) {
+    public function purge_client($id = null)
+    {
         if ($this->inventoryRepository->purge_client($id)) {
             flash('client information deleted.. thank you');
             return redirect()->route('inventory.clients.credit', null);
@@ -112,17 +134,20 @@ class SalesController extends AdminBaseController {
      * @param type $id
      * @return type
      */
-    public function receipt($id) {
+    public function receipt($id)
+    {
         $this->data['sales'] = InventoryBatchProductSales::find($id);
         return view('inventory::shop.receipt_preview', ['data' => $this->data]);
     }
 
-    public function receipts() {
+    public function receipts()
+    {
         $this->data['records'] = InventoryBatchProductSales::all();
         return view('inventory::sales_receipts', ['data' => $this->data]);
     }
 
-    public function return_goods() {
+    public function return_goods()
+    {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->sales_return()) {
                 flash("Transaction Successful");
@@ -139,11 +164,12 @@ class SalesController extends AdminBaseController {
     }
 
 
-    public function import_shop_items(){
+    public function import_shop_items()
+    {
         $items = ShopItems::all();
         $cat = InventoryCategories::whereName('Shop')->get()->first();
-        $n =0;
-        foreach ($items as $item){
+        $n = 0;
+        foreach ($items as $item) {
             $p = new InventoryProducts();
             $p->name = $item->name;
             $p->category = $cat->id;
@@ -155,9 +181,9 @@ class SalesController extends AdminBaseController {
             $price->selling = $item->price;
             $price->product = $p->id;
             $price->save();
-            $n+=1;
+            $n += 1;
         }
-        echo $n.' Shop Items Imported';
+        echo $n . ' Shop Items Imported';
     }
 
 }

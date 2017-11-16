@@ -30,18 +30,16 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender
     public function extendWith(Menu $menu)
     {
         $menu->group('Dashboard', function (Group $group) {
-
-
-            if(!m_setting('inventory.no_pos')) {
+            if (!m_setting('inventory.no_pos')) {
                 $group->item('Pharmacy POS', function (Item $item) {
                     $item->icon('fa fa-cart-arrow-down');
-                    $item->route('inventory.shopfront',['shop'=>false]);
+                    $item->route('inventory.shopfront');
                     $item->authorize($this->auth->hasAccess('inv.*'));
                 });
 
                 $group->item('Shop POS', function (Item $item) {
                     $item->icon('fa fa-shopping-basket');
-                    $item->route('inventory.shopfront',['shop'=>true]);
+                    $item->route('inventory.shop');
                     $item->authorize($this->auth->hasAccess('inv.*'));
                 });
             }
@@ -134,25 +132,6 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender
                         });
                         $item->authorize($this->auth->hasAccess('inv.purchases'));
                     });
-                    /*
-                      $item->item('Orders via Collabmed', function (Item $item) {
-                      $item->icon('fa fa-circle-thin');
-                      // $item->route('inventory.collabmed.orders');
-                      //$item->authorize($this->auth->hasAccess('inv.purchases'));
-
-                      $item->item('Orders', function (Item $item) {
-                      $item->icon('fa fa-cart-arrow-down');
-                      $item->route('inventory.collabmed.orders');
-                      //$item->authorize($this->auth->hasAccess('inv.purchases'));
-                      });
-
-                      $item->item('Quotations', function (Item $item) {
-                      $item->icon('fa fa-unsorted');
-                      $item->route('inventory.collabmed.quotations.view');
-                      //$item->authorize($this->auth->hasAccess('inv.purchases'));
-                      });
-                      });
-                     */
 
                     $item->item('Create LPO', function (Item $item) {
                         $item->icon('fa fa-hand-pointer-o');
@@ -164,11 +143,6 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender
                         $item->route('inventory.purchase_orders');
                         $item->authorize($this->auth->hasAccess('inv.purchases'));
                     });
-                    /*
-                      $item->item('Internal Orders', function (Item $item) {
-                      $item->icon('fa fa-dot-circle-o');
-                      $item->route('inventory.orders.internal');
-                      }); */
                     $item->item('Receive Goods', function (Item $item) {
                         $item->icon('fa fa-shopping-basket');
                         $item->route('inventory.receive_goods');

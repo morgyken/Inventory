@@ -24,7 +24,19 @@ interface InventoryRepository
      */
     public function add_product($id = null);
 
+    /**
+     * @return mixed
+     */
     public function set_stock_value();
 
+    /**
+     * @return mixed
+     */
     public function updateProdPrice();
+
+    /**
+     * @param int|null $id
+     * @return mixed
+     */
+    public function record_sales($id = null);
 }
