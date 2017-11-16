@@ -39,4 +39,10 @@ interface InventoryRepository
      * @return mixed
      */
     public function record_sales($id = null);
+
+    /**
+     * @param bool $true
+     * @return mixed
+     */
+    public function getSales($true = false);
 }

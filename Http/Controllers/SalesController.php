@@ -22,6 +22,10 @@ class SalesController extends AdminBaseController
      * @var InventoryRepository
      */
     protected $inventoryRepository;
+    /**
+     * @var Request
+     */
+    private $request;
 
     /**
      * SalesController constructor.
@@ -56,18 +60,14 @@ class SalesController extends AdminBaseController
 
     public function shop($id = null)
     {
-        $this->data['is_shop'] = true;
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->record_sales($id)) {
                 $receipt = session('receipt_id');
-                if (isset($this->request->pharmacy)) {
-                    flash('Drugs dispensed successfully');
-                    return redirect()->back();
-                }
                 flash('Transaction completed');
                 return redirect()->route('inventory.receipt', $receipt);
             }
         }
+        $this->data['sold'] = $this->inventoryRepository->getSales(true);
         $this->data['schemes'] = Schemes::all();
         return view('inventory::shop.shop', ['data' => $this->data]);
     }
