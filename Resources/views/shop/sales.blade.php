@@ -14,7 +14,7 @@
                     <td>
                         <a href="{{route('inventory.receipt',$item->id)}}">
                             <i class="fa fa-eye"></i> View</a>
-                        <a target="_blank" href="{{route('inventory.receipt',$item->id)}}">
+                        <a target="_blank" href="{{route('inventory.sale.receipt.print',$item->id)}}">
                             <i class="fa fa-print"></i> Print</a>
                     </td>
                 </tr>
