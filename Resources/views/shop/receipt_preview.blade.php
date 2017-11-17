@@ -99,12 +99,15 @@ $total = 0;
                             </a>
                         @else
                             @if($sales->shop)
-                                <a href="{{route('inventory.sale.receipt.print',$data['sales']->id)}}" target="_blank"
+                                <a href="{{route('inventory.sale.receipt.print',$sales->id)}}" target="_blank"
                                    class="btn btn-primary">
                                     <i class="fa fa-print"></i> Print Receipt</a>
                                 <a href="{{route('inventory.shop')}}" class="btn btn-success">
                                     <i class="fa fa-fast-forward"></i> Next Sales</a>
                             @else
+                                <a href="{{route('inventory.sale.receipt.print',$sales->id)}}" target="_blank"
+                                   class="btn btn-primary">
+                                    <i class="fa fa-print"></i> Print Receipt</a>
                                 <a href="{{route('inventory.shopfront')}}" class="btn btn-success">
                                     <i class="fa fa-fast-forward"></i> Next Sales</a>
                             @endif

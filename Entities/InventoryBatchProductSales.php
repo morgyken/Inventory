@@ -27,11 +27,12 @@ use Ignite\Reception\Entities\Patients;
  * @property-read \Ignite\Inventory\Entities\InventoryPayments $amountpaid
  * @property-read \Ignite\Inventory\Entities\Customer|null $customers
  * @property-read mixed $amount
+ * @property-read mixed $desc
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InventoryDispensing[] $goodies
- * @property-read PatientInsurance|null $insuranceses
+ * @property-read \Ignite\Reception\Entities\PatientInsurance|null $insuranceses
  * @property-read \Ignite\Reception\Entities\Patients|null $patients
- * @property-read EvaluationPayments $payment
- * @property-read RemovedBills $removed_bills
+ * @property-read \Ignite\Finance\Entities\EvaluationPayments $payment
+ * @property-read \Ignite\Finance\Entities\RemovedBills $removed_bills
  * @property-read \Ignite\Users\Entities\User $users
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereCustomer($value)
