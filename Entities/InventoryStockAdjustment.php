@@ -38,8 +38,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  */
 class InventoryStockAdjustment extends Model {
-
-    protected $fillable = [];
+    
+    protected $guarded = ['id'];
     public $table = 'inventory_stock_adjustments';
 
     public function products() {
