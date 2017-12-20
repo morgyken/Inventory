@@ -18,7 +18,7 @@
 @section('content')
 <div class="box box-info">
     <div class="box-header with-border">
-        <h3 class="box-title"><a class="btn btn-primary btn-xs" href="{{route('inventory.new.order.internal')}}">
+        <h3 class="box-title"><a class="btn btn-primary btn-xs" href="{{route('inventory.store.new_order')}}">
                 <i class="fa fa-plus-square"></i> New Internal Order
             </a>
         </h3>

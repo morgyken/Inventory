@@ -475,10 +475,5 @@ class InventoryController extends AdminBaseController
         return redirect()->back(); //route('inventory.purchase_details', $batch_id);
     }
 
-    public function ViewInternalOrders()
-    {
-        $this->data['orders'] = InternalOrder::all();
-        return view('inventory::internalorders_all', ['data' => $this->data]);
-    }
 
 }

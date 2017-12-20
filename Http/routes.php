@@ -84,9 +84,10 @@ $router->get('batch/{id}/details', ['uses' => 'InventoryController@batch_details
 $router->get('goods/delivered/{batch}', ['uses' => 'InventoryController@purchase_details', 'as' => 'purchase_details']);
 
 //internal orders
-$router->group(['as' => 'store.'], function (Router $router) {
-    $router->get('orders/internal', ['uses' => 'StoreController@viewOrders', 'as' => 'view_orders']);
-    $router->post('new/order/internal', ['uses' => 'StoreController@newOrders', 'as' => 'new_orders']);
+$router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $router) {
+    $router->get('new/order', ['uses' => 'StoreController@startOrder', 'as' => 'new_order']);
+    $router->get('orders/internal/{id?}', ['uses' => 'StoreController@viewOrders', 'as' => 'view_orders']);
+    $router->post('new/order/internal', ['uses' => 'StoreController@newOrders', 'as' => 'save_order']);
     $router->get('stores/view/all', ['uses' => 'StoreController@stores', 'as' => 'stores']);
     $router->post('store/save', ['uses' => 'StoreController@saveStore', 'as' => 'save_store']);
 });

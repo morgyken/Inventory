@@ -27,18 +27,27 @@ class StoreController extends AdminBaseController
         $this->inventoryRepository = $inventoryRepository;
     }
 
-    public function viewOrders()
+    public function startOrder()
     {
         $this->data['orders'] = InternalOrder::all();
         $this->data['stores'] = Store::all();
         return view('inventory::store.internal_orders', ['data' => $this->data]);
     }
 
+    public function viewOrders($id = null)
+    {
+        $this->data['orders'] = InternalOrder::all();
+        if ($id) {
+            $this->data['order'] = InternalOrder::find($id);
+        }
+        return view('inventory::store.internal_orders_all', ['data' => $this->data]);
+    }
+
     public function newOrders()
     {
         if ($this->inventoryRepository->saveInternalOrder()) {
             flash('Internal Order placed successfully');
-            return redirect()->route('inventory.orders.internal');
+            return redirect()->route('inventory.orders.view_order');
         }
         return redirect()->route('inventory.orders.internal');
     }
@@ -56,9 +65,6 @@ class StoreController extends AdminBaseController
     public function stores($id = null)
     {
         $this->data['stores'] = Store::all();
-        if (!empty($id)) {
-            $this->data['store'] = Store::find($id);
-        }
         return view('inventory::store.stores', ['data' => $this->data]);
     }
 }
