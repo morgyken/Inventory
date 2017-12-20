@@ -23,14 +23,15 @@ extract($data);
                 <dt>Order Date:</dt>
                 <dd>{{smart_date($order->created_at)}}</dd>
                 <dt>Order Status</dt>
-                <dd><span class="label label-success">{{$order->status_label}}</span></dd>
+                <dd>{{$order->nice_status}}</dd>
             </dl>
             <div>
                 <table class="table table-responsive table-striped">
                     <thead>
                     <tr>
                         <th>Item</th>
-                        <th>Quantity</th>
+                        <th>Ordered</th>
+                        <th>Dispatched</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -38,15 +39,10 @@ extract($data);
                         <tr>
                             <td>{{$item->product->name}}</td>
                             <td>{{$item->quantity}}</td>
+                            <td>{{$item->dispatched??0}}</td>
                         </tr>
                     @endforeach
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <th colspan="3">Total</th>
-                        <th>{{$order->totals}}</th>
-                    </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
