@@ -78,4 +78,10 @@ class StoreController extends AdminBaseController
         $this->data['orders'] = InternalOrder::whereStatus(0)->get();
         return view('inventory::store.dispatch_orders', ['data' => $this->data]);
     }
+
+    public function saveDispatch()
+    {
+        $dis = $this->inventoryRepository->dispatchInternal();
+        dd($dis);
+    }
 }

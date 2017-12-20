@@ -17,9 +17,12 @@ class CreateInternalOrderDispatchesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('item_id');
             $table->integer('qty_dispatched');
+            $table->integer('qty_accepted')->nullable();
             $table->integer('qty_rejected')->nullable();
             $table->unsignedInteger('batch_id')->nullable();
             $table->text('reject_reason')->nullable();
+            $table->unsignedInteger('dispatch_user');
+            $table->unsignedInteger('receive_user')->nullable();
             $table->timestamps();
         });
     }

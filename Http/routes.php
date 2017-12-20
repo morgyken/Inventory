@@ -91,6 +91,7 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
     $router->get('stores/view/all', ['uses' => 'StoreController@stores', 'as' => 'stores']);
     $router->post('store/save', ['uses' => 'StoreController@saveStore', 'as' => 'save_store']);
     $router->get('dispatch/{id?}', ['uses' => 'StoreController@dispatchItems', 'as' => 'dispatch']);
+    $router->post('dispatcher', ['uses' => 'StoreController@saveDispatch', 'as' => 'save_dispatch']);
 });
 //suppliers
 $router->match(['post', 'get'], 'suppliers/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);

@@ -21,6 +21,7 @@ use Ignite\Finance\Entities\InsuranceInvoice;
 use Ignite\Inventory\Entities\Customer;
 use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\InternalOrderDetails;
+use Ignite\Inventory\Entities\InternalOrderDispatch;
 use Ignite\Inventory\Entities\InventoryBatch;
 use Ignite\Inventory\Entities\InventoryBatchProductSales;
 use Ignite\Inventory\Entities\InventoryBatchPurchases;
@@ -1014,4 +1015,33 @@ class InventoryFunctions implements InventoryRepository
         }
         return $sales->get();
     }
+
+    /**
+     * @throws \Illuminate\Support\Facades\Exception
+     */
+    public function dispatchInternal()
+    {
+        $to_dispatch = \request('dispatch');
+        $order_id = \request('order_id');
+        \DB::beginTransaction();
+        try {
+            foreach ($to_dispatch as $k => $v) {
+                $item = InternalOrderDetails::find($k);
+                $_needed = $item->quantity - $item->dispatched;
+                if ($v > $_needed) {
+                    flash('Cannot dispatch more than requested', 'danger');
+                    throw new \Exception('Cannot dispatch more than requested');
+                }
+                InternalOrderDispatch::create([
+                    'item_id' => $item->id,
+                    'qty_dispatched' => $v,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return \DB::rollBack();
+        }
+        \DB::commit();
+        return true;
+    }
+
 }

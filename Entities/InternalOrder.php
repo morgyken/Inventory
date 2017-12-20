@@ -58,7 +58,6 @@ class InternalOrder extends Model
         return $this->hasMany(InternalOrderDetails::class, 'internal_order');
     }
 
-
     public function getNiceStatusAttribute()
     {
         switch ($this->status) {
