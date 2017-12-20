@@ -164,15 +164,24 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender
                 $item->item('Internal Orders', function (Item $item) {
                     $item->icon('fa fa-list');
                     $item->authorize($this->auth->hasAccess('inv.internal_orders'));
-                    $item->item('Stores', function (Item $item) {
-                        $item->icon('fa fa-building');
-                        $item->route('inventory.stores');
+                    $item->item('New Order', function (Item $item) {
+                        $item->icon('fa fa-plus-square');
+                        $item->route('inventory.store.new_order');
                         $item->authorize($this->auth->hasAccess('inv.internal_orders'));
                     });
-
                     $item->item('Internal Orders', function (Item $item) {
                         $item->icon('fa fa-arrows');
-                        $item->route('inventory.orders.internal');
+                        $item->route('inventory.store.view_orders');
+                        $item->authorize($this->auth->hasAccess('inv.internal_orders'));
+                    });
+                    $item->item('Stores', function (Item $item) {
+                        $item->icon('fa fa-building');
+                        $item->route('inventory.store.stores');
+                        $item->authorize($this->auth->hasAccess('inv.internal_orders'));
+                    });
+                    $item->item('Dispatch', function (Item $item) {
+                        $item->icon('fa fa-send');
+                        $item->route('inventory.store.dispatch');
                         $item->authorize($this->auth->hasAccess('inv.internal_orders'));
                     });
                 });

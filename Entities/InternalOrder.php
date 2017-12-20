@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InternalOrderDetails[] $details
  * @property-read \Ignite\Inventory\Entities\Store $disp_store
+ * @property-read mixed $nice_status
  * @property-read \Ignite\Inventory\Entities\Store $rq_store
  * @property-read \Ignite\Users\Entities\User $users
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InternalOrder whereAuthor($value)
@@ -31,25 +32,39 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InternalOrder whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class InternalOrder extends Model {
+class InternalOrder extends Model
+{
 
     protected $fillable = [];
     public $table = 'inventory_internal_orders';
 
-    public function users() {
+    public function users()
+    {
         return $this->belongsTo(\Ignite\Users\Entities\User::class, 'author');
     }
 
-    public function disp_store() {
-        return $this->hasOne(Store::class, 'id', 'dispatching_store');
+    public function disp_store()
+    {
+        return $this->belongsTo(Store::class, 'dispatching_store');
     }
 
-    public function rq_store() {
-        return $this->hasOne(Store::class, 'id', 'requesting_store');
+    public function rq_store()
+    {
+        return $this->belongsTo(Store::class, 'requesting_store');
     }
 
-    public function details() {
+    public function details()
+    {
         return $this->hasMany(InternalOrderDetails::class, 'internal_order');
     }
 
+    public function getNiceStatusAttribute()
+    {
+        switch ($this->status) {
+            case 0:
+                return 'Submitted';
+            default:
+                return 'Pending';
+        }
+    }
 }

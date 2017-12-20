@@ -59,7 +59,7 @@ class InventoryController extends AdminBaseController
     {
         if ($this->request->isMethod('post')) {
             if ($this->inventoryRepository->add_supplier()) {
-                flash("Supplier details saved");
+                flash('Supplier details saved');
                 return redirect()->route('inventory.suppliers');
             }
         }
@@ -475,38 +475,5 @@ class InventoryController extends AdminBaseController
         return redirect()->back(); //route('inventory.purchase_details', $batch_id);
     }
 
-    public function ViewInternalOrders()
-    {
-        $this->data['orders'] = InternalOrder::all();
-        return view('inventory::internalorders_all', ['data' => $this->data]);
-    }
-
-    public function ManageInternalOrders()
-    {
-        if ($this->request->isMethod('post')) {
-            if ($this->inventoryRepository->SaveInternalOrder($this->request)) {
-                flash('Internal Order placed successfully');
-                return redirect()->back(); //route('inventory.purchase_details', $batch_id);
-            }
-        }
-        $this->data['orders'] = InternalOrder::all();
-        $this->data['stores'] = Store::all();
-        return view('inventory::internalorders', ['data' => $this->data]);
-    }
-
-    public function ManageStores()
-    {
-        if ($this->request->isMethod('post')) {
-            $store = new Store;
-            $store->name = $this->request->name;
-            $store->description = $this->request->desc;
-            $store->save();
-        }
-        $this->data['stores'] = Store::all();
-        if (isset($this->request->id)) {
-            $this->data['store'] = Store::find($this->request->id);
-        }
-        return view('inventory::stores', ['data' => $this->data]);
-    }
 
 }

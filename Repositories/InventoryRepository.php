@@ -45,4 +45,8 @@ interface InventoryRepository
      * @return mixed
      */
     public function getSales($true = false);
+
+    public function saveInternalOrder();
+
+    public function dispatchInternal();
 }

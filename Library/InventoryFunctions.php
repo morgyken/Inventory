@@ -21,6 +21,7 @@ use Ignite\Finance\Entities\InsuranceInvoice;
 use Ignite\Inventory\Entities\Customer;
 use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\InternalOrderDetails;
+use Ignite\Inventory\Entities\InternalOrderDispatch;
 use Ignite\Inventory\Entities\InventoryBatch;
 use Ignite\Inventory\Entities\InventoryBatchProductSales;
 use Ignite\Inventory\Entities\InventoryBatchPurchases;
@@ -971,28 +972,27 @@ class InventoryFunctions implements InventoryRepository
         return $req->save();
     }
 
-    public function SaveInternalOrder()
+    public function saveInternalOrder()
     {
-        DB::transaction(function () {
-            $stack = self::order_item_stack(array_keys($this->request->all()));
-            $order = new InternalOrder;
-            $order->author = \Auth::user()->id;
-            $order->dispatching_store = $this->request->dispatching_store;
-            $order->requesting_store = $this->request->requesting_store;
-            $order->deliver_date = $this->request->deliver_date;
-            $order->save();
-            foreach ($stack as $index) {
-                $item = 'item' . $index;
-                $quantity = 'qty' . $index;
-                $details = new InternalOrderDetails();
-                $details->internal_order = $order->id;
-                $details->item = $this->request->$item;
-                $details->quantity = $this->request->$quantity;
-                $details->save();
-            }
-        });
-
-        return true;
+        \DB::beginTransaction();
+        $stack = self::order_item_stack(array_keys($this->request->all()));
+        $order = new InternalOrder;
+        $order->author = \Auth::user()->id;
+        $order->dispatching_store = $this->request->dispatching_store;
+        $order->requesting_store = $this->request->requesting_store;
+        $order->deliver_date = $this->request->deliver_date;
+        $order->save();
+        foreach ($stack as $index) {
+            $item = 'item' . $index;
+            $quantity = 'qty' . $index;
+            $details = new InternalOrderDetails();
+            $details->internal_order = $order->id;
+            $details->item = $this->request->$item;
+            $details->quantity = $this->request->$quantity;
+            $details->save();
+        }
+        \DB::commit();
+        return $order->id;
     }
 
     public function sendOrderToCollabmed(Request $request)
@@ -1015,4 +1015,33 @@ class InventoryFunctions implements InventoryRepository
         }
         return $sales->get();
     }
+
+    /**
+     * @throws \Illuminate\Support\Facades\Exception
+     */
+    public function dispatchInternal()
+    {
+        $to_dispatch = \request('dispatch');
+        $order_id = \request('order_id');
+        \DB::beginTransaction();
+        try {
+            foreach ($to_dispatch as $k => $v) {
+                $item = InternalOrderDetails::find($k);
+                $_needed = $item->quantity - $item->dispatched;
+                if ($v > $_needed) {
+                    flash('Cannot dispatch more than requested', 'danger');
+                    throw new \Exception('Cannot dispatch more than requested');
+                }
+                InternalOrderDispatch::create([
+                    'item_id' => $item->id,
+                    'qty_dispatched' => $v,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return \DB::rollBack();
+        }
+        \DB::commit();
+        return true;
+    }
+
 }

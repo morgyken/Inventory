@@ -38,7 +38,7 @@ class MakeInternalOrderDetailsTable extends Migration {
      * @return void
      */
     public function down() {
-        Schema::dropIfExists('internal_order_details');
+        Schema::dropIfExists('inventory_internal_order_details');
     }
 
 }

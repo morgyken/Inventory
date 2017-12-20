@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Model;
 class Store extends Model
 {
 
-    protected $fillable = [];
+    protected $guarded = [];
     public $table = 'inventory_stores';
 
     public function getDescAttribute()
