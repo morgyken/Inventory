@@ -45,11 +45,11 @@ class StoreController extends AdminBaseController
 
     public function newOrders()
     {
-        if ($this->inventoryRepository->saveInternalOrder()) {
+        if ($id = $this->inventoryRepository->saveInternalOrder()) {
             flash('Internal Order placed successfully');
-            return redirect()->route('inventory.orders.view_order');
+            return redirect()->route('inventory.store.view_orders', $id);
         }
-        return redirect()->route('inventory.orders.internal');
+        return redirect()->route('inventory.store.view_orders');
     }
 
     public function saveStore()
