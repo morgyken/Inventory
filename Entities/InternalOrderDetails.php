@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $quantity
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
- * @property-read \Ignite\Inventory\Entities\InventoryProducts $items
+ * @property-read \Ignite\Inventory\Entities\InventoryProducts $product
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InternalOrderDetails whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InternalOrderDetails whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InternalOrderDetails whereInternalOrder($value)
@@ -24,10 +24,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InternalOrderDetails extends Model {
 
-    protected $fillable = [];
+    protected $guarded = [];
     protected $table = 'inventory_internal_order_details';
 
-    public function items() {
+    public function product() {
         return $this->belongsTo(InventoryProducts::class, 'item');
     }
 

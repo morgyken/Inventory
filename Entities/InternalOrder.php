@@ -41,11 +41,11 @@ class InternalOrder extends Model {
     }
 
     public function disp_store() {
-        return $this->hasOne(Store::class, 'id', 'dispatching_store');
+        return $this->belongsTo(Store::class, 'dispatching_store');
     }
 
     public function rq_store() {
-        return $this->hasOne(Store::class, 'id', 'requesting_store');
+        return $this->belongsTo(Store::class, 'requesting_store');
     }
 
     public function details() {

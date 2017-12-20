@@ -36,10 +36,11 @@ class StoreController extends AdminBaseController
 
     public function viewOrders($id = null)
     {
-        $this->data['orders'] = InternalOrder::all();
         if ($id) {
             $this->data['order'] = InternalOrder::find($id);
+            return view('inventory::store.order_details', ['data' => $this->data]);
         }
+        $this->data['orders'] = InternalOrder::all();
         return view('inventory::store.internal_orders_all', ['data' => $this->data]);
     }
 
