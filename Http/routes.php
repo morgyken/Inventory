@@ -1,5 +1,9 @@
 <?php
-/** @var \Illuminate\Routing\Router $router */
+
+use Illuminate\Routing\Router;
+
+/** @var Router $router */
+
 $router->get('/', ['uses' => 'InventoryController@index', 'as' => 'index']);
 
 //sales
@@ -79,11 +83,13 @@ $router->get('goods/received/grns', ['uses' => 'InventoryController@grns', 'as' 
 $router->get('batch/{id}/details', ['uses' => 'InventoryController@batch_details', 'as' => 'batch.details']);
 $router->get('goods/delivered/{batch}', ['uses' => 'InventoryController@purchase_details', 'as' => 'purchase_details']);
 
-
-$router->match(['post', 'get'], 'orders/internal', ['uses' => 'InventoryController@ManageInternalOrders', 'as' => 'new.order.internal']);
-$router->match(['post', 'get'], 'new/order/internal', ['uses' => 'InventoryController@ViewInternalOrders', 'as' => 'orders.internal']);
-$router->match(['post', 'get'], 'stores/', ['uses' => 'InventoryController@ManageStores', 'as' => 'stores']);
-$router->match(['post', 'get'], 'store/{id}', ['uses' => 'InventoryController@ManageStores', 'as' => 'store.manage']);
+//internal orders
+$router->group(['as' => 'store.'], function (Router $router) {
+    $router->get('orders/internal', ['uses' => 'StoreController@viewOrders', 'as' => 'view_orders']);
+    $router->post('new/order/internal', ['uses' => 'StoreController@newOrders', 'as' => 'new_orders']);
+    $router->get('stores/view/all', ['uses' => 'StoreController@stores', 'as' => 'stores']);
+    $router->post('store/save', ['uses' => 'StoreController@saveStore', 'as' => 'save_store']);
+});
 //suppliers
 $router->match(['post', 'get'], 'suppliers/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);
 //$router->get('suppliers/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);

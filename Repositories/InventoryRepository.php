@@ -11,6 +11,7 @@
  */
 
 namespace Ignite\Inventory\Repositories;
+use Illuminate\Http\Request;
 
 /**
  * Interface InventoryRepository
@@ -45,4 +46,6 @@ interface InventoryRepository
      * @return mixed
      */
     public function getSales($true = false);
+
+    public function saveInternalOrder();
 }

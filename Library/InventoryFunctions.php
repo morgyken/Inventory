@@ -971,7 +971,7 @@ class InventoryFunctions implements InventoryRepository
         return $req->save();
     }
 
-    public function SaveInternalOrder()
+    public function saveInternalOrder()
     {
         DB::transaction(function () {
             $stack = self::order_item_stack(array_keys($this->request->all()));
