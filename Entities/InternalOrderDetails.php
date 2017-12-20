@@ -22,12 +22,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InternalOrderDetails whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class InternalOrderDetails extends Model {
+class InternalOrderDetails extends Model
+{
 
     protected $guarded = [];
     protected $table = 'inventory_internal_order_details';
 
-    public function product() {
+    public function product()
+    {
         return $this->belongsTo(InventoryProducts::class, 'item');
     }
 

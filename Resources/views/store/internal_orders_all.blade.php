@@ -27,23 +27,8 @@ extract($data);
                                     <td>{{$item->users->profile->name}}</td>
                                     <td>{{$item->disp_store->name}}</td>
                                     <td>{{$item->rq_store->name}}</td>
-                                    <td>
-                                        @if($item->status ===0)
-                                            <span class="btn-info btn-xs">
-                                    <small>
-                                        <i class="fa fa-hourglass-start" aria-hidden="true"></i>
-                                        pending
-                                    </small>
-                                </span>
-                                        @else
-                                            <span class="btn-success btn-xs">
-                                    <small>
-                                        <i class="fa fa-hourglass-start" aria-hidden="true"></i>
-                                        closed
-                                    </small>
-                                </span>
-                                        @endif
-                                    </td>
+                                    <td>{{$item->nice_status}}</td>
+                                    <td>{{$item->created_at->format('d/m/Y')}}</td>
                                     <td><a href="{{route('inventory.store.view_orders',$item->id)}}">
                                             <i class="fa fa-eye"></i> View
                                         </a></td>
@@ -57,6 +42,7 @@ extract($data);
                                 <th>Dispatching Store</th>
                                 <th>Requesting Store</th>
                                 <th>Status</th>
+                                <th>Ordered Date</th>
                                 <td>View</td>
                             </tr>
                             </thead>
