@@ -33,6 +33,7 @@ extract($data);
                         <th>Item</th>
                         <th>Ordered</th>
                         <th>Dispatched</th>
+                        <th>Quantity</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -42,6 +43,7 @@ extract($data);
                             <td>{{$item->product->name}}</td>
                             <td>{{$item->quantity}}</td>
                             <td>{{$item->dispatched??0}}</td>
+                            <td><input type="text" name="dispatch"></td>
                         </tr>
                     @endforeach
                     </tbody>

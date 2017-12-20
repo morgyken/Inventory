@@ -174,9 +174,14 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender
                         $item->route('inventory.store.view_orders');
                         $item->authorize($this->auth->hasAccess('inv.internal_orders'));
                     });
-                   $item->item('Stores', function (Item $item) {
+                    $item->item('Stores', function (Item $item) {
                         $item->icon('fa fa-building');
                         $item->route('inventory.store.stores');
+                        $item->authorize($this->auth->hasAccess('inv.internal_orders'));
+                    });
+                    $item->item('Dispatch', function (Item $item) {
+                        $item->icon('fa fa-send');
+                        $item->route('inventory.store.dispatch');
                         $item->authorize($this->auth->hasAccess('inv.internal_orders'));
                     });
                 });

@@ -11,7 +11,6 @@
  */
 
 namespace Ignite\Inventory\Repositories;
-use Illuminate\Http\Request;
 
 /**
  * Interface InventoryRepository

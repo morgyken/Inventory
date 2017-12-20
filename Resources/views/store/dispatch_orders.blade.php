@@ -4,8 +4,8 @@ extract($data);
 
 @extends('layouts.app')
 
-@section('content_title','Internal Orders')
-@section('content_description','Internal Orders')
+@section('content_title','Dispatch Orders')
+@section('content_description','Dispatch Orders')
 
 @section('content')
     <div class="box box-info">
@@ -29,7 +29,7 @@ extract($data);
                                     <td>{{$item->rq_store->name}}</td>
                                     <td>{{$item->nice_status}}</td>
                                     <td>{{$item->created_at->format('d/m/Y')}}</td>
-                                    <td><a href="{{route('inventory.store.view_orders',$item->id)}}">
+                                    <td><a href="{{route('inventory.store.dispatch',$item->id)}}">
                                             <i class="fa fa-eye"></i> View
                                         </a></td>
                                 </tr>

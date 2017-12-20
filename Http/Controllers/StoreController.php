@@ -68,4 +68,14 @@ class StoreController extends AdminBaseController
         $this->data['stores'] = Store::all();
         return view('inventory::store.stores', ['data' => $this->data]);
     }
+
+    public function dispatchItems($id = null)
+    {
+        if ($id) {
+            $this->data['order'] = InternalOrder::find($id);
+            return view('inventory::store.dispatch_details', ['data' => $this->data]);
+        }
+        $this->data['orders'] = InternalOrder::whereStatus(0)->get();
+        return view('inventory::store.dispatch_orders', ['data' => $this->data]);
+    }
 }
