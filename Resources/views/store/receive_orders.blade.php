@@ -4,8 +4,8 @@ extract($data);
 
 @extends('layouts.app')
 
-@section('content_title','Dispatch Orders')
-@section('content_description','Dispatch Orders')
+@section('content_title','Receive Items from Order')
+@section('content_description','Receive Items from Order')
 
 @section('content')
     <div class="box box-info">
@@ -29,8 +29,8 @@ extract($data);
                                     <td>{{$item->rq_store->name}}</td>
                                     <td>{{$item->nice_status}}</td>
                                     <td>{{$item->created_at->format('d/m/Y')}}</td>
-                                    <td><a href="{{route('inventory.store.dispatch',$item->id)}}">
-                                            <i class="fa fa-eye"></i> Dispatch
+                                    <td><a href="{{route('inventory.store.receive',$item->id)}}">
+                                            <i class="fa fa-eye"></i> Receive
                                         </a></td>
                                 </tr>
                             @endforeach
@@ -43,7 +43,7 @@ extract($data);
                                 <th>Requesting Store</th>
                                 <th>Status</th>
                                 <th>Ordered Date</th>
-                                <td>View</td>
+                                <td>Receive</td>
                             </tr>
                             </thead>
                         </table>
