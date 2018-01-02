@@ -85,4 +85,14 @@ class StoreController extends AdminBaseController
         flash('Inventory Dispatched', 'success');
         return redirect()->route('inventory.store.dispatch', $dis);
     }
+
+    public function receiveItems($id = null)
+    {
+
+    }
+
+    public function saveReceive()
+    {
+        
+    }
 }
