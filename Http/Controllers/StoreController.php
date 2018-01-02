@@ -83,6 +83,6 @@ class StoreController extends AdminBaseController
     {
         $dis = $this->inventoryRepository->dispatchInternal();
         flash("Inventory Dispatched");
-        return redirect()->back();
+        return redirect()->route('inventory.store.dispatch', $dis);
     }
 }

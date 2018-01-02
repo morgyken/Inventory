@@ -1041,7 +1041,7 @@ class InventoryFunctions implements InventoryRepository
             return \DB::rollBack();
         }
         \DB::commit();
-        return true;
+        return $order_id;
     }
 
 }
