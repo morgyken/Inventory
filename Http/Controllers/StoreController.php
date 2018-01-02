@@ -82,6 +82,7 @@ class StoreController extends AdminBaseController
     public function saveDispatch()
     {
         $dis = $this->inventoryRepository->dispatchInternal();
-        dd($dis);
+        flash("Inventory Dispatched");
+        return redirect()->back();
     }
 }
