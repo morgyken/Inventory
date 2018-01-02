@@ -1057,4 +1057,19 @@ class InventoryFunctions implements InventoryRepository
         return $order->save();
     }
 
+    public function saveReceived(): bool
+    {
+        $to_receive = \request('receive');
+        \DB::beginTransaction();
+        foreach ($to_receive as $key => $item) {
+            $in = InternalOrderDispatch::find($key);
+            $in->receive_user = $this->request->user()->id;
+            $in->reject_reason = $this->request->reason[$key];
+            $in->qty_rejected = $this->request->reject[$key];
+            $in->qty_accepted = $this->request->receive[$key];
+            $in->save();
+        }
+        \DB::commit();
+        return true;
+    }
 }

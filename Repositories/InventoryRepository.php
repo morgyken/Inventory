@@ -49,4 +49,6 @@ interface InventoryRepository
     public function saveInternalOrder();
 
     public function dispatchInternal();
+
+    public function saveReceived();
 }
