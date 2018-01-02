@@ -45,7 +45,7 @@ extract($data);
                             <td>{{$item->product->name}}</td>
                             <td>{{$item->quantity}}</td>
                             <td>{{$item->dispatched??0}}</td>
-                            <td><input type="text" name="dispatch[<?=$item->id?>]"></td>
+                            <td><input type="text" name="dispatch[<?=$item->id?>]" value="{{$item->pending}}"></td>
                         </tr>
                     @endforeach
                     </tbody>

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Ignite\Inventory\Entities\InternalOrderDispatch[] $dispatch
  * @property-read mixed $dispatched
+ * @property-read mixed $pending
  * @property-read \Ignite\Inventory\Entities\InventoryProducts $product
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InternalOrderDetails whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InternalOrderDetails whereId($value)
@@ -29,6 +30,7 @@ class InternalOrderDetails extends Model
 
     protected $guarded = [];
     protected $table = 'inventory_internal_order_details';
+
 //    protected $appends = ['dispatched'];
 
     public function product()
@@ -44,5 +46,10 @@ class InternalOrderDetails extends Model
     public function getDispatchedAttribute(): int
     {
         return $this->dispatch->sum('qty_dispatched');
+    }
+
+    public function getPendingAttribute(): int
+    {
+        return $this->quantity - $this->dispatched;
     }
 }

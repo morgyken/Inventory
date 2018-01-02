@@ -1023,6 +1023,7 @@ class InventoryFunctions implements InventoryRepository
     {
         $to_dispatch = \request('dispatch');
         $order_id = \request('order_id');
+        $order = InternalOrder::find($order_id);
         \DB::beginTransaction();
         try {
             foreach ($to_dispatch as $k => $v) {
@@ -1037,11 +1038,23 @@ class InventoryFunctions implements InventoryRepository
                     'qty_dispatched' => $v,
                 ]);
             }
+            $this->recordStatus($order);
         } catch (\Exception $e) {
             return \DB::rollBack();
         }
         \DB::commit();
         return $order_id;
+    }
+
+    /**
+     * @param InternalOrder $order
+     * @return bool
+     */
+    private function recordStatus(InternalOrder $order): bool
+    {
+        $to_dispatch = $order->details->sum('pending');
+        $order->status = empty($to_dispatch) ? 2 : 1;
+        return $order->save();
     }
 
 }
