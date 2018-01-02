@@ -1036,6 +1036,7 @@ class InventoryFunctions implements InventoryRepository
                 InternalOrderDispatch::create([
                     'item_id' => $item->id,
                     'qty_dispatched' => $v,
+                    'dispatch_user' => $this->request->user()->id,
                 ]);
             }
             $this->recordStatus($order);
