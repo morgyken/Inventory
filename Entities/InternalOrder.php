@@ -63,6 +63,10 @@ class InternalOrder extends Model
         switch ($this->status) {
             case 0:
                 return 'Submitted';
+            case 1:
+                return 'Partially Dispatched';
+            case 2:
+                return 'Fully Dispatched';
             default:
                 return 'Pending';
         }

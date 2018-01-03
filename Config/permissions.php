@@ -18,4 +18,11 @@ return [
         'approve_lpo' => 'Approve',
         'stock_take' => 'Stock Take'
     ],
+    'inventory.internal_orders' => [
+        'create' => 'Create Internal Orders',
+        'view' => 'View Internal Orders',
+        'manage_stores' => 'Mange Internal Stores',
+        'dispatch' => 'Dispatch Internal Orders',
+        'receive' => 'Receive Internal Orders',
+    ],
 ];

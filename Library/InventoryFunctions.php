@@ -1023,6 +1023,7 @@ class InventoryFunctions implements InventoryRepository
     {
         $to_dispatch = \request('dispatch');
         $order_id = \request('order_id');
+        $order = InternalOrder::find($order_id);
         \DB::beginTransaction();
         try {
             foreach ($to_dispatch as $k => $v) {
@@ -1035,8 +1036,10 @@ class InventoryFunctions implements InventoryRepository
                 InternalOrderDispatch::create([
                     'item_id' => $item->id,
                     'qty_dispatched' => $v,
+                    'dispatch_user' => $this->request->user()->id,
                 ]);
             }
+            $this->recordStatus($order);
         } catch (\Exception $e) {
             return \DB::rollBack();
         }
@@ -1044,4 +1047,30 @@ class InventoryFunctions implements InventoryRepository
         return $order_id;
     }
 
+    /**
+     * @param InternalOrder $order
+     * @return bool
+     */
+    private function recordStatus(InternalOrder $order): bool
+    {
+        $to_dispatch = $order->details->sum('pending');
+        $order->status = empty($to_dispatch) ? 2 : 1;
+        return $order->save();
+    }
+
+    public function saveReceived(): bool
+    {
+        $to_receive = \request('receive');
+        \DB::beginTransaction();
+        foreach ($to_receive as $key => $item) {
+            $in = InternalOrderDispatch::find($key);
+            $in->receive_user = $this->request->user()->id;
+            $in->reject_reason = $this->request->reason[$key];
+            $in->qty_rejected = $this->request->reject[$key];
+            $in->qty_accepted = $this->request->receive[$key];
+            $in->save();
+        }
+        \DB::commit();
+        return true;
+    }
 }

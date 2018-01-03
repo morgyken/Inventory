@@ -9,7 +9,7 @@ extract($data);
 
 @section('content')
     <div class="box box-info">
-        {!! Form::open(['route'=>'inventory.store.save_dispatch']) !!}
+        {!! Form::open(['route'=>'inventory.store.save_receive']) !!}
         {!! Form::hidden('order_id',$order->id)!!}
         <div class="box-header with-border">
             <h3 class="box-title">Order details</h3>
@@ -33,20 +33,25 @@ extract($data);
                     <tr>
                         <th>#</th>
                         <th>Item</th>
-                        <th>Ordered</th>
                         <th>Dispatched</th>
-                        <th>Quantity</th>
+                        <th>Received</th>
+                        <th>Rejected</th>
+                        <th>Reason</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($order->details as $item)
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{$item->product->name}}</td>
-                            <td>{{$item->quantity}}</td>
-                            <td>{{$item->dispatched??0}}</td>
-                            <td><input type="text" name="dispatch[<?=$item->id?>]" value="{{$item->pending}}"></td>
-                        </tr>
+                        @foreach($item->dispatch as $d)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$item->product->name}}</td>
+                                <td>{{$d->qty_dispatched}}</td>
+                                <td><input type="text" name="receive[<?=$d->id?>]" value="{{$d->qty_dispatched}}"></td>
+                                <td><input type="text" name="reject[<?=$d->id?>]" value="0"></td>
+                                <td><input type="text" name="reason[<?=$d->id?>]" placeholder="Mbona?">
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
                     </tbody>
                 </table>
@@ -56,12 +61,12 @@ extract($data);
         </div>
         <div class="box-footer">
             <div class="pull-left">
-                <a href="{{route('inventory.store.dispatch')}}" class="btn btn-default">
+                <a href="{{route('inventory.store.receive')}}" class="btn btn-default">
                     <i class="fa fa-arrow-left"></i>
                     Back</a>
             </div>
             <div class="pull-right">
-                <button class="btn btn-success"><i class="fa fa-send"></i> Dispatch Order</button>
+                <button class="btn btn-success"><i class="fa fa-send"></i> Accept Items</button>
             </div>
         </div>
         {!! Form::close() !!}
