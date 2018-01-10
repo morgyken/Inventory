@@ -33,4 +33,12 @@ class Store extends Model
         return $this->name . ' - ' . $this->description;
     }
 
+
+    /*
+     * Determines the parent store of a store
+     */
+    public function parentStore()
+    {
+        return $this->belongsTo(Store::class, 'parent_store_id');
+    }
 }
