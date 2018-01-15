@@ -32,6 +32,16 @@ class StoreController extends AdminBaseController
     /*
     * Lists all the stores as well as the creation of one
     */
+    public function create()
+    {
+        $stores = $this->repo->all();
+
+        return view('inventory::store.create', compact('stores'));
+    }
+
+    /*
+    * Lists all the stores as well as the creation of one
+    */
     public function edit($id)
     {
         $stores = $this->repo->all();
@@ -44,11 +54,11 @@ class StoreController extends AdminBaseController
     /*
     * Lists all the stores as well as the creation of one
     */
-    public function create()
+    public function show($id)
     {
-        $stores = $this->repo->all();
+        $store = $this->repo->find($id);
 
-        return view('inventory::store.create', compact('stores'));
+        return view('inventory::store.show', compact('store'));
     }
 
     /*
@@ -86,6 +96,8 @@ class StoreController extends AdminBaseController
 
         return redirect()->route('inventory.store.create');
     }
+
+
 
 
 

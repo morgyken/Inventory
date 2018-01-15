@@ -975,20 +975,20 @@ class InventoryFunctions implements InventoryRepository
     public function saveInternalOrder()
     {
         \DB::beginTransaction();
-        $stack = self::order_item_stack(array_keys($this->request->all()));
+        $stack = self::order_item_stack(array_keys(request()->all()));
         $order = new InternalOrder;
         $order->author = \Auth::user()->id;
-        $order->dispatching_store = $this->request->dispatching_store;
-        $order->requesting_store = $this->request->requesting_store;
-        $order->deliver_date = $this->request->deliver_date;
+        $order->dispatching_store = request('dispatching_store');
+        $order->requesting_store = request('requesting_store');
+        $order->deliver_date = request('deliver_date');
         $order->save();
         foreach ($stack as $index) {
             $item = 'item' . $index;
             $quantity = 'qty' . $index;
             $details = new InternalOrderDetails();
             $details->internal_order = $order->id;
-            $details->item = $this->request->$item;
-            $details->quantity = $this->request->$quantity;
+            $details->item = request($item);
+            $details->quantity = request($quantity);
             $details->save();
         }
         \DB::commit();

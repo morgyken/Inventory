@@ -92,16 +92,33 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 
     $router->get('/edit/{id}', ['uses' => 'StoreController@edit', 'as' => 'edit']);
 
+    $router->get('/show/{id}', ['uses' => 'StoreController@show', 'as' => 'show']);
+
     $router->post('/edit/{id}', ['uses' => 'StoreController@update', 'as' => 'update']);
 
     $router->get('/delete/{id}', ['uses' => 'StoreController@delete', 'as' => 'delete']);
+
+    $router->get('/{id}/orders-made', ['uses' => 'OrderController@ordersMade', 'as' => 'orders']);
+
+    $router->get('/{id}/orders-received', ['uses' => 'OrderController@ordersReceived', 'as' => 'received']);
+
+    $router->get('/{id}/receive-orders', ['uses' => 'OrderController@receiveOrders', 'as' => 'receive']);
+
+    $router->post('/orders', ['uses' => 'OrderController@store', 'as' => 'orders.save']);
+
+    $router->get('/dispatch/{id?}', ['uses' => 'DispatchController@show', 'as' => 'dispatch']);
+
+    $router->post('/dispatch/{id?}', ['uses' => 'DispatchController@store', 'as' => 'dispatcher']);
+
+    $router->get('/dispatched/{id?}', ['uses' => 'DispatchController@index', 'as' => 'dispatched']);
+
 
     $router->get('new/order', ['uses' => 'StoreController@startOrder', 'as' => 'new_order']);
     $router->get('orders/internal/{id?}', ['uses' => 'StoreController@viewOrders', 'as' => 'view_orders']);
     $router->post('new/order/internal', ['uses' => 'StoreController@newOrders', 'as' => 'save_order']);
     $router->get('stores/view/all', ['uses' => 'StoreController@stores', 'as' => 'stores']);
     $router->post('store/save', ['uses' => 'StoreController@saveStore', 'as' => 'save_store']);
-    $router->get('dispatch/{id?}', ['uses' => 'StoreController@dispatchItems', 'as' => 'dispatch']);
+//    $router->get('dispatch/{id?}', ['uses' => 'StoreController@dispatchItems', 'as' => 'dispatch']);
     $router->post('dispatcher', ['uses' => 'StoreController@saveDispatch', 'as' => 'save_dispatch']);
     $router->get('take/{id?}', ['uses' => 'StoreController@receiveItems', 'as' => 'receive']);
     $router->post('taker', ['uses' => 'StoreController@saveReceive', 'as' => 'save_receive']);

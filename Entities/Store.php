@@ -33,7 +33,6 @@ class Store extends Model
         return $this->name . ' - ' . $this->description;
     }
 
-
     /*
      * Determines the parent store of a store
      */
