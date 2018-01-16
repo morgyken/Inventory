@@ -86,17 +86,24 @@ $router->get('goods/delivered/{batch}', ['uses' => 'InventoryController@purchase
 //internal orders
 $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $router) {
 
+    $router->get('/', ['uses' => 'StoreController@index', 'as' => 'index']);
+
     $router->post('/', ['uses' => 'StoreController@store', 'as' => 'save']);
 
-    $router->get('/create', ['uses' => 'StoreController@create', 'as' => 'create']);
+    $router->get('/{id}', ['uses' => 'StoreController@show', 'as' => 'show']);
 
     $router->get('/edit/{id}', ['uses' => 'StoreController@edit', 'as' => 'edit']);
-
-    $router->get('/show/{id}', ['uses' => 'StoreController@show', 'as' => 'show']);
 
     $router->post('/edit/{id}', ['uses' => 'StoreController@update', 'as' => 'update']);
 
     $router->get('/delete/{id}', ['uses' => 'StoreController@delete', 'as' => 'delete']);
+
+
+
+
+
+
+
 
     $router->get('/{id}/orders-made', ['uses' => 'OrderController@ordersMade', 'as' => 'orders']);
 
@@ -123,6 +130,11 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
     $router->get('take/{id?}', ['uses' => 'StoreController@receiveItems', 'as' => 'receive']);
     $router->post('taker', ['uses' => 'StoreController@saveReceive', 'as' => 'save_receive']);
 });
+
+
+
+
+
 //suppliers
 $router->match(['post', 'get'], 'suppliers/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);
 //$router->get('suppliers/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);
