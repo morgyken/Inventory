@@ -98,11 +98,11 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 
     $router->get('/delete/{id}', ['uses' => 'StoreController@delete', 'as' => 'delete']);
 
-
-
-
-
-
+//    $router->group(['as' => 'order.', 'prefix' => 'orders'], function (Router $router) {
+//
+//        $router->get('/', ['uses' => 'StoreController@index', 'as' => 'index']);
+//
+//    });
 
 
     $router->get('/{id}/orders-made', ['uses' => 'OrderController@ordersMade', 'as' => 'orders']);
