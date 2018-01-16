@@ -48,13 +48,6 @@ class OrderController extends AdminBaseController
         flash('Your order has been succefully sent', 'success');
 
         return redirect()->back();
-//        $store = $this->storeRepo->find($storeId);
-//
-//        $dispatchingStores = $this->repo->getDispatchingStores($store);
-//
-//        $data = compact('store', 'dispatchingStores');
-//
-//        return view('inventory::store.orders.orders_made', $data);
     }
 
 
