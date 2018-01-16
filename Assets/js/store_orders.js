@@ -9,7 +9,7 @@
 
 $('table').hide();
 $(document).ready(function () {
-    // $('select[name=supplier]').select2({theme: "bootstrap"});
+    $('select[name=supplier]').select2({theme: "bootstrap"});
     $('.date').datepicker({minDate: "0"});
     var i = 1;
 

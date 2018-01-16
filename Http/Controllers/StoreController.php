@@ -7,25 +7,102 @@ use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\Store;
 use Ignite\Inventory\Repositories\InventoryRepository;
 use Illuminate\Http\Request;
+use Ignite\Inventory\Repositories\StoresRepository;
 
 class StoreController extends AdminBaseController
 {
     /**
      * @var Request Incoming HTTP request
      */
-    protected $request;
+    protected $request, $repo;
 
     /**
      * @var InventoryRepository
      */
     protected $inventoryRepository;
 
-    public function __construct(Request $request, InventoryRepository $inventoryRepository)
+    public function __construct(Request $request, InventoryRepository $inventoryRepository, StoresRepository $repo)
     {
         parent::__construct();
         $this->request = $request;
         $this->inventoryRepository = $inventoryRepository;
+        $this->repo = $repo;
     }
+
+    /*
+    * Lists all the stores as well as the creation of one
+    */
+    public function create()
+    {
+        $stores = $this->repo->all();
+
+        return view('inventory::store.create', compact('stores'));
+    }
+
+    /*
+    * Lists all the stores as well as the creation of one
+    */
+    public function edit($id)
+    {
+        $stores = $this->repo->all();
+
+        $store = $this->repo->find($id);
+
+        return view('inventory::store.edit', compact('stores', 'store'));
+    }
+
+    /*
+    * Lists all the stores as well as the creation of one
+    */
+    public function show($id)
+    {
+        $store = $this->repo->find($id);
+
+        return view('inventory::store.show', compact('store'));
+    }
+
+    /*
+     * Persist a store into the database
+     */
+    public function store()
+    {
+        $this->repo->create();
+
+        flash('Store saved', 'success');
+
+        return redirect()->back();
+    }
+
+    /*
+     * Persist a store into the database
+     */
+    public function update($id)
+    {
+        $this->repo->update($id);
+
+        flash('Store updated', 'success');
+
+        return redirect()->back();
+    }
+
+    /*
+     * Persist a store into the database
+     */
+    public function delete($id)
+    {
+        $this->repo->delete($id);
+
+        flash('Store deleted', 'success');
+
+        return redirect()->route('inventory.store.create');
+    }
+
+
+
+
+
+
+
 
     public function startOrder()
     {

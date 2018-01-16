@@ -34,9 +34,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InternalOrder extends Model
 {
+    protected $fillable = [
+        'author', 'dispatching_store', 'dispatching_store', 'delivery_date', 'status'
+    ];
 
-    protected $fillable = [];
     public $table = 'inventory_internal_orders';
+
+    protected $with = [
+        'dispatchingStore', 'requestingStore'
+    ];
 
     public function users()
     {
@@ -49,6 +55,22 @@ class InternalOrder extends Model
     }
 
     public function rq_store()
+    {
+        return $this->belongsTo(Store::class, 'requesting_store');
+    }
+
+    /*
+     * Relationship between an order and the store that the order was made to
+     */
+    public function dispatchingStore()
+    {
+        return $this->belongsTo(Store::class, 'dispatching_store');
+    }
+
+    /*
+     * Relationship between an order and the store that made the order
+     */
+    public function requestingStore()
     {
         return $this->belongsTo(Store::class, 'requesting_store');
     }

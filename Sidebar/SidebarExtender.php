@@ -161,8 +161,13 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender
                     });
                 });
 
-                $item->item('Internal Orders', function (Item $item) {
+                $item->item('Stores Management', function (Item $item) {
                     $item->icon('fa fa-list');
+                    $item->item('Stores', function (Item $item) {
+                        $item->icon('fa fa-building');
+                        $item->route('inventory.store.create');
+                        $item->authorize($this->auth->hasAccess('inventory.internal_orders.manage_stores'));
+                    });
                     $item->authorize($this->auth->hasAccess('inventory.internal_orders.*'));
                     $item->item('New Order', function (Item $item) {
                         $item->icon('fa fa-plus-square');
@@ -174,11 +179,7 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender
                         $item->route('inventory.store.view_orders');
                         $item->authorize($this->auth->hasAccess('inventory.internal_orders.view'));
                     });
-                    $item->item('Stores', function (Item $item) {
-                        $item->icon('fa fa-building');
-                        $item->route('inventory.store.stores');
-                        $item->authorize($this->auth->hasAccess('inventory.internal_orders.manage_stores'));
-                    });
+
                     $item->item('Dispatch', function (Item $item) {
                         $item->icon('fa fa-send');
                         $item->route('inventory.store.dispatch');
