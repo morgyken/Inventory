@@ -83,7 +83,9 @@ $router->get('goods/received/grns', ['uses' => 'InventoryController@grns', 'as' 
 $router->get('batch/{id}/details', ['uses' => 'InventoryController@batch_details', 'as' => 'batch.details']);
 $router->get('goods/delivered/{batch}', ['uses' => 'InventoryController@purchase_details', 'as' => 'purchase_details']);
 
-//internal orders
+/*
+ * Store routes
+ */
 $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $router) {
 
     $router->get('/', ['uses' => 'StoreController@index', 'as' => 'index']);
@@ -98,11 +100,16 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 
     $router->get('/delete/{id}', ['uses' => 'StoreController@delete', 'as' => 'delete']);
 
-//    $router->group(['as' => 'order.', 'prefix' => 'orders'], function (Router $router) {
-//
-//        $router->get('/', ['uses' => 'StoreController@index', 'as' => 'index']);
-//
-//    });
+    /*
+     * Order routes
+     */
+    $router->group(['prefix' => '/{storeId}'], function (Router $router) {
+
+        $router->get('/orders-made', ['uses' => 'OrderController@index', 'as' => 'orders-made']);
+
+        $router->post('/orders', ['uses' => 'OrderController@store', 'as' => 'make-order']);
+
+    });
 
 
     $router->get('/{id}/orders-made', ['uses' => 'OrderController@ordersMade', 'as' => 'orders']);
@@ -120,15 +127,15 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
     $router->get('/dispatched/{id?}', ['uses' => 'DispatchController@index', 'as' => 'dispatched']);
 
 
-    $router->get('new/order', ['uses' => 'StoreController@startOrder', 'as' => 'new_order']);
-    $router->get('orders/internal/{id?}', ['uses' => 'StoreController@viewOrders', 'as' => 'view_orders']);
-    $router->post('new/order/internal', ['uses' => 'StoreController@newOrders', 'as' => 'save_order']);
-    $router->get('stores/view/all', ['uses' => 'StoreController@stores', 'as' => 'stores']);
-    $router->post('store/save', ['uses' => 'StoreController@saveStore', 'as' => 'save_store']);
-//    $router->get('dispatch/{id?}', ['uses' => 'StoreController@dispatchItems', 'as' => 'dispatch']);
-    $router->post('dispatcher', ['uses' => 'StoreController@saveDispatch', 'as' => 'save_dispatch']);
-    $router->get('take/{id?}', ['uses' => 'StoreController@receiveItems', 'as' => 'receive']);
-    $router->post('taker', ['uses' => 'StoreController@saveReceive', 'as' => 'save_receive']);
+//    $router->get('new/order', ['uses' => 'StoreController@startOrder', 'as' => 'new_order']);
+//    $router->get('orders/internal/{id?}', ['uses' => 'StoreController@viewOrders', 'as' => 'view_orders']);
+//    $router->post('new/order/internal', ['uses' => 'StoreController@newOrders', 'as' => 'save_order']);
+//    $router->get('stores/view/all', ['uses' => 'StoreController@stores', 'as' => 'stores']);
+//    $router->post('store/save', ['uses' => 'StoreController@saveStore', 'as' => 'save_store']);
+////    $router->get('dispatch/{id?}', ['uses' => 'StoreController@dispatchItems', 'as' => 'dispatch']);
+//    $router->post('dispatcher', ['uses' => 'StoreController@saveDispatch', 'as' => 'save_dispatch']);
+//    $router->get('take/{id?}', ['uses' => 'StoreController@receiveItems', 'as' => 'receive']);
+//    $router->post('taker', ['uses' => 'StoreController@saveReceive', 'as' => 'save_receive']);
 });
 
 

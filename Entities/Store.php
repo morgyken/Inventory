@@ -37,4 +37,12 @@ class Store extends Model
     {
         return $this->belongsTo(Store::class, 'parent_store_id');
     }
+
+    /*
+     * Relationship between orders made by a store and the store
+     */
+    public function orders()
+    {
+        return $this->hasMany(InternalOrder::class, 'requesting_store');
+    }
 }
