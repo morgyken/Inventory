@@ -27,7 +27,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td>No orders made yet</td></tr>
+                        <tr><td colspan="5">No orders made yet</td></tr>
                     @endforelse
                     </tbody>
                 </table>
@@ -37,7 +37,7 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function(){
-    $('.table').dataTable();
-});
+// $(document).ready(function(){
+//     $('.table').dataTable();
+// });
 </script>
