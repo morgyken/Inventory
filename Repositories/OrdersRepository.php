@@ -3,34 +3,31 @@ namespace Ignite\Inventory\Repositories;
 
 use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\Store;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Auth;
 
 class OrdersRepository
 {
     /*
-     * Returns all the orders made by a store or all stores
+     * Make an order from a store
      */
-    public function getOrders($id)
+    public function create($store)
     {
-        $orders = InternalOrder::where('dispatching_store', $id)
-                            ->orWhere('requesting_store', $id)
-                            ->get();
+        DB::transaction(function () use ($store) {
 
-        $ordersMade = $orders->filter(function($order) use($id){
+            $orderDetails = request()->except(['items']);
 
-            return $order->requesting_store == $id;
+            $orderDetails['author'] = Auth::id();
 
-        });
+            $orderDetails['deliver_date'] = $orderDetails['deliver_date'] ? Carbon::parse($orderDetails['deliver_date']) : null;
 
-        $ordersReceived = $orders->filter(function($order) use($id){
+            $order = $store->orders()->create($orderDetails);
 
-            return $order->dispatching_store == $id;
+            $order->details()->createMany(request('items'));
 
         });
-
-        return compact('ordersMade', 'ordersReceived');
     }
-
-
 
     /*
      * Returns the stores that are supposed to dispatch to a certain store
@@ -42,6 +39,6 @@ class OrdersRepository
            return [ $store->parentStore->id => $store->parentStore->name ];
         }
 
-        return Store::all()->pluck('name', 'id');
+        return Store::where('id', '!=', $store->id)->get()->pluck('name', 'id');
     }
 }

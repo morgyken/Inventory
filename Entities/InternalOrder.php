@@ -49,16 +49,6 @@ class InternalOrder extends Model
         return $this->belongsTo(\Ignite\Users\Entities\User::class, 'author');
     }
 
-    public function disp_store()
-    {
-        return $this->belongsTo(Store::class, 'dispatching_store');
-    }
-
-    public function rq_store()
-    {
-        return $this->belongsTo(Store::class, 'requesting_store');
-    }
-
     /*
      * Relationship between an order and the store that the order was made to
      */
@@ -75,6 +65,9 @@ class InternalOrder extends Model
         return $this->belongsTo(Store::class, 'requesting_store');
     }
 
+    /*
+     * Relationship between an order and its details
+     */
     public function details()
     {
         return $this->hasMany(InternalOrderDetails::class, 'internal_order');
