@@ -1,5 +1,5 @@
 <div class="panel panel-info">
-    <div class="panel-heading">Update {{ $store->name }} store</div>
+    <div class="panel-heading">Update {{ $store->name }}</div>
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
@@ -18,9 +18,9 @@
                         <label class="col-md-4">Select a parent store:</label>
                         <div class="col-md-8">
                             <select name="parent_store_id" class="form-control">
-                                <option>Select a store</option>
+                                <option {{ $store->parent_store_id ?: 'selected' }}>Select a store</option>
                                 @foreach($stores as $parents)
-                                    <option value="{{ $parents->id }}" {{ $store->id != $parents->id ?: 'selected' }}>
+                                    <option value="{{ $parents->id }}" {{ $store->parent_store_id != $parents->id ?: 'selected' }}>
                                         {{ $parents->name }}
                                     </option>
                                 @endforeach
@@ -33,8 +33,7 @@
                     <div class="form-group">
                         <label class="col-md-2">Description:</label>
                         <div class="col-md-10">
-                            <textarea name="description" value="{{ $store->description }}" class="form-control"></textarea>
-                            {!! $errors->first('description', '<span class="help-block">:message</span>') !!}
+                            <textarea name="description" class="form-control">{{ $store->description }}</textarea>
                         </div>
                     </div>
                 </div>

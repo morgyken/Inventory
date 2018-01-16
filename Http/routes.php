@@ -90,15 +90,16 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 
     $router->post('/', ['uses' => 'StoreController@store', 'as' => 'save']);
 
+    $router->get('/{id}', ['uses' => 'StoreController@show', 'as' => 'show']);
+
     $router->get('/edit/{id}', ['uses' => 'StoreController@edit', 'as' => 'edit']);
 
     $router->post('/edit/{id}', ['uses' => 'StoreController@update', 'as' => 'update']);
 
-
-//    $router->get('/show/{id}', ['uses' => 'StoreController@show', 'as' => 'show']);
-
-
     $router->get('/delete/{id}', ['uses' => 'StoreController@delete', 'as' => 'delete']);
+
+
+
 
 
 

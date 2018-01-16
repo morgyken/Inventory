@@ -24,14 +24,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Store extends Model
 {
-
-    protected $guarded = [];
     public $table = 'inventory_stores';
 
-    public function getDescAttribute()
-    {
-        return $this->name . ' - ' . $this->description;
-    }
+    protected $fillable = [
+        'name', 'description', 'clinic', 'parent_store_id', 'main_store', 'delivery_store'
+    ];
 
     /*
      * Determines the parent store of a store

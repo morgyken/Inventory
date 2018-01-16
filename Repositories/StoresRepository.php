@@ -40,7 +40,7 @@ class StoresRepository
 
         $data['delivery_store'] = request()->has('delivery_store') ? request('delivery_store') : 0;
 
-        return Store::where('id', $id)->update($data);
+        Store::where('id', $id)->update($data);
     }
 
     /*

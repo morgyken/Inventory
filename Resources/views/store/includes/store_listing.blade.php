@@ -22,8 +22,8 @@
                             <td>{{!$store->parentStore ?'': $store->parentStore->name }}</td>
                             <td>{{$store->created_at}}</td>
                             <td>
-                                {{--<a href="{{route('inventory.store.orders', $store->id)}}"--}}
-                                {{--class="btn btn-info btn-xs"><i class="fa fa-wrench"></i> Manage</a>--}}
+                                <a href="{{route('inventory.store.show', $store->id)}}"
+                                class="btn btn-info btn-xs"><i class="fa fa-wrench"></i> Manage</a>
                                 <a href="{{route('inventory.store.edit', $store->id)}}"
                                    class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
                                 <a href="{{route('inventory.store.delete', $store->id)}}"
