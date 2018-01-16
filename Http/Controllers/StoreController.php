@@ -66,9 +66,9 @@ class StoreController extends AdminBaseController
 
 
     /*
-     * Persist a store into the database
+     * Update a store
      */
-    public function update($id, StoreRequest $request)
+    public function update($id)
     {
         $this->repo->update($id);
 
