@@ -161,35 +161,10 @@ class SidebarExtender implements \Maatwebsite\Sidebar\SidebarExtender
                     });
                 });
 
-                $item->item('Stores Management', function (Item $item) {
-                    $item->icon('fa fa-list');
-                    $item->item('Stores', function (Item $item) {
-                        $item->icon('fa fa-building');
-                        $item->route('inventory.store.create');
-                        $item->authorize($this->auth->hasAccess('inventory.internal_orders.manage_stores'));
-                    });
-                    $item->authorize($this->auth->hasAccess('inventory.internal_orders.*'));
-                    $item->item('New Order', function (Item $item) {
-                        $item->icon('fa fa-plus-square');
-                        $item->route('inventory.store.new_order');
-                        $item->authorize($this->auth->hasAccess('inventory.internal_orders.create'));
-                    });
-                    $item->item('Internal Orders', function (Item $item) {
-                        $item->icon('fa fa-arrows');
-                        $item->route('inventory.store.view_orders');
-                        $item->authorize($this->auth->hasAccess('inventory.internal_orders.view'));
-                    });
-
-                    $item->item('Dispatch', function (Item $item) {
-                        $item->icon('fa fa-send');
-                        $item->route('inventory.store.dispatch');
-                        $item->authorize($this->auth->hasAccess('inventory.internal_orders.dispatch'));
-                    });
-                    $item->item('Receive Items', function (Item $item) {
-                        $item->icon('fa fa-hand-lizard-o');
-                        $item->route('inventory.store.receive');
-                        $item->authorize($this->auth->hasAccess('inventory.internal_orders.receive'));
-                    });
+                $item->item('Stores', function (Item $item) {
+                    $item->icon('fa fa-building');
+                    $item->route('inventory.store.index');
+                    $item->authorize($this->auth->hasAccess('inventory.internal_orders.manage_stores'));
                 });
 
                 $item->item('Sales', function (Item $item) {

@@ -23,6 +23,19 @@ class OrderController extends AdminBaseController
     }
 
     /*
+     * Store an order
+     */
+    public function store()
+    {
+        if ($id = $this->inventoryRepository->saveInternalOrder()) {
+            flash('Internal Order placed successfully');
+            return redirect()->route('inventory.store.view_orders', $id);
+        }
+
+        return redirect()->route('inventory.store.view_orders');
+    }
+
+    /*
      * Shows all the orders made by a store and to which store
      */
     public function ordersMade($id)
