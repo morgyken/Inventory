@@ -7,24 +7,57 @@
 
 /* global PRODUCTS_URL */
 
-$('table').hide();
 $(document).ready(function () {
-    // $('select[name=supplier]').select2({theme: "bootstrap"});
-    $('.date').datepicker({minDate: "0"});
-    var i = 1;
 
-    $("#add_row").click(function () {
-        var to_add = "<td><select name=\"item" + i + "\" class=\" select2-single\" style=\"width: 100%\"></select></td><td><input type=\"text\" name='qty" + i + "' placeholder='Quantity' value=\"1\"/></td><td><button class=\"btn btn-xs btn-danger remove\"><i class=\"fa fa-trash-o\"></i></button></td>";
-        $('#addr' + i).html(to_add);
-        $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
-        map_select2(i);
-        i++;
+    $(".date").datepicker({minDate: "0"});
+
+    var inventoryIndex = 0;
+
+    $("#add-row").click(function addRow(){
+
+        var content = getContent(inventoryIndex);
+
+        $("#item-container").append(content);
+
+        inventoryIndex++;
+
+        mapSelect(inventoryIndex);
+
     });
 
-    function map_select2(i) {
-        $('#addr' + i + ' select').select2({
+    function getContent(currentIndex){
+
+        var index = currentIndex + 1;
+
+        var id = "item-" + index;
+
+        var name = "items["+index+"][item]";
+
+        var quantity = "items["+index+"][quantity]";
+
+        return "<div id="+id+" class='col-md-12'>"+
+            "<div class='form-group'>"+
+            "<div class='col-md-6'>"+
+            "<select class='col-md-12' name="+name+"></select>"+
+            "</div>"+
+            "<div class='col-md-4'>"+
+            "<input class='form-control' name="+quantity+" />"+
+            "</div>"+
+            "<div class='col-md-2'>"+
+            "<button value="+index+" type='button' class='btn btn-xs btn-danger remove'><i class='fa fa-trash-o'></i></button>"+
+            "</div>"+
+            "</div>"+
+            "</div>";
+    }
+
+    $("body").on("click", ".remove", function (e) {
+        $("#item-" + e.target.value).remove();
+    });
+
+    function mapSelect(index){
+        $("#item-" + index + " select").select2({
             "theme": "classic",
-            "placeholder": 'Please select an item',
+            "placeholder": "Please select an item",
             "formatNoMatches": function () {
                 return "No matches found";
             },
@@ -37,7 +70,7 @@ $(document).ready(function () {
             "formatSelectionTooBig": function (limit) {
                 return "You can only select " + limit + " items";
             },
-            "formatLoadMore": function (pageNumber) {
+            "formatLoadMore": function () {
                 return "Loading more results...";
             },
             "formatSearching": function () {
@@ -49,30 +82,17 @@ $(document).ready(function () {
                 "url": PRODUCTS_URL,
                 "dataType": "json",
                 "cache": true,
-                "data": function (term, page) {
+                "data": function (term) {
                     return {
                         term: term
                     };
                 },
-                "results": function (data, page) {
+                "results": function (data) {
                     return {results: data};
                 }
             }
         });
-        $('#addr' + i + ' select').on('select2:select', function (evt) {
-            var selected = $(this).find('option:selected');
-            var price = selected.data().data.prices.price;
-            $('input[name=price' + i + ']').val(price);
-            calculate_total();
-        });
-        $('#addr' + i + ' input').keyup(function () {
-            calculate_total();
-        });
-        $(".remove").click(function (e) {
-            e.preventDefault();
-            $(this).closest('tr').remove();
-        });
     }
-    map_select2(0);
-    $('table').show();
+
+    mapSelect(inventoryIndex);
 });
