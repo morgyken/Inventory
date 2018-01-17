@@ -27,11 +27,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InternalOrderDetails extends Model
 {
-
     protected $guarded = [];
-    protected $table = 'inventory_internal_order_details';
 
-//    protected $appends = ['dispatched'];
+    protected $table = 'inventory_internal_order_details';
 
     public function product()
     {
@@ -40,12 +38,12 @@ class InternalOrderDetails extends Model
 
     public function dispatch()
     {
-        return $this->hasMany(InternalOrderDispatch::class, 'item_id');
+        return $this->hasMany(InternalOrderDispatch::class, 'order_detail_id');
     }
 
     public function getDispatchedAttribute(): int
     {
-        return $this->dispatch->sum('qty_dispatched');
+        return $this->dispatch->sum('dispatched');
     }
 
     public function getPendingAttribute(): int

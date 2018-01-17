@@ -45,4 +45,12 @@ class Store extends Model
     {
         return $this->hasMany(InternalOrder::class, 'requesting_store');
     }
+
+    /*
+     * Relationship between orders received by a store and the store
+     */
+    public function received()
+    {
+        return $this->hasMany(InternalOrder::class, 'dispatching_store');
+    }
 }

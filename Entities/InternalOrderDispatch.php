@@ -34,5 +34,13 @@ use Illuminate\Database\Eloquent\Model;
 class InternalOrderDispatch extends Model
 {
     protected $guarded = [];
+
     protected $table = 'inventory_internal_order_dispatches';
+
+    public function setDispatchedAttribute()
+    {
+        $this->attributes['created_at'] = now();
+
+        $this->attributes['updated_at'] = now();
+    }
 }

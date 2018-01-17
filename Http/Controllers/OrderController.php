@@ -50,6 +50,16 @@ class OrderController extends AdminBaseController
         return redirect()->back();
     }
 
+    /*
+     * Show the orders made by a store
+     */
+    public function received($storeId)
+    {
+        $store = $this->storeRepo->find($storeId);
+
+        return view('inventory::store.orders.orders_received', compact('store'));
+    }
+
 
 
 

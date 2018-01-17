@@ -160,3 +160,12 @@ if (!function_exists('filter_description')) {
     }
 
 }
+
+if (!function_exists('now')) {
+
+    function now() {
+        return \Carbon\Carbon::now();
+    }
+
+}
+

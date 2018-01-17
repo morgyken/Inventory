@@ -10,6 +10,14 @@ use Auth;
 class OrdersRepository
 {
     /*
+     * Return an order from the database
+     */
+    public function find($orderId)
+    {
+        return InternalOrder::find($orderId);
+    }
+
+    /*
      * Make an order from a store
      */
     public function create($store)

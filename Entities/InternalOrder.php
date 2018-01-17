@@ -40,10 +40,6 @@ class InternalOrder extends Model
 
     public $table = 'inventory_internal_orders';
 
-    protected $with = [
-        'dispatchingStore', 'requestingStore'
-    ];
-
     public function users()
     {
         return $this->belongsTo(\Ignite\Users\Entities\User::class, 'author');

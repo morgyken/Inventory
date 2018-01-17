@@ -71,7 +71,7 @@
     <div class="col-md-4">
         <div class="panel panel-info">
             <div class="panel-heading">Orders Received
-{{--                <a href="{{ route('inventory.store.orders-received', $store->id) }}" class="btn btn-xs btn-info pull-right">view</a>--}}
+                <a href="{{ route('inventory.store.orders-received', $store->id) }}" class="btn btn-xs btn-info pull-right">view</a>
             </div>
             <div class="panel-body">Panel Content</div>
         </div>
