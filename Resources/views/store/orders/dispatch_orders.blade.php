@@ -20,6 +20,9 @@
 
             {!! Form::open(['class'=>'form-horizontal','route'=>['inventory.dispatch.store', $order->id]]) !!}
                 @foreach($order->details as $detail)
+
+                    <input type="hidden" name={{ "dispatch[".$loop->index."][dispatched_by]" }} value="{{ Auth::id() }}"/>
+
                     <p class="col-md-4">{{ $detail->product->name }}</p>
                     <p class="col-md-3">{{ $detail->quantity }}</p>
                     <p class="col-md-3">{{ $detail->dispatched }}</p>
@@ -27,7 +30,7 @@
                         <div class="form-group">
                             <input type="hidden" name={{ "dispatch[".$loop->index."][order_detail_id]" }} value="{{ $detail->id }}"/>
 
-                            <input type="number" value="{{ $detail->pending }}" max="{{ $detail->pending }}" min="1"
+                            <input type="number" value="{{ $detail->pending }}" max="{{ $detail->pending }}" min="0"
                                    class="form-control" name={{ "dispatch[".$loop->index."][dispatched]" }}>
                         </div>
                     </div>

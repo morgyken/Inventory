@@ -35,12 +35,10 @@ class InternalOrderDispatch extends Model
 {
     protected $guarded = [];
 
-    protected $table = 'inventory_internal_order_dispatches';
+    protected $table = 'inventory_store_dispatched_orders';
 
-    public function setDispatchedAttribute()
+    public function received()
     {
-        $this->attributes['created_at'] = now();
-
-        $this->attributes['updated_at'] = now();
+        return $this->hasMany(InternalReceivedOrders::class, 'dispatch_id');
     }
 }

@@ -9,7 +9,7 @@ use Ignite\Inventory\Repositories\OrdersRepository;
 
 class DispatchController extends AdminBaseController
 {
-    protected $repo;
+    protected $repo, $ordersRepo;
 
     public function __construct(DispatchesRepository $repo, OrdersRepository $ordersRepo)
     {
@@ -39,8 +39,32 @@ class DispatchController extends AdminBaseController
     {
         $this->repo->dispatch();
 
-        flash("Items disparched successfully", "success");
+        flash("Items dispatched successfully", "success");
 
         return redirect()->back();
     }
+
+//    /*
+//     * Show form for receiving an item that has been dispatched.
+//     */
+//    public function edit($id)
+//    {
+//        $order = $this->ordersRepo->find($id);
+//
+//        $store = $order->dispatchingStore;
+//
+//        return view('inventory::store.orders.receive_orders', compact('order', 'store'));
+//    }
+//
+//    /*
+//     * Show form for receiving an item that has been dispatched.
+//     */
+//    public function update($id)
+//    {
+//        $order = $this->ordersRepo->find($id);
+//
+//        $store = $order->dispatchingStore;
+//
+//        return view('inventory::store.orders.receive_orders', compact('order', 'store'));
+//    }
 }

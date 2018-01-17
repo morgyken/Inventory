@@ -31,7 +31,7 @@ $(document).ready(function () {
 
         var id = "item-" + index;
 
-        var name = "items["+index+"][item]";
+        var name = "items["+index+"][product_id]";
 
         var quantity = "items["+index+"][quantity]";
 

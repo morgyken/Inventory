@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class MakeStoresTable extends Migration {
+class CreateStoresTable extends Migration {
 
     /**
      * Run the migrations.
@@ -27,10 +27,6 @@ class MakeStoresTable extends Migration {
             $table->boolean('delivery_store')->comment('can edit product prices')->default(0);
 
             $table->timestamps();
-
-            $table->foreign('clinic')->references('id')->on('settings_clinics')
-                    ->onDelete('cascade')
-                    ->onUpdate('cascade');
         });
     }
 

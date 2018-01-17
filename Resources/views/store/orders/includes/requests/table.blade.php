@@ -17,12 +17,15 @@
                     @forelse($store->orders as $order)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $store->name }}</td>
-                            <td>{{ !$store->parentStore ?'': $store->parentStore->name }}</td>
-                            <td>{{ $store->created_at }}</td>
+                            <td>{{ $order->users->profile->fullName }}</td>
+                            <td>{{ $order->dispatchingStore->name }}</td>
+                            <td>{{ $order->created_at }}</td>
                             <td>
                                 <a href="{{route('inventory.store.orders-made', $store->id)}}"
-                                   class="btn btn-info btn-xs"><i class="fa fa-wrench"></i> View
+                                   class="btn btn-info btn-xs"> View
+                                </a>
+                                <a href="{{route('inventory.dispatch.receive-order', $order->id)}}"
+                                   class="btn btn-success btn-xs"> Receive
                                 </a>
                             </td>
                         </tr>

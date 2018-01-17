@@ -29,16 +29,21 @@ class InternalOrderDetails extends Model
 {
     protected $guarded = [];
 
-    protected $table = 'inventory_internal_order_details';
+    protected $table = 'inventory_store_order_details';
 
     public function product()
     {
-        return $this->belongsTo(InventoryProducts::class, 'item');
+        return $this->belongsTo(InventoryProducts::class, 'product_id');
     }
 
     public function dispatch()
     {
         return $this->hasMany(InternalOrderDispatch::class, 'order_detail_id');
+    }
+
+    public function received()
+    {
+        return $this->hasMany(InternalReceivedOrders::class, 'order_detail_id');
     }
 
     public function getDispatchedAttribute(): int
@@ -49,5 +54,20 @@ class InternalOrderDetails extends Model
     public function getPendingAttribute(): int
     {
         return $this->quantity - $this->dispatched;
+    }
+
+    public function getAvailableAttribute($query)
+    {
+        return $this->dispatched - ($this->accepted + $this->rejected);
+    }
+
+    public function getAcceptedAttribute() : int
+    {
+        return $this->received->sum('received');
+    }
+
+    public function getRejectedAttribute() : int
+    {
+        return $this->received->sum('rejected');
     }
 }

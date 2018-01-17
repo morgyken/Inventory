@@ -24,13 +24,11 @@ class OrdersRepository
     {
         DB::transaction(function () use ($store) {
 
-            $orderDetails = request()->except(['items']);
+            $details = request()->except(['items']);
 
-            $orderDetails['author'] = Auth::id();
+            $details['delivery_date'] = carbonDate($details['delivery_date']);
 
-            $orderDetails['deliver_date'] = $orderDetails['deliver_date'] ? Carbon::parse($orderDetails['deliver_date']) : null;
-
-            $order = $store->orders()->create($orderDetails);
+            $order = $store->orders()->create($details);
 
             $order->details()->createMany(request('items'));
 

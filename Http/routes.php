@@ -117,11 +117,15 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 /*
  * Dispatching routes
  */
-$router->group(['as' => 'dispatch.', 'prefix' => '/order/{orderId}/dispatch'], function (Router $router) {
+$router->group(['as' => 'dispatch.', 'prefix' => '/order/{orderId}'], function (Router $router) {
 
-    $router->get('/', ['uses' => 'DispatchController@index', 'as' => 'index']);
+    $router->get('/dispatch', ['uses' => 'DispatchController@index', 'as' => 'index']);
 
-    $router->post('/', ['uses' => 'DispatchController@store', 'as' => 'store']);
+    $router->post('/dispatch', ['uses' => 'DispatchController@store', 'as' => 'store']);
+
+    $router->get('/receive', ['uses' => 'OrderController@show', 'as' => 'receive-order']);
+
+    $router->post('/receive', ['uses' => 'OrderReceivingController@store', 'as' => 'accept-order']);
 
 });
 

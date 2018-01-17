@@ -34,15 +34,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InternalOrder extends Model
 {
-    protected $fillable = [
-        'author', 'dispatching_store', 'dispatching_store', 'delivery_date', 'status'
-    ];
+    protected $guarded = [];
 
-    public $table = 'inventory_internal_orders';
+    public $table = 'inventory_store_orders';
 
     public function users()
     {
-        return $this->belongsTo(\Ignite\Users\Entities\User::class, 'author');
+        return $this->belongsTo(\Ignite\Users\Entities\User::class, 'ordered_by');
     }
 
     /*
@@ -67,19 +65,5 @@ class InternalOrder extends Model
     public function details()
     {
         return $this->hasMany(InternalOrderDetails::class, 'internal_order');
-    }
-
-    public function getNiceStatusAttribute()
-    {
-        switch ($this->status) {
-            case 0:
-                return 'Submitted';
-            case 1:
-                return 'Partially Dispatched';
-            case 2:
-                return 'Fully Dispatched';
-            default:
-                return 'Pending';
-        }
     }
 }

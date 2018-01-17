@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInternalOrderDispatchesTable extends Migration
+class CreateStoreReceivedOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,16 @@ class CreateInternalOrderDispatchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('inventory_internal_order_dispatches', function (Blueprint $table) {
+        Schema::create('inventory_store_received_orders', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->unsignedInteger('order_detail_id');
+            $table->integer('order_detail_id')->nullable();
 
-            $table->unsignedInteger('batch_id')->nullable();
-
-            $table->integer('dispatched');
-
-            $table->integer('accepted')->nullable();
+            $table->integer('received')->nullable();
 
             $table->integer('rejected')->nullable();
 
-            $table->text('reject_reason')->nullable();
-
-            $table->unsignedInteger('dispatched_by');
+            $table->text('reason')->nullable();
 
             $table->unsignedInteger('received_by')->nullable();
 
@@ -43,6 +37,6 @@ class CreateInternalOrderDispatchesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inventory_internal_order_dispatches');
+        Schema::dropIfExists('inventory_store_received_orders');
     }
 }

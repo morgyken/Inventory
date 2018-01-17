@@ -17,15 +17,17 @@ class DispatchesRepository
 {
     public function dispatch()
     {
+        $data = collect(request('dispatch'))->where('dispatched', '>', 0)->toArray();
+
         $dispatches = [];
 
-        foreach(request('dispatch') as $dispatch)
+        foreach($data as $dispatch)
         {
             $dispatch['created_at'] = $dispatch['updated_at'] = now();
 
             array_push($dispatches, $dispatch);
         }
 
-        InternalOrderDispatch::insert(request('dispatch'));
+        InternalOrderDispatch::insert($dispatches);
     }
 }
