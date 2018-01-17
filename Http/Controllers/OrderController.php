@@ -50,83 +50,25 @@ class OrderController extends AdminBaseController
         return redirect()->back();
     }
 
+    /*
+     * Show the orders made by a store
+     */
+    public function received($storeId)
+    {
+        $store = $this->storeRepo->find($storeId);
 
+        return view('inventory::store.orders.orders_received', compact('store'));
+    }
 
+    /*
+     * Show the form to receive orders that have been dispatched
+     */
+    public function show($id)
+    {
+        $order = $this->repo->find($id);
 
+        $store = $order->dispatchingStore;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    /*
-//     * Store an order
-//     */
-//    public function store()
-//    {
-//        if ($id = $this->inventoryRepository->saveInternalOrder()) {
-//            flash('Internal Order placed successfully');
-//            return redirect()->route('inventory.store.view_orders', $id);
-//        }
-//
-//        return redirect()->route('inventory.store.view_orders');
-//    }
-//
-//    /*
-//     * Shows all the orders made by a store and to which store
-//     */
-//    public function ordersMade($id)
-//    {
-//        $storeOrders = $this->repo->getOrders($id);
-//
-//        $store = Store::find($id);
-//
-//        $stores = $this->repo->getDispatchingStores($store);
-//
-//        $data = array_merge(compact('store', 'stores'), $storeOrders);
-//
-//        return view('inventory::store.orders.orders_made', $data);
-//    }
-//
-//    /*
-//     * Shows orders received by store
-//     */
-//    public function ordersReceived($id)
-//    {
-//        $storeOrders = $this->repo->getOrders($id);
-//
-//        $store = Store::find($id);
-//
-//        $data = array_merge(compact('store'), $storeOrders);
-//
-//        return view('inventory::store.orders.orders_received', $data);
-//    }
-//
-//    /*
-//     * Shows view to received orders
-//     */
-//    public function receiveOrders($id)
-//    {
-//        $store = Store::find($id);
-//
-//        $orders = InternalOrder::whereIn('status', [1, 2])
-//                               ->where('requesting_store', $store->id)->get();
-//
-//        return view('inventory::store.orders.receive_orders', compact('orders'));
-//    }
-
-
+        return view('inventory::store.orders.receive_orders', compact('order', 'store'));
+    }
 }

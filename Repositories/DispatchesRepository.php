@@ -15,44 +15,19 @@ use Ignite\Inventory\Entities\InternalOrderDispatch;
 
 class DispatchesRepository
 {
-    public function dispatchInternal()
+    public function dispatch()
     {
-        $to_dispatch = request('dispatch');
-        $order_id = request('order_id');
-        $order = InternalOrder::find($order_id);
+        $data = collect(request('dispatch'))->where('dispatched', '>', 0)->toArray();
 
-        \DB::beginTransaction();
-        try {
-            foreach ($to_dispatch as $k => $v) {
-                $item = InternalOrderDetails::find($k);
-                $_needed = $item->quantity - $item->dispatched;
-                if ($v > $_needed) {
-                    flash('Cannot dispatch more than requested', 'danger');
-                    throw new \Exception('Cannot dispatch more than requested');
-                }
-                InternalOrderDispatch::create([
-                    'item_id' => $item->id,
-                    'qty_dispatched' => $v,
-                    'dispatch_user' => Auth::user()->id,
-                ]);
-            }
-            $this->recordStatus($order);
-        } catch (\Exception $e) {
-            return \DB::rollBack();
+        $dispatches = [];
+
+        foreach($data as $dispatch)
+        {
+            $dispatch['created_at'] = $dispatch['updated_at'] = now();
+
+            array_push($dispatches, $dispatch);
         }
-        \DB::commit();
 
-        return $order;
-    }
-
-    /**
-     * @param InternalOrder $order
-     * @return bool
-     */
-    private function recordStatus(InternalOrder $order): bool
-    {
-        $to_dispatch = $order->details->sum('pending');
-        $order->status = empty($to_dispatch) ? 2 : 1;
-        return $order->save();
+        InternalOrderDispatch::insert($dispatches);
     }
 }

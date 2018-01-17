@@ -160,3 +160,16 @@ if (!function_exists('filter_description')) {
     }
 
 }
+
+if (!function_exists('now')) {
+    function now() {
+        return \Carbon\Carbon::now();
+    }
+}
+
+if (!function_exists('carbonDate')) {
+    function carbonDate($date) {
+        return $date ? \Carbon\Carbon::parse($date) : null;
+    }
+}
+

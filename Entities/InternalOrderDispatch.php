@@ -34,5 +34,11 @@ use Illuminate\Database\Eloquent\Model;
 class InternalOrderDispatch extends Model
 {
     protected $guarded = [];
-    protected $table = 'inventory_internal_order_dispatches';
+
+    protected $table = 'inventory_store_dispatched_orders';
+
+    public function received()
+    {
+        return $this->hasMany(InternalReceivedOrders::class, 'dispatch_id');
+    }
 }

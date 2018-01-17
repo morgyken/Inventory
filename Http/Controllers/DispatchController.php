@@ -3,55 +3,68 @@
 namespace Ignite\Inventory\Http\Controllers;
 
 use Ignite\Core\Http\Controllers\AdminBaseController;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Ignite\Inventory\Repositories\DispatchesRepository;
-use Ignite\Inventory\Entities\InternalOrder;
+use Ignite\Inventory\Repositories\OrdersRepository;
 
 
 class DispatchController extends AdminBaseController
 {
-    protected $request, $repo;
+    protected $repo, $ordersRepo;
 
-    public function __construct(DispatchesRepository $repo)
+    public function __construct(DispatchesRepository $repo, OrdersRepository $ordersRepo)
     {
         parent::__construct();
 
         $this->repo = $repo;
+
+        $this->ordersRepo = $ordersRepo;
     }
 
     /*
-     * Shows the detaisl of a dispatched order
+     * Shows the details of a dispatched order
      */
     public function index($id)
     {
-        $order = InternalOrder::find($id);
+        $order = $this->ordersRepo->find($id);
 
-        return view('inventory::store.orders.orders_dispatched', compact('order'));
+        $store = $order->dispatchingStore;
+
+        return view('inventory::store.orders.dispatch_orders', compact('order', 'store'));
     }
 
     /*
-     * Shows the store to dispatch to
-     */
-    public function show($id)
-    {
-        $order = InternalOrder::find($id);
-
-        return view('inventory::store.orders.orders_dispatch', compact('order'));
-    }
-
-    /**
      * Dispatch an item into the database.
      */
-    public function store()
+    public function store($id)
     {
-        $this->repo->dispatchInternal();
+        $this->repo->dispatch();
 
-        $store = InternalOrder::find(request('order_id'))->dispatchingStore->id;
+        flash("Items dispatched successfully", "success");
 
-        flash('Items Dispatched', 'success');
-
-        return redirect()->route('inventory.store.received', $store);
+        return redirect()->back();
     }
+
+//    /*
+//     * Show form for receiving an item that has been dispatched.
+//     */
+//    public function edit($id)
+//    {
+//        $order = $this->ordersRepo->find($id);
+//
+//        $store = $order->dispatchingStore;
+//
+//        return view('inventory::store.orders.receive_orders', compact('order', 'store'));
+//    }
+//
+//    /*
+//     * Show form for receiving an item that has been dispatched.
+//     */
+//    public function update($id)
+//    {
+//        $order = $this->ordersRepo->find($id);
+//
+//        $store = $order->dispatchingStore;
+//
+//        return view('inventory::store.orders.receive_orders', compact('order', 'store'));
+//    }
 }

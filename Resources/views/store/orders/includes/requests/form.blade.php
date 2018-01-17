@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 {!! Form::open(['class'=>'form-horizontal', 'route'=>['inventory.store.make-order', 'storeId' => $store->id]]) !!}
 
-                {!! Form::hidden('author', Auth::user()->id) !!}
+                {!! Form::hidden('ordered_by', Auth::user()->id) !!}
 
                 <div class="col-md-6">
                     <div class="form-group {{ $errors->has('store') ? ' has-error' : '' }} req">
@@ -19,11 +19,11 @@
 
                 <div class="col-md-6">
                     <div class="form-group {{ $errors->has('deliver_date') ? ' has-error' : '' }} req">
-                        {!! Form::label('deliver_date', 'Delivery Date',['class'=>'col-md-4']) !!}
+                        {!! Form::label('delivery_date', 'Delivery Date',['class'=>'col-md-4']) !!}
 
                         <div class="col-md-8">
-                            {!! Form::text('deliver_date', old('deliver_date'), ['class' => 'form-control date']) !!}
-                            {!! $errors->first('deliver_date', '<span class="help-block">:message</span>') !!}
+                            {!! Form::text('delivery_date', old('delivery_date'), ['class' => 'form-control date']) !!}
+                            {!! $errors->first('delivery_date', '<span class="help-block">:message</span>') !!}
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div id="item-0" class="col-md-12">
                         <div class="form-group">
                             <div class="col-md-6">
-                                <select name="items[0][item]" class="col-md-12"></select>
+                                <select name="items[0][product_id]" class="col-md-12"></select>
                             </div>
                             <div class="col-md-4">
                                 <input name="items[0][quantity]" class="form-control" />

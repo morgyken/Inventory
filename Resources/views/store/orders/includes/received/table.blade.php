@@ -8,29 +8,26 @@
                         <tr>
                             <th>#</th>
                             <th>Ordered By</th>
-                            <th>Dispatching Store</th>
+                            <th>Requesting Store</th>
                             <th>Ordered date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($store->orders as $order)
+                    @forelse($store->received as $order)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $order->users->profile->fullName }}</td>
-                            <td>{{ $order->dispatchingStore->name }}</td>
+                            <td>{{ $order->requestingStore->name }}</td>
                             <td>{{ $order->created_at }}</td>
                             <td>
-                                <a href="{{route('inventory.store.orders-made', $store->id)}}"
-                                   class="btn btn-info btn-xs"> View
-                                </a>
-                                <a href="{{route('inventory.dispatch.receive-order', $order->id)}}"
-                                   class="btn btn-success btn-xs"> Receive
+                                <a href="{{ route('inventory.dispatch.index', array($order->id)) }}"
+                                   class="btn btn-info btn-xs"><i class="fa fa-wrench"></i> Dispatch
                                 </a>
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5">No orders made yet</td></tr>
+                        <tr><td colspan="5">No orders received yet</td></tr>
                     @endforelse
                     </tbody>
                 </table>

@@ -1,72 +1,79 @@
-<?php
-extract($data);
-?>
-
 @extends('layouts.app')
 
-@section('content_title','Receive Items from Order')
-@section('content_description','Receive Items from Order')
+@section('content_title', "Manage Store")
+@section('content_description', "manage store stock movement")
 
 @section('content')
-    <div class="box box-info">
-        <div class="box-header with-border">
-            <h3 class="box-title"><a class="btn btn-primary btn-xs" href="{{route('inventory.store.new_order')}}">
-                    <i class="fa fa-plus-square"></i> New Internal Order
-                </a>
-            </h3>
-        </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-12">
-                    @if(!$orders->isEmpty())
-                        <table class="table table-responsive table-striped">
-                            <tbody>
-                            @foreach($orders as $item)
-                                <tr id="supplier{{$item->id}}">
-                                    <td>{{$loop->iteration}}</td>
-                                    <td>{{$item->users->profile->name}}</td>
-                                    <td>{{$item->disp_store->name}}</td>
-                                    <td>{{$item->rq_store->name}}</td>
-                                    <td>{{$item->nice_status}}</td>
-                                    <td>{{$item->created_at->format('d/m/Y')}}</td>
-                                    <td><a href="{{route('inventory.store.receive',$item->id)}}">
-                                            <i class="fa fa-eye"></i> Receive
-                                        </a></td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>User</th>
-                                <th>Dispatching Store</th>
-                                <th>Requesting Store</th>
-                                <th>Status</th>
-                                <th>Ordered Date</th>
-                                <td>Receive</td>
-                            </tr>
-                            </thead>
-                        </table>
-                    @else
-                        <div class="alert alert-info">
-                            <p>No records to show</p>
+
+    @include('inventory::store.orders.includes.dashboard')
+
+    <div class="panel panel-info">
+        <div class="panel-heading">Receive orders made <b class="pull-right">Dispatched By: {{ $order->dispatchingStore->name }}</b></div>
+        <div class="panel-body">
+
+            <section style="margin: 10px 0 50px 0">
+                <label class="col-md-2">Item</label>
+                <label class="col-md-1">Ordered</label>
+                <label class="col-md-1">Dispatched</label>
+                <label class="col-md-1">Received</label>
+                <label class="col-md-2">Receiving</label>
+                <label class="col-md-2">Reject</label>
+                <label class="col-md-3">Reason</label>
+            </section>
+
+            {!! Form::open(['class'=>'form-horizontal','route'=>['inventory.dispatch.accept-order', $order->id]]) !!}
+
+                @foreach($order->details as $detail)
+                    <p class="col-md-2">{{ $detail->product->name }}</p>
+                    <p class="col-md-1 text-center">{{ $detail->quantity }}</p>
+                    <p class="col-md-1 text-center">{{ $detail->dispatched }}</p>
+                    <p class="col-md-1 text-center">{{ $detail->accepted }}</p>
+
+                    <input type="hidden" name="receive[{{$loop->index}}][order_detail_id]" value="{{ $detail->id }}" />
+
+                    <input type="hidden" name="receive[{{$loop->index}}][received_by]" value="{{ Auth::id() }}" />
+
+                    <div id="receive-{{ $loop->index }}" class="col-md-2">
+                        <div class="form-group" style="margin-right:1px;margin-left:1px">
+                            <input type="number" class="form-control" min="0" max="{{ $detail->available }}" value="{{ $detail->available }}" readonly
+                                    name="receive[{{$loop->index}}][received]" />
                         </div>
-                    @endif
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group" style="margin-right:1px;margin-left:1px">
+                            <input id="reject-{{ $loop->index }}" type="number" class="form-control reject"
+                                   min="0" value="0" max="{{ $detail->available }}" name="receive[{{$loop->index}}][rejected]" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group" style="margin-right:1px;margin-left:1px">
+                            <input type="text" class="form-control" name="receive[{{$loop->index}}][reason]">
+                        </div>
+                    </div>
+                @endforeach
+
+                <div class="col-md-12 pull-right">
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="fa fa-save"></i> Receive Items
+                    </button>
                 </div>
-            </div>
+            {!! Form::close() !!}
         </div>
     </div>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            try {
-                $('table').DataTable({
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'excel', 'pdf', 'print'
-                    ]
-                });
-            } catch (e) {
-            }
+    <script>
+        $(document).ready(function(){
+            $(".reject").bind("keyup mouseup", function(event) {
+
+                var reject = event.target.value ? parseInt(event.target.value) : 0;
+
+                var receivingObj = $("#receive-" + event.target.id.split("-")[1] + " input");
+
+                var available = parseInt(receivingObj.attr('max'));
+
+                receivingObj.val(available - reject);
+            });
         });
     </script>
 @endsection
