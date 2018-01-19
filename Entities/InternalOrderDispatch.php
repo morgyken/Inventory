@@ -41,4 +41,9 @@ class InternalOrderDispatch extends Model
     {
         return $this->hasMany(InternalReceivedOrders::class, 'dispatch_id');
     }
+
+    public function dispatcher()
+    {
+        return $this->belongsTo(\Ignite\Users\Entities\User::class, 'dispatched_by');
+    }
 }
