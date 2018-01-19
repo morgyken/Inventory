@@ -9,4 +9,9 @@ class InternalReceivedOrders extends Model
     protected $guarded = [];
 
     protected $table = "inventory_store_received_orders";
+
+    public function receiver()
+    {
+        return $this->belongsTo(\Ignite\Users\Entities\User::class, 'received_by');
+    }
 }
