@@ -94,17 +94,4 @@ class OrderController extends AdminBaseController
 
         return view('inventory::store.orders.order_details', compact('order', 'details'));
     }
-
-//    private function trail($detail)
-//    {
-//        $merged = array_merge($detail->dispatch->toArray(), $detail->received->toArray());
-//
-//        collect($merged)->transform(function($trail){
-//
-//            dd($trail);
-//
-//        });
-//
-////        dd($detail->dispatch->concat($detail->received));
-//    }
 }

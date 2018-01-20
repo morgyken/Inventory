@@ -9,6 +9,7 @@
                     <tr>
                         <th>Store Id</th>
                         <th>Store Name</th>
+                        <th>Clinic/Department</th>
                         <th>Parent Store</th>
                         <th>Date Added</th>
                         <th>Actions</th>
@@ -19,6 +20,7 @@
                         <tr id="supplier{{$store->id}}">
                             <td>{{$store->id}}</td>
                             <td>{{$store->name}}</td>
+                            <td>{{$store->department->name ?? ''}}</td>
                             <td>{{!$store->parentStore ?'': $store->parentStore->name }}</td>
                             <td>{{$store->created_at}}</td>
                             <td>

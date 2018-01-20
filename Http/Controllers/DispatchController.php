@@ -37,7 +37,7 @@ class DispatchController extends AdminBaseController
      */
     public function store($id)
     {
-        $this->repo->dispatch();
+        $this->repo->dispatch($id);
 
         flash("Items dispatched successfully", "success");
 

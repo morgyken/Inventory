@@ -14,7 +14,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($store->received as $order)
+                    @forelse($store->received->sortByDesc('created_at') as $order)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $order->users->profile->fullName }}</td>

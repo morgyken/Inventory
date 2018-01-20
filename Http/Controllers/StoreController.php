@@ -4,20 +4,23 @@ namespace Ignite\Inventory\Http\Controllers;
 
 use Ignite\Core\Http\Controllers\AdminBaseController;
 use Ignite\Inventory\Repositories\StoresRepository;
+use Ignite\Inventory\Repositories\StoreDepartmentsRepository;
 use Ignite\Inventory\Http\Requests\StoreRequest;
 
 class StoreController extends AdminBaseController
 {
-    protected $repo;
+    protected $repo, $departmentsRepo;
 
     /*
      * Inject dependencies into the class
      */
-    public function __construct(StoresRepository $repo)
+    public function __construct(StoresRepository $repo, StoreDepartmentsRepository $departmentsRepo)
     {
         parent::__construct();
 
         $this->repo = $repo;
+
+        $this->departmentsRepo = $departmentsRepo;
     }
 
     /*
@@ -27,7 +30,9 @@ class StoreController extends AdminBaseController
     {
         $stores = $this->repo->all();
 
-        return view('inventory::store.index', compact('stores'));
+        $departments = $this->departmentsRepo->all();
+
+        return view('inventory::store.index', compact('stores', 'departments'));
     }
 
     /*
@@ -51,7 +56,9 @@ class StoreController extends AdminBaseController
 
         $store = $stores->find($id);
 
-        return view('inventory::store.edit', compact('stores', 'store'));
+        $departments = $this->departmentsRepo->all();
+
+        return view('inventory::store.edit', compact('stores', 'store', 'departments'));
     }
 
     /*

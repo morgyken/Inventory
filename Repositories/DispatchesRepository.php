@@ -8,10 +8,8 @@
 
 namespace Ignite\Inventory\Repositories;
 
-use Auth;
-use Ignite\Inventory\Entities\InternalOrder;
-use Ignite\Inventory\Entities\InternalOrderDetails;
 use Ignite\Inventory\Entities\InternalOrderDispatch;
+use Ignite\Inventory\Entities\StoreProducts;
 
 class DispatchesRepository
 {
@@ -19,15 +17,22 @@ class DispatchesRepository
     {
         $data = collect(request('dispatch'))->where('dispatched', '>', 0)->toArray();
 
-        $dispatches = [];
-
         foreach($data as $dispatch)
         {
             $dispatch['created_at'] = $dispatch['updated_at'] = now();
 
-            array_push($dispatches, $dispatch);
+            $record = new InternalOrderDispatch($dispatch);
+
+            $record->save();
+
+            $storeProduct = StoreProducts::firstOrNew([
+                'product_id' => $record->detail->product->id, 'store_id' => $record->dispatched_by
+            ]);
+
+            $storeProduct->quantity = $storeProduct->quantity - $dispatch['dispatched'];
+
+            $storeProduct->save();
         }
 
-        InternalOrderDispatch::insert($dispatches);
     }
 }

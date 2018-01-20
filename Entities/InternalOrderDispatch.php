@@ -46,4 +46,9 @@ class InternalOrderDispatch extends Model
     {
         return $this->belongsTo(\Ignite\Users\Entities\User::class, 'dispatched_by');
     }
+
+    public function detail()
+    {
+        return $this->belongsTo(InternalOrderDetails::class, 'order_detail_id');
+    }
 }

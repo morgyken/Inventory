@@ -31,6 +31,14 @@ class Store extends Model
     ];
 
     /*
+     * Relationship between a store and a clinic/department
+     */
+    public function department()
+    {
+        return $this->belongsTo(StoreDepartment::class, 'clinic');
+    }
+
+    /*
      * Determines the parent store of a store
      */
     public function parentStore()
@@ -52,5 +60,14 @@ class Store extends Model
     public function received()
     {
         return $this->hasMany(InternalOrder::class, 'dispatching_store');
+    }
+
+    /*
+     * Relationship between a store and all its products
+     */
+    public function products()
+    {
+        return $this->belongsToMany(InventoryProducts::class, 'inventory_store_products', 'store_id', 'product_id')
+                    ->withPivot('quantity', 'selling_price', 'insurance_price');
     }
 }
