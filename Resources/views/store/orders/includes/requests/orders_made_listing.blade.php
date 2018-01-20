@@ -3,6 +3,14 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
+                @if($store->main_store)
+                    <div>
+                        <a class="btn btn-sm btn-primary" href="{{ url('inventory/purchase/direct/goods?store='.$store->id) }}">
+                            Receive goods directly from supplier
+                        </a>
+                    </div>
+                @endif
+
                 <table class="table table-responsive table-striped">
                     <thead>
                         <tr>

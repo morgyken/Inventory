@@ -105,6 +105,10 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
      */
     $router->group(['prefix' => '/{storeId}'], function (Router $router) {
 
+        $router->get('/products', ['uses' => 'StoreProductController@index', 'as' => 'products']);
+
+
+
         $router->get('/orders-made', ['uses' => 'OrderController@index', 'as' => 'orders-made']);
 
         $router->get('/orders-received', ['uses' => 'OrderController@received', 'as' => 'orders-received']);

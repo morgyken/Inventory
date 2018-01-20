@@ -17,6 +17,9 @@
 @section('content')
     <div class="box box-info">
         {!! Form::open(['class'=>'form-horizontal']) !!}
+
+        {!! Form::hidden('store_id', request('store')) !!}
+
         <div class="box-header with-border">
             <h3 class="box-title">Order details</h3>
         </div>

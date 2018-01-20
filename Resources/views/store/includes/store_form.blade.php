@@ -29,14 +29,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label class="col-md-2">Description:</label>
-                        <div class="col-md-10">
+                        <label class="col-md-4">Select a department:</label>
+                        <div class="col-md-8">
+                            <select name="clinic" class="form-control">
+                                <option selected disabled>Select a department</option>
+                                @foreach($departments as $department)
+                                    <option value="{{ $department->id }}"  {{ $store->clinic != $department->id ?: 'selected' }}>
+                                        {{ $department->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-4">Description:</label>
+                        <div class="col-md-8">
                             <textarea name="description" class="form-control">{{ $store->description }}</textarea>
                         </div>
                     </div>
                 </div>
+
+
+
+
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="main_store" class="col-md-4">Can order from supppliers:</label>

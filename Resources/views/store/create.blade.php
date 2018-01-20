@@ -27,10 +27,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label class="col-md-2">Description:</label>
-                            <div class="col-md-10">
+                            <label class="col-md-4">Select a department:</label>
+                            <div class="col-md-8">
+                                <select name="clinic" class="form-control">
+                                    <option selected disabled>Select a department</option>
+                                    @foreach($departments as $department)
+                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4">Description:</label>
+                            <div class="col-md-8">
                                 <textarea name="description" value="{{ old('description') }}" class="form-control"></textarea>
                                 {!! $errors->first('description', '<span class="help-block">:message</span>') !!}
                             </div>

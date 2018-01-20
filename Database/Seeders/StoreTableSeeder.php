@@ -14,11 +14,12 @@ class StoreTableSeeder extends Seeder
      */
     public function run()
     {
-        $stores = [
-            ['name' => 'MAIN STORE', 'description' => 'The main store'],
-            ['name' => 'Pharmacy', 'description' => 'Pharmacy store'],
-            ['name' => 'Nursing', 'description' => 'Nursing store'],
-        ];
+        $stores = array(
+            [ 'name' => 'Main Store', 'description' => 'the main store', 'main_store' => 1, 'delivery_store' => 1 ],
+            [ 'name' => 'Pharmacy Store', 'description' => 'the pharmacy store' ],
+            [ 'name' => 'Nursing Store', 'description' => 'the nursing store' ],
+        );
+
         foreach ($stores as $store) {
             Store::create($store);
         }

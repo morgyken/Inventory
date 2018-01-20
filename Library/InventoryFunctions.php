@@ -47,6 +47,7 @@ use Ignite\Inventory\Entities\OrderToCollabmed;
 use Ignite\Inventory\Entities\Requisition;
 use Ignite\Inventory\Entities\RequisitionDetails;
 use Ignite\Inventory\Events\MarkupWasAdjusted;
+use Ignite\Inventory\Events\OrderReceived;
 use Ignite\Inventory\Repositories\InventoryRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -654,9 +655,11 @@ class InventoryFunctions implements InventoryRepository
             $stack = self::order_item_stack(array_keys($this->request->all()));
             $order = new InventoryBatch;
             $order->user = $this->request->user()->id;
+            $order->store = $this->request->store_id;
             $order->amount = $this->request->amount;
             $order->supplier = $this->request->supplier;
             $order->save();
+
             foreach ($stack as $index) {
                 $item = 'item' . $index;
                 $price = 'price' . $index;
@@ -688,6 +691,9 @@ class InventoryFunctions implements InventoryRepository
 //dispatch($job);
             $this->update_stock_from_lpo($order, true);
             session(['last_receive' => $order->id]);
+
+            event(new OrderReceived($order));
+
         });
 
         return true;

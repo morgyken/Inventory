@@ -7,6 +7,6 @@
 
     @include('inventory::store.includes.store_form')
 
-    @include('inventory::store.includes.store_listing')
+    @include('inventory::store.includes.stores_listing')
 
 @endsection

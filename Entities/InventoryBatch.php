@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Model;
 class InventoryBatch extends Model {
 
     protected $fillable = [];
+
     public $table = 'inventory_batches';
 
     public function lpo() {
