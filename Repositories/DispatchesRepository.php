@@ -13,26 +13,37 @@ use Ignite\Inventory\Entities\StoreProducts;
 
 class DispatchesRepository
 {
-    public function dispatch()
+    public function dispatch($id)
     {
         $data = collect(request('dispatch'))->where('dispatched', '>', 0)->toArray();
 
         foreach($data as $dispatch)
         {
-            $dispatch['created_at'] = $dispatch['updated_at'] = now();
+            $record = $this->dispatchItem($dispatch);
 
-            $record = new InternalOrderDispatch($dispatch);
-
-            $record->save();
-
-            $storeProduct = StoreProducts::firstOrNew([
-                'product_id' => $record->detail->product->id, 'store_id' => $record->dispatched_by
-            ]);
-
-            $storeProduct->quantity = $storeProduct->quantity - $dispatch['dispatched'];
-
-            $storeProduct->save();
+            $this->reduceQuantity($record->detail->product->id, $id, $record->dispatched_by, $dispatch['dispatched']);
         }
 
+    }
+
+    private function dispatchItem($dispatch)
+    {
+        $dispatch['created_at'] = $dispatch['updated_at'] = now();
+
+        $record = new InternalOrderDispatch($dispatch);
+
+        $record->save();
+
+        return $record;
+    }
+
+    private function reduceQuantity($productId, $storeId, $quantityDispatched)
+    {
+        $product = StoreProducts::where('product_id', $productId)
+                                ->where('store_id', $storeId)->first();
+
+        $product->quantity = $product->quantity - $quantityDispatched;
+
+        $product->save();
     }
 }

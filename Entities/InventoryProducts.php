@@ -131,4 +131,18 @@ class InventoryProducts extends Model
     {
         return ceil((($this->categories->cash_markup + 100) * $this->selling_p) / 100);
     }
+
+    public function storageDetails()
+    {
+        return $this->hasMany(StoreProducts::class, 'product_id');
+    }
+
+    public function scopeStorage($query, $store)
+    {
+        return $query->whereHas('storageDetails', function($query) use ($store){
+
+            return $query->where('store_id', $store);
+
+        });
+    }
 }
