@@ -21,6 +21,7 @@ class StoreTableSeeder extends Seeder
         );
 
         foreach ($stores as $store) {
+
             Store::create($store);
         }
     }

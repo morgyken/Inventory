@@ -21,8 +21,8 @@ class StoreDepartment extends Model
     /*
      * Relationship between a store and a department
      */
-    public function store()
+    public function stores()
     {
-        return $this->hasMany(Store::class);
+        return $this->hasMany(Store::class, 'clinic');
     }
 }
