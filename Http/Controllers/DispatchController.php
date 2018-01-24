@@ -3,6 +3,7 @@
 namespace Ignite\Inventory\Http\Controllers;
 
 use Ignite\Core\Http\Controllers\AdminBaseController;
+use Ignite\Inventory\Entities\StoreProducts;
 use Ignite\Inventory\Repositories\DispatchesRepository;
 use Ignite\Inventory\Repositories\OrdersRepository;
 
@@ -29,7 +30,29 @@ class DispatchController extends AdminBaseController
 
         $store = $order->dispatchingStore;
 
-        return view('inventory::store.orders.dispatch_orders', compact('order', 'store'));
+        $details = $order->details->transform(function($detail) use ($store){
+
+            $available = $this->getAvailableQuantity($detail, $store->id);
+
+            return [
+                'id' => $detail->id,
+
+                'available' => $available,
+
+                'item' => $detail->product->name,
+
+                'ordered' => $detail->quantity,
+
+                'dispatched' => $detail->dispatched,
+
+                'pending' => $detail->pending,
+
+                'dispatch' => $this->getDispatchQuantity($available, $detail->quantity, $detail->dispatched)
+            ];
+
+        });
+
+        return view('inventory::store.orders.dispatch_orders', compact('order', 'store', 'details'));
     }
 
     /*
@@ -44,27 +67,34 @@ class DispatchController extends AdminBaseController
         return redirect()->back();
     }
 
-//    /*
-//     * Show form for receiving an item that has been dispatched.
-//     */
-//    public function edit($id)
-//    {
-//        $order = $this->ordersRepo->find($id);
-//
-//        $store = $order->dispatchingStore;
-//
-//        return view('inventory::store.orders.receive_orders', compact('order', 'store'));
-//    }
-//
-//    /*
-//     * Show form for receiving an item that has been dispatched.
-//     */
-//    public function update($id)
-//    {
-//        $order = $this->ordersRepo->find($id);
-//
-//        $store = $order->dispatchingStore;
-//
-//        return view('inventory::store.orders.receive_orders', compact('order', 'store'));
-//    }
+    public function getAvailableQuantity($detail, $storeId)
+    {
+        $record = StoreProducts::firstOrCreate([
+            'product_id' => $detail->product->id, 'store_id' => $storeId
+        ]);
+
+        return $record->quantity;
+    }
+
+    public function getDispatchQuantity($available, $ordered, $dispatched)
+    {
+        if($dispatched > 0)
+        {
+            return $ordered - $dispatched;
+        }
+        else
+        {
+            if($available == 0)
+            {
+                return 0;
+            }
+
+            if($available > 0 and $available < $ordered)
+            {
+                return $available;
+            }
+
+            return $ordered;
+        }
+    }
 }

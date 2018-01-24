@@ -4,6 +4,8 @@
 @section('content_description','Manage products in store')
 
 @section('content')
+    @include('inventory::store.orders.includes.dashboard')
+
     <div class="panel panel-info">
         <div class="panel-heading"><b>{{ $store->name }}</b> - products in store</div>
         <div class="panel-body">
@@ -13,41 +15,46 @@
 
                         <table class="table table-striped" id="store-products">
                             <thead>
-                            <tr>
-                                <th>Item Code</th>
-                                <th>Item</th>
-                                <th>Quantity</th>
-                                <th style="text-align: right">Cash Price</th>
-                                <th style="text-align: right">Insurance Price</th>
-                            </tr>
+                                <tr>
+                                    <th>Item Code</th>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th style="text-align: right">Cash Price</th>
+                                    <th style="text-align: right">Insurance Price</th>
+                                </tr>
                             </thead>
-                            @forelse($store->products as $product)
-                                <tr>
-                                    <td>{{ $product->product_code }}</td>
-                                    <td>{{ $product->desc }}</td>
-                                    <td>{{ $product->pivot->quantity }}</td>
-                                    <td style="text-align: right">
-                                        <input type="text" name="cash{{$product->id}}"
-                                               pid="{{$product->id}}"
-                                               value="{{ $product->pivot->selling_price }}"/>
-                                    </td>
-                                    <td style="text-align: right">
-                                        <input type="text" name="cash{{$product->id}}"
-                                               pid="{{$product->id}}"
-                                               value="{{ number_format($product->pivot->insurance_price, 2) }}"/>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    Sorry! This store does not have any products
-                                </tr>
-                            @endforelse
+                            <tbody>
+                                @forelse($store->products as $product)
+                                    <tr>
+                                        <td>{{ $product->product_code }}</td>
+                                        <td>{{ $product->desc }}</td>
+                                        <td>{{ $product->pivot->quantity }}</td>
+                                        <td style="text-align: right">
+                                            <input type="text" name="cash{{$product->id}}"
+                                                   pid="{{$product->id}}"
+                                                   value="{{ $product->pivot->selling_price }}"
+                                                   {{ $store->delivery_store ?: 'disabled' }} />
+                                        </td>
+                                        <td style="text-align: right">
+                                            <input type="text" name="cash{{$product->id}}"
+                                                   pid="{{$product->id}}"
+                                                   value="{{ number_format($product->pivot->insurance_price, 2) }}"
+                                                   {{ $store->delivery_store ?: 'disabled' }} />
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5">Sorry! This store does not have any products</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
                         </table>
-                        <td>
+
+                        @if($store->delivery_store)
                             <button type="button" class="btn btn-primary" id="save">
                                 Update Prices
                             </button>
-                        </td>
+                        @endif
 
 
                     {!! Form::close() !!}
@@ -56,8 +63,11 @@
         </div>
     </div>
 
-    {{--<script type="text/javascript">--}}
-        {{--$(document).ready(function () {--}}
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#store-products').dataTable();
+
             {{--var data = [], arrIndex = {};--}}
 
             {{--function addOrReplace(object) {--}}
@@ -70,8 +80,10 @@
                 {{--console.log(data);--}}
             {{--}--}}
 
-            {{--$('#datatable').dataTable();--}}
-            {{--$(document).on('keyup', 'input[type=text]', function () {--}}
+
+
+            {{--$(document).on('keyup',
+            'input[type=text]', function () {--}}
                 {{--var product = $(this).attr('pid');--}}
                 {{--var update = {--}}
                     {{--product: product,--}}
@@ -99,6 +111,6 @@
                     {{--}--}}
                 {{--});--}}
             {{--});--}}
-        {{--});--}}
-    {{--</script>--}}
+        });
+    </script>
 @endsection

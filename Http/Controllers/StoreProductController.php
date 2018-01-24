@@ -30,8 +30,6 @@ class StoreProductController extends AdminBaseController
     {
         $store = $this->storeRepo->find($id);
 
-//        dd($store->products);
-
         return view('inventory::store.products.store_products', compact('store'));
     }
 }

@@ -46,6 +46,11 @@ class InternalOrderDetails extends Model
         return $this->hasMany(InternalReceivedOrders::class, 'order_detail_id');
     }
 
+    public function order()
+    {
+        return $this->belongsTo(InternalOrder::class, 'internal_order');
+    }
+
     public function getDispatchedAttribute(): int
     {
         return $this->dispatch->sum('dispatched');
