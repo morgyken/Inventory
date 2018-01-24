@@ -14,7 +14,7 @@ class DepartmentsSeeder extends Seeder
     {
         $departments = [
             'nursing', 'doctors', 'dental', 'optical', 'radiology', 'diagnostics',
-            'laboratory', 'pharmacy', 'ultrasound', 'theatre', 'review'
+            'laboratory', 'pharmacy', 'ultrasound', 'theatre', 'cafeteria', 'shop'
         ];
 
         foreach ($departments as $department)
