@@ -24,7 +24,7 @@ class DispatchesRepository
             $productId = $record->detail->product->id;
 
             $product = StoreProducts::where('product_id', $productId)
-                                    ->where('store_id', $storeId)->first();
+                                    ->where('store_id', $storeId)->firstOrCreate();
 
             $product->quantity = $product->quantity - $dispatch['dispatched'];
 
