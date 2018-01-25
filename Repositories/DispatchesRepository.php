@@ -23,10 +23,7 @@ class DispatchesRepository
 
             $productId = $record->detail->product->id;
 
-            $product = StoreProducts::firstOrCreate([
-                            'product_id', $productId,
-                            'store_id', $storeId
-                        ]);
+            $product = StoreProducts::firstOrCreate(['product_id' => $productId, 'store_id' => $storeId]);
 
             $product->quantity = $product->quantity - $dispatch['dispatched'];
 
