@@ -107,8 +107,6 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 
         $router->get('/products', ['uses' => 'StoreProductController@index', 'as' => 'products']);
 
-
-
         $router->get('/orders-made', ['uses' => 'OrderController@index', 'as' => 'orders-made']);
 
         $router->get('/orders-received', ['uses' => 'OrderController@received', 'as' => 'orders-received']);
@@ -122,15 +120,16 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 /*
  * Dispatching routes
  */
-$router->group(['as' => 'dispatch.', 'prefix' => '/order/{orderId}'], function (Router $router) {
+
+$router->get('/order/{orderId}', ['uses' => 'OrderController@show', 'as' => 'show-order']);
+
+$router->group(['as' => 'dispatch.', 'prefix' => '/store/{storeId}/order/{orderId}'], function (Router $router) {
 
     $router->get('/dispatch', ['uses' => 'DispatchController@index', 'as' => 'index']);
 
     $router->post('/dispatch', ['uses' => 'DispatchController@store', 'as' => 'store']);
 
     $router->get('/receive', ['uses' => 'OrderController@edit', 'as' => 'receive-order']);
-
-    $router->get('/', ['uses' => 'OrderController@show', 'as' => 'show-order']);
 
     $router->post('/receive', ['uses' => 'OrderReceivingController@store', 'as' => 'accept-order']);
 

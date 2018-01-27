@@ -8,12 +8,13 @@
 
 namespace Ignite\Inventory\Repositories;
 
+use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\InternalOrderDispatch;
 use Ignite\Inventory\Entities\StoreProducts;
 
 class DispatchesRepository
 {
-    public function dispatch($storeId)
+    public function dispatch($storeId, $orderId)
     {
         $data = collect(request('dispatch'))->where('dispatched', '>', 0)->toArray();
 

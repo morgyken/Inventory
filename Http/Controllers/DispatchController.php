@@ -24,15 +24,15 @@ class DispatchController extends AdminBaseController
     /*
      * Shows the details of a dispatched order
      */
-    public function index($id)
+    public function index($storeId, $orderId)
     {
-        $order = $this->ordersRepo->find($id);
+        $order = $this->ordersRepo->find($orderId);
 
         $store = $order->dispatchingStore;
 
-        $details = $order->details->transform(function($detail) use ($store){
+        $details = $order->details->transform(function($detail) use ($storeId){
 
-            $available = $this->getAvailableQuantity($detail, $store->id);
+            $available = $this->getAvailableQuantity($detail, $storeId);
 
             return [
                 'id' => $detail->id,
@@ -58,9 +58,9 @@ class DispatchController extends AdminBaseController
     /*
      * Dispatch an item into the database.
      */
-    public function store($id)
+    public function store($storeId, $orderId)
     {
-        $this->repo->dispatch($id);
+        $this->repo->dispatch($storeId, $orderId);
 
         flash("Items dispatched successfully", "success");
 

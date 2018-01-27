@@ -12,8 +12,10 @@ class OrdersReceivingRepository
     /*
      * Receive items from the dispatched list
      */
-    public function create()
+    public function create($storeId, $orderId)
     {
+//        dd(request('receive'));
+
         foreach(request('receive') as $item)
         {
             if($item['received'] > 0 or $item['rejected'] > 0)

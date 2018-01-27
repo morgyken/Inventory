@@ -64,11 +64,11 @@ class OrderController extends AdminBaseController
     /*
      * Show the form to receive orders that have been dispatched
      */
-    public function edit($id)
+    public function edit($storeId, $orderId)
     {
-        $order = $this->repo->find($id);
+        $order = $this->repo->find($orderId);
 
-        $store = $order->dispatchingStore;
+        $store = $order->requestingStore;
 
         return view('inventory::store.orders.receive_orders', compact('order', 'store'));
     }
