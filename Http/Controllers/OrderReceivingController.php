@@ -18,9 +18,9 @@ class OrderReceivingController extends AdminBaseController
     /*
      * Store a newly created resource in storage.
      */
-    public function store($id)
+    public function store($storeId, $orderId)
     {
-        $this->repo->create();
+        $this->repo->create($storeId, $orderId);
 
         flash('Items have been received successfully', 'success');
 

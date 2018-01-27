@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content_title','Internal stores')
+@section('content_title', $store->name)
 @section('content_description','Manage internal stores')
 
 @section('content')

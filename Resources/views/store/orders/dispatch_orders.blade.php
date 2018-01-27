@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content_title', "Manage Store")
+@section('content_title', $store->name)
 @section('content_description', "manage store stock movement")
 
 @section('content')
@@ -19,14 +19,14 @@
                 <label class="col-md-2">Dispatch</label>
             </section>
 
-            {!! Form::open(['class'=>'form-horizontal','route'=>['inventory.dispatch.store', $order->id]]) !!}
+            {!! Form::open(['class'=>'form-horizontal','route'=>['inventory.dispatch.store', $order->dispatching_store, $order->id]]) !!}
                 @foreach($details as $detail)
 
                     <input type="hidden" name={{ "dispatch[".$loop->index."][dispatched_by]" }} value="{{ Auth::id() }}"/>
 
                     <p class="col-md-4">
                         {{ $detail['item'] }}
-                        @if($detail['available'] == 0)
+                        @if($detail['available'] <= 0)
                             <i class="text-danger">(out of stock)</i>
                         @endif
                     </p>

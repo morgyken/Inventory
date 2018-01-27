@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content_title', "Manage Store")
+@section('content_title', $store->name)
 @section('content_description', "manage store stock movement")
 
 @section('content')
@@ -21,7 +21,7 @@
                 <label class="col-md-3">Reason</label>
             </section>
 
-            {!! Form::open(['class'=>'form-horizontal','route'=>['inventory.dispatch.accept-order', $order->id]]) !!}
+            {!! Form::open(['class'=>'form-horizontal','route'=>['inventory.dispatch.accept-order', $order->requesting_store, $order->id]]) !!}
 
                 @foreach($order->details as $detail)
                     <p class="col-md-2">{{ $detail->product->name }}</p>
