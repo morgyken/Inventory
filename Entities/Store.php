@@ -68,6 +68,6 @@ class Store extends Model
     public function products()
     {
         return $this->belongsToMany(InventoryProducts::class, 'inventory_store_products', 'store_id', 'product_id')
-                    ->withPivot('quantity', 'selling_price', 'insurance_price');
+                    ->withPivot('quantity', 'selling_price', 'insurance_price')->withTimestamps();
     }
 }
