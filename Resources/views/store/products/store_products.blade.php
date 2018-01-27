@@ -13,7 +13,7 @@
                 <div class="col-md-12">
                     {!! Form::open() !!}
 
-                        <table class="table table-striped" id="store-products">
+                        <table class="table table-striped" id="datatable">
                             <thead>
                                 <tr>
                                     <th>Item Code</th>
@@ -27,7 +27,7 @@
                                 @forelse($store->products as $product)
                                     <tr>
                                         <td>{{ $product->product_code }}</td>
-                                        <td>{{ $product->desc }}</td>
+                                        <td>{{ $product->name }}</td>
                                         <td>{{ $product->pivot->quantity }}</td>
                                         <td style="text-align: right">
                                             <input type="text" name="cash{{$product->id}}"
@@ -61,56 +61,50 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var data = [], arrIndex = {};
+
+                function addOrReplace(object) {
+                    var index = arrIndex[object.product];
+                    if (index === undefined) {
+                        index = data.length;
+                        arrIndex[object.product] = index;
+                    }
+                    data[index] = object;
+                    console.log(data);
+                }
+
+                $('#datatable').dataTable();
+                $(document).on('keyup', 'input[type=text]', function () {
+                    var product = $(this).attr('pid');
+                    var update = {
+                        product: product,
+                        cash: $('input[name=cash' + product + ']').val(),
+                        insurance: $('input[name=insurance' + product + ']').val()
+                    };
+                    addOrReplace(update);
+                });
+                $('#save').click(function () {
+                    $.ajax({
+                        url: "{{route('api.inventory.product.price.edit')}}",
+                        method: 'POST',
+                        data: {
+                            _token: "{{csrf_token()}}",
+                            data: data
+                        },
+                        dataType: "json",
+                        success: function () {
+                            alertify.success("Updates saved");
+                            data = [];
+                            arrIndex = {};
+                        },
+                        error: function () {
+                            alertify.error("An error occurred");
+                        }
+                    });
+                });
+            });
+        </script>
     </div>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            $('#store-products').dataTable();
-
-            {{--var data = [], arrIndex = {};--}}
-
-            {{--function addOrReplace(object) {--}}
-                {{--var index = arrIndex[object.product];--}}
-                {{--if (index === undefined) {--}}
-                    {{--index = data.length;--}}
-                    {{--arrIndex[object.product] = index;--}}
-                {{--}--}}
-                {{--data[index] = object;--}}
-                {{--console.log(data);--}}
-            {{--}--}}
-
-
-
-            {{--$(document).on('keyup',
-            'input[type=text]', function () {--}}
-                {{--var product = $(this).attr('pid');--}}
-                {{--var update = {--}}
-                    {{--product: product,--}}
-                    {{--cash: $('input[name=cash' + product + ']').val(),--}}
-                    {{--insurance: $('input[name=insurance' + product + ']').val()--}}
-                {{--};--}}
-                {{--addOrReplace(update);--}}
-            {{--});--}}
-            {{--$('#save').click(function () {--}}
-                {{--$.ajax({--}}
-                    {{--url: "{{route('api.inventory.product.price.edit')}}",--}}
-                    {{--method: 'POST',--}}
-                    {{--data: {--}}
-                        {{--_token: "{{csrf_token()}}",--}}
-                        {{--data: data--}}
-                    {{--},--}}
-                    {{--dataType: "json",--}}
-                    {{--success: function () {--}}
-                        {{--alertify.success("Updates saved");--}}
-                        {{--data = [];--}}
-                        {{--arrIndex = {};--}}
-                    {{--},--}}
-                    {{--error: function () {--}}
-                        {{--alertify.error("An error occurred");--}}
-                    {{--}--}}
-                {{--});--}}
-            {{--});--}}
-        });
-    </script>
 @endsection

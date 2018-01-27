@@ -136,9 +136,6 @@ $router->group(['as' => 'dispatch.', 'prefix' => '/order/{orderId}'], function (
 
 });
 
-
-
-
 //suppliers
 $router->match(['post', 'get'], 'suppliers/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);
 //$router->get('suppliers/{id?}', ['uses' => 'InventoryController@suppliers', 'as' => 'suppliers']);

@@ -1,7 +1,9 @@
 <?php
 namespace Ignite\Inventory\Repositories;
 
+use DB;
 use Ignite\Inventory\Entities\Store;
+use Ignite\Inventory\Events\StoreCreated;
 
 class StoresRepository
 {
@@ -18,7 +20,15 @@ class StoresRepository
      */
     public function create()
     {
-        return Store::create(request()->all());
+        DB::transaction(function () {
+
+            $store = Store::create(request()->all());
+
+            event(new StoreCreated($store));
+
+            return $store;
+
+        });
     }
 
     /*
