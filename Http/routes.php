@@ -113,8 +113,13 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 
         $router->post('/orders', ['uses' => 'OrderController@store', 'as' => 'make-order']);
 
+        $router->get('/knock-off', ['uses' => 'KnockOffController@index', 'as' => 'knock-off']);
+
+        $router->post('/knock-off', ['uses' => 'KnockOffController@store', 'as' => 'knocked-off']);
 
     });
+
+
 });
 
 /*

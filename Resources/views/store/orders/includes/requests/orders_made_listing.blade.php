@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($store->orders as $order)
+                    @forelse($store->orders->sortByDesc('created_at') as $order)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $order->users->profile->fullName }}</td>
