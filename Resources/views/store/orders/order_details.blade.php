@@ -24,7 +24,7 @@
                             <span class="col-md-9 text-left">{{ $trail['quantity'] }} items {{ $trail['message'] }}</span>
                         </div>
                     @empty
-                        <p>No action has been taken since item were ordered</p>
+                        <p>No action has been taken since items were ordered</p>
                     @endforelse
                 </div>
             @endforeach
@@ -35,12 +35,6 @@
 <script>
     $(document).ready(function(){
         $('.accordion').accordion({heightStyle: "content"});
-
-        // $('body').on('click', '.edit-note', function(event){
-        //
-        //     $('#note-id').val(event.target.value);
-        //
-        // });
     })
 </script>
 

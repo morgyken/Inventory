@@ -117,6 +117,8 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 
         $router->post('/knock-off', ['uses' => 'KnockOffController@store', 'as' => 'knocked-off']);
 
+        $router->get('/order/{orderId}', ['uses' => 'OrderController@show', 'as' => 'show-order']);
+
     });
 
 
@@ -125,8 +127,6 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 /*
  * Dispatching routes
  */
-
-$router->get('/order/{orderId}', ['uses' => 'OrderController@show', 'as' => 'show-order']);
 
 $router->group(['as' => 'dispatch.', 'prefix' => '/store/{storeId}/order/{orderId}'], function (Router $router) {
 

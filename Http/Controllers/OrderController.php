@@ -76,9 +76,11 @@ class OrderController extends AdminBaseController
     /*
      * Show an order and the trail with which products were received
      */
-    public function show($id)
+    public function show($storeId, $orderId)
     {
-        $order = $this->repo->find($id);
+        $order = $this->repo->find($orderId);
+
+        $store = $this->storeRepo->find($storeId);
 
         $details = $order->details->transform(function($detail){
 
@@ -92,6 +94,6 @@ class OrderController extends AdminBaseController
 
         });
 
-        return view('inventory::store.orders.order_details', compact('order', 'details'));
+        return view('inventory::store.orders.order_details', compact('order', 'details', 'store'));
     }
 }
