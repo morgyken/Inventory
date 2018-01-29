@@ -13,16 +13,16 @@ class KnockOffsRepository
 
             foreach(request('items') as $item)
             {
-                $item['knocked_by'] = request('knocked_by');
-
-                StoreKnockOff::create($item);
-
                 $storeProduct = StoreProducts::where('store_id', $storeId)
                                              ->where('product_id', $item['product_id'])->first();
 
                 $newQuantity = $storeProduct->quantity - $item['quantity'];
 
                 $storeProduct->quantity = $newQuantity <= 0 ? 0 : $newQuantity;
+
+                $item['knocked_by'] = request('knocked_by');
+
+                StoreKnockOff::create($item);
 
                 $storeProduct->save();
             }

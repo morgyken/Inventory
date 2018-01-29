@@ -5,7 +5,7 @@
 
 @section('content')
     @include('inventory::store.orders.includes.dashboard')
-    
+
     <div class="panel panel-info">
         <div class="panel-heading">Knock off items</div>
         <div class="panel-body">
