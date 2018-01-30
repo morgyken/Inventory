@@ -26,6 +26,6 @@ $router->get('supplier/batches', ['uses' => 'ApiController@supplier_batches', 'a
 $router->post('product/price/edit', ['uses' => 'ApiController@editProductPrice', 'as' => 'product.price.edit']);
 
 $router->get('today/sold/{shop?}', ['as' => 'sales.today', 'uses' => 'APIController@todaySales']);
-$router->get('get/store/products', ['uses' => 'ApiStoreController@products', 'as' => 'get.store-products']);
+$router->get('get/store/products', ['uses' => 'ApiController@products', 'as' => 'get.store-products']);
 
 
