@@ -8,5 +8,5 @@ class StorePrescription extends Model
 {
     protected $guarded = ['id'];
 
-
+    protected $table = 'inventory_store_prescriptions';
 }
