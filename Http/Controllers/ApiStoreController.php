@@ -19,7 +19,7 @@ class ApiStoreController extends Controller
 
         $term = request('term')['term'];
 
-        $stores = StoreDepartment::with(['stores'])->whereIn('name',  request('departments'))
+        $stores = StoreDepartment::with(['stores'])->where('id',  request('clinic'))
                                  ->get()->pluck('stores')->flatten()->pluck('id');
 
         if (!empty($term))
@@ -63,7 +63,7 @@ class ApiStoreController extends Controller
 
                     return [
                         'text' => $storage->product->name . '  - ' . $stock_text . $strngth_text . $expiry . "( " . $store->name . " )",
-                        'id' => $product->id,
+                        'id' => [ "product_id" => $product->id, "store_id" => $store->id ],
                         'store' => $store->id,
                         'batch' => empty($batchp->batch) ? 0 : $batchp->batch,
 
