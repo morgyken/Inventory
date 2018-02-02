@@ -63,7 +63,7 @@ class ApiStoreController extends Controller
 
                     return [
                         'text' => $storage->product->name . '  - ' . $stock_text . $strngth_text . $expiry . "( " . $store->name . " )",
-                        'id' => [ "product_id" => $product->id, "store_id" => $store->id ],
+                        'id' => $storage->product->id,
                         'store' => $store->id,
                         'batch' => empty($batchp->batch) ? 0 : $batchp->batch,
 
