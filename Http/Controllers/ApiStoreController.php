@@ -19,7 +19,7 @@ class ApiStoreController extends Controller
 
         $term = request('term')['term'];
 
-        $stores = StoreDepartment::with(['stores'])->whereIn('name',  request('departments'))
+        $stores = StoreDepartment::with(['stores'])->where('id',  request('clinic'))
                                  ->get()->pluck('stores')->flatten()->pluck('id');
 
         if (!empty($term))
