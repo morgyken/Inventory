@@ -20,7 +20,7 @@ class ApiStoreController extends Controller
         $term = request('term')['term'];
 
         $stores = StoreDepartment::with(['stores'])->where('id',  request('clinic'))
-                                 ->get()->pluck('stores')->flatten()->pluck('id');
+            ->get()->pluck('stores')->flatten()->pluck('id');
 
         if (!empty($term))
         {
@@ -40,46 +40,51 @@ class ApiStoreController extends Controller
 
                     $query->where('name', 'like', "%$term%");
 
-                })->with(['store', 'product'])->whereIn('store_id', $stores)->get();
+                })->with(['store', 'product.stocks', 'product.prices'])->whereIn('store_id', $stores)->get();
 
-                $build = $storeProducts->map(function($storage){
 
-                    $product = $storage->product;
-                    $store = $storage->store;
-                    $batchp = InventoryBatchPurchases::whereProduct($product->id)
-                            ->whereActive(TRUE)
-                            ->first();
-                    $itemPrices = InventoryProductPrice::where('product', $product->id)->get();
+                $build = $storeProducts->map(function($storeProduct){
+
+                    $storeId = $storeProduct->store_id;
+
+                    $product = $storeProduct->product;
+
+                    $batchp = InventoryBatchPurchases::whereProduct($product->id)->whereActive(TRUE)->first();
+
+                    $this->data['item_prices'] = InventoryProductPrice::query()->where('product', '=', $product->id)->get();
+
                     $active_price = 0.00;
-                    foreach ($itemPrices as $product) {
-                        if ($product->price > $active_price) {
-                            $active_price = $product->price;
+
+                    foreach ($this->data['item_prices'] as $productPrice)
+                    {
+                        if ($productPrice->price > $active_price)
+                        {
+                            $active_price = $productPrice->price;
                         }
                     }
 
                     $expiry = empty($batchp->expiry_date) ? '' : ' |expiry: ' . $batchp->expiry_date;
-                    $stock_text = $storage->quantity == 0 ? '  Out of stock' : $storage->quantity . ' in stock';
+                    $stock_text = $storeProduct->quantity == 0 ? '  Out of stock' : $storeProduct->quantity . ' in stock';
                     $strngth_text = empty($product->strength) ? '' : ' | ' . $product->strength . $product->units->name;
 
                     return [
-                        'text' => $storage->product->name . '  - ' . $stock_text . $strngth_text . $expiry . "( " . $store->name . " )",
-                        'id' => $storage->product->id,
-                        'store' => $store->id,
+                        'text' => $product->name . '  - ' . $stock_text . $strngth_text . $expiry . "( " . $storeProduct->store->name . " )",
+                        'id' => $product->id,
+                        'store' => $storeId,
                         'batch' => empty($batchp->batch) ? 0 : $batchp->batch,
-
-//                        'cash_price' => ($product->categories->cash_markup + 100) / 100 * $active_price, //$item->prices->credit_price
-//
-//                        'credit_price' => ($product->categories->credit_markup + 100) / 100 * $active_price,
-
+                        'cash_price' => ($product->categories->cash_markup + 100) / 100 * $active_price, //$item->prices->credit_price
+                        'credit_price' => ($product->categories->credit_markup + 100) / 100 * $active_price,
                         'o_price' => $active_price,
-                        'available' => $storage->quantity,
-                        'disabled' => $storage->quantity == 0 ? true : false,
+                        'available' => $storeProduct->quantity,
+                        'disabled' => $storeProduct->quantity == 0 ? true : false,
                     ];
 
                 });
+
+                return response()->json(['results' => $build]);
             }
         }
 
-        return response()->json(['results' => $build]);
+//        return response()->json(['results' => $build]);
     }
 }
