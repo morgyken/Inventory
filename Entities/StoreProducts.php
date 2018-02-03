@@ -15,6 +15,7 @@ class StoreProducts extends Model
      */
     public function product()
     {
+//        return $this->hasOne(InventoryProducts::class, 'product_id');
         return $this->belongsTo(InventoryProducts::class, 'product_id');
     }
 
