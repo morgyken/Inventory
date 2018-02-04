@@ -24,6 +24,8 @@ class CreateStorePrescriptions extends Migration
 
             $table->unsignedInteger('quantity');
 
+            $table->boolean('dispensed')->default(false);
+
             $table->timestamps();
         });
     }
