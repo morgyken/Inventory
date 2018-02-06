@@ -24,7 +24,7 @@ class StoresRepository
 
             $store = Store::create(request()->all());
 
-            event(new StoreCreated($store));
+//            event(new StoreCreated($store));
 
             return $store;
 
