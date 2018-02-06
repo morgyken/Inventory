@@ -1,5 +1,9 @@
 <?php
 
+use Ignite\Inventory\Entities\InventoryCategories;
+use Ignite\Inventory\Entities\InventoryProductPrice;
+use Ignite\Inventory\Entities\InventoryProducts;
+use Ignite\Inventory\Entities\InventoryUnits;
 use Illuminate\Routing\Router;
 
 /** @var Router $router */
@@ -177,3 +181,4 @@ $router->match(['post', 'get'], 'reports/stock/expiry', ['uses' => 'ReportContro
 
 $router->get('suggest/items', ['uses' => 'ApiController@pullProductSuggestions', 'as' => 'prod.tulus']);
 
+$router->get('upload-products', ['uses' => 'InventoryController@uploadExcel', 'as' => 'upload.excel']);
