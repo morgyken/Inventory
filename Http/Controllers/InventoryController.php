@@ -29,6 +29,7 @@ use Illuminate\Http\Request;
 use Ignite\Inventory\Entities\InventoryBatchPurchases;
 use Ignite\Inventory\Entities\Requisition;
 use Ignite\Inventory\Entities\RequisitionDetails;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends AdminBaseController
 {
@@ -475,5 +476,41 @@ class InventoryController extends AdminBaseController
         return redirect()->back(); //route('inventory.purchase_details', $batch_id);
     }
 
+    public function uploadExcel()
+    {
+        Excel::load('price_list.xlsx', function($reader) {
 
+            $reader->each(function($sheet) {
+
+                // Loop through all rows
+                $sheet->each(function($row) {
+
+                    $product = InventoryProducts::create([
+                        'name' => $row->item_name,
+
+                        'category' => InventoryCategories::where('name', 'Drugs')->first()->id,
+
+                        'unit' => InventoryUnits::where('name', 'g')->first()->id,
+                    ]);
+
+                    InventoryProductPrice::create([
+
+                        'product' => $product->id,
+
+                        'price' => $row->regular,
+
+                        'selling' => $row->regular,
+
+                        'ins_price' => $row->insurance,
+
+                    ]);
+
+                });
+
+            });
+
+        });
+
+        dd("successfully uploaded all the drugs from an excel");
+    }
 }
