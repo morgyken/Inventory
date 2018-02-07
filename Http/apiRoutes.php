@@ -29,3 +29,5 @@ $router->get('today/sold/{shop?}', ['as' => 'sales.today', 'uses' => 'APIControl
 $router->get('get/store/products', ['uses' => 'ApiStoreController@products', 'as' => 'get.storeproducts']);
 
 $router->get('get/order/products', ['uses' => 'ApiStoreController@orderProducts', 'as' => 'get.orderproducts']);
+
+$router->get('get/shop/products', ['uses' => 'ApiStoreController@products', 'as' => 'get.shopproducts']);

@@ -35,19 +35,17 @@ $(document).ready(function () {
 
         var quantity = "items["+index+"][quantity]";
 
-        var reason = "items["+index+"][reason]";
-
         return "<div id="+id+" class='col-md-12'>"+
             "<div class='form-group'>"+
-            "<div class='col-md-5'>"+
+            "<div class='col-md-6'>"+
             "<select class='col-md-12' name="+name+"></select>"+
             "</div>"+
-            "<div class='col-md-2'>"+
+            "<div class='col-md-4'>"+
             "<input class='form-control' name="+quantity+" />"+
             "</div>"+
-            "<div class='col-md-3'>"+
-            "<input class='form-control' name="+reason+" />"+
-            "</div>"+
+            // "<div class='col-md-3'>"+
+            // "<input class='form-control' name="+reason+" />"+
+            // "</div>"+
             "<div class='col-md-2'>"+
             "<button value="+index+" type='button' class='btn btn-xs btn-danger remove'><i class='fa fa-trash-o'></i></button>"+
             "</div>"+

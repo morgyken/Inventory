@@ -222,7 +222,8 @@ extract($data);
         });
         var INSURANCE = false;
         var STOCK_URL = "{{route('api.inventory.getstock')}}";
-        var PRODUCTS_URL = "{{route('api.inventory.get.products')}}";
+        {{--var PRODUCTS_URL = "{{route('api.inventory.get.products')}}";--}}
+        var PRODUCTS_URL = "{{route('api.inventory.get.shopproducts')}}";
         var SCHEMES_URL = "{{route('api.settings.get_schemes')}}";
         var PHONE_URL = "{{route('api.inventory.cust.get')}}";
         var PATIENTS_URL = "{{route('api.reception.suggest_patients')}}";
