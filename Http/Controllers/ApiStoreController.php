@@ -2,6 +2,7 @@
 
 namespace Ignite\Inventory\Http\Controllers;
 
+use Carbon\Carbon;
 use Ignite\Inventory\Entities\InventoryBatchPurchases;
 use Ignite\Inventory\Entities\InventoryProductPrice;
 use Ignite\Inventory\Entities\InventoryProducts;
@@ -86,5 +87,34 @@ class ApiStoreController extends Controller
         }
 
 //        return response()->json(['results' => $build]);
+    }
+
+    public function orderProducts()
+    {
+
+        $term = request('term')['term'];
+        $new_array = [];
+        if (!empty($term)) {
+            /** @var InventoryProducts[] $found */
+            $found = InventoryProducts::with(['prices' => function ($query) {
+            }, 'taxgroups'])
+                //  ->select('id', 'name', 'strength')
+                ->where('name', 'like', "%$term%")->get();
+            foreach ($found as $item) {
+                if($item->created_at >= Carbon::parse("6th February 2018"))
+                {
+                    $str = $item->strength ? '(' . $item->strength . ' ' . $item->units->name . ')' : '';
+                    $text = $item->name . ' ' . $str;
+                    $new_array[] = [
+                        'text' => $text,
+                        'id' => $item->id,
+                        'tax' => $item->taxgroups ? $item->taxgroups->rate : 0,
+//                    'disabled' => true
+                    ];
+                }
+            }
+        }
+        return response()->json(['results' => $new_array]);
+
     }
 }

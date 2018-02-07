@@ -64,6 +64,7 @@
 </div>
 
 <script type="text/javascript">
-    var PRODUCTS_URL = "{{ route('api.inventory.get_products') }}";
+    {{--var PRODUCTS_URL = "{{ route('api.inventory.get_products') }}";--}}
+    var PRODUCTS_URL = "{{ route('api.inventory.get.orderproducts') }}";
 </script>
 <script src="{!! m_asset('inventory:js/inorder_stub.js') !!}"></script>

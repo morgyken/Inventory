@@ -46,7 +46,7 @@ class OrderController extends AdminBaseController
 
         $this->repo->create($store);
 
-        flash('Your order has been succefully sent', 'success');
+        flash('Your order has been successfully sent', 'success');
 
         return redirect()->back();
     }

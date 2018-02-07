@@ -27,3 +27,5 @@ $router->post('product/price/edit', ['uses' => 'ApiController@editProductPrice',
 
 $router->get('today/sold/{shop?}', ['as' => 'sales.today', 'uses' => 'APIController@todaySales']);
 $router->get('get/store/products', ['uses' => 'ApiStoreController@products', 'as' => 'get.storeproducts']);
+
+$router->get('get/order/products', ['uses' => 'ApiStoreController@orderProducts', 'as' => 'get.orderproducts']);
