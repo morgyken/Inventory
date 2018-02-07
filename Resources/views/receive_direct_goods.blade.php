@@ -114,6 +114,7 @@
         </div>
         {!! Form::close() !!}
     </div>
-    <script type="text/javascript">var PRODUCTS_URL = "{{route('api.inventory.get_products')}}";</script>
+    {{--<script type="text/javascript">var PRODUCTS_URL = "{{route('api.inventory.get_products')}}";</script>--}}
+    <script type="text/javascript">var PRODUCTS_URL = "{{route('api.inventory.get.receiveproducts')}}";</script>
     <script src="{!! m_asset('inventory:js/direct_stock.js') !!}"></script>
 @endsection
