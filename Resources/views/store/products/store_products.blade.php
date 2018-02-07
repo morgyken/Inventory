@@ -25,23 +25,25 @@
                             </thead>
                             <tbody>
                                 @forelse($store->products as $product)
-                                    <tr>
-                                        <td>{{ $product->product_code }}</td>
-                                        <td>{{ $product->name }}</td>
-                                        <td>{{ $product->pivot->quantity }}</td>
-                                        <td style="text-align: right">
-                                            <input type="text" name="cash{{$product->id}}"
-                                                   pid="{{$product->id}}"
-                                                   value="{{ $product->pivot->selling_price }}"
-                                                   {{ $store->delivery_store ?: 'disabled' }} />
-                                        </td>
-                                        <td style="text-align: right">
-                                            <input type="text" name="cash{{$product->id}}"
-                                                   pid="{{$product->id}}"
-                                                   value="{{ number_format($product->pivot->insurance_price, 2) }}"
-                                                   {{ $store->delivery_store ?: 'disabled' }} />
-                                        </td>
-                                    </tr>
+                                    @if($product->created_at >= \Carbon\Carbon::parse("6th February 2018"))
+                                        <tr>
+                                            <td>{{ $product->product_code }}</td>
+                                            <td>{{ $product->name }}</td>
+                                            <td>{{ $product->pivot->quantity }}</td>
+                                            <td style="text-align: right">
+                                                <input type="text" name="cash{{$product->id}}"
+                                                       pid="{{$product->id}}"
+                                                       value="{{ $product->pivot->selling_price }}"
+                                                       {{ $store->delivery_store ?: 'disabled' }} />
+                                            </td>
+                                            <td style="text-align: right">
+                                                <input type="text" name="cash{{$product->id}}"
+                                                       pid="{{$product->id}}"
+                                                       value="{{ number_format($product->pivot->insurance_price, 2) }}"
+                                                       {{ $store->delivery_store ?: 'disabled' }} />
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @empty
                                     <tr>
                                         <td colspan="5">Sorry! This store does not have any products</td>

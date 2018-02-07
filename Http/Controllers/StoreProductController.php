@@ -32,8 +32,6 @@ class StoreProductController extends AdminBaseController
 
         $store->load(['products']);
 
-//        dd($store->products);
-
         return view('inventory::store.products.store_products', compact('store'));
     }
 }
