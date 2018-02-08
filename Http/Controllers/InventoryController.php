@@ -478,15 +478,16 @@ class InventoryController extends AdminBaseController
 
     public function uploadExcel()
     {
+        ini_set('memory_limit', -1);
+
         Excel::load('shoplist.xlsx', function($reader) {
 
             $reader->each(function($sheet) {
 
-                // Loop through all rows
-                $sheet->each(function($row) {
-
+                if($sheet->item_name)
+                {
                     $product = InventoryProducts::create([
-                        'name' => $row->item_name,
+                        'name' => $sheet->item_name,
 
                         'category' => InventoryCategories::where('name', 'Shop')->first()->id,
 
@@ -497,11 +498,10 @@ class InventoryController extends AdminBaseController
 
                         'product' => $product->id,
 
-                        'price' => $row->price,
+                        'price' => $sheet->price,
 
                     ]);
-
-                });
+                }
 
             });
 
