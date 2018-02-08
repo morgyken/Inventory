@@ -80,7 +80,7 @@ class DispatchController extends AdminBaseController
     {
         if($dispatched > 0)
         {
-            return $ordered - $dispatched;
+            return ($ordered - $dispatched) > 0 ? ($ordered - $dispatched) : 0;
         }
         else
         {

@@ -38,7 +38,7 @@
                             <input type="hidden" name={{ "dispatch[".$loop->index."][order_detail_id]" }} value="{{ $detail['id'] }}"/>
 
                             <input type="number" value="{{ $detail['dispatch'] }}" max="{{ $detail['dispatch'] }}" min="0"
-                                   class="form-control" name={{ "dispatch[".$loop->index."][dispatched]" }}  {{ $detail['dispatch'] != 0 ?: 'disabled' }}>
+                                   class="form-control" name={{ "dispatch[".$loop->index."][dispatched]" }}  {{ $detail['dispatch'] > 0 ?: 'disabled' }}>
                         </div>
                     </div>
                 @endforeach
