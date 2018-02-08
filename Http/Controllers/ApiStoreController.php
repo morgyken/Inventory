@@ -126,7 +126,9 @@ class ApiStoreController extends Controller
 
         $term = request('term')['term'];
 
-        $stores = StoreDepartment::with(['stores'])->where('name',  'shop')
+        $department = request('shop') ? "shop" : "pharmacy";
+
+        $stores = StoreDepartment::with(['stores'])->where('name',  $department)
             ->get()->pluck('stores')->flatten()->pluck('id');
 
         $storeProducts = StoreProducts::whereHas('product', function($query) use($term){

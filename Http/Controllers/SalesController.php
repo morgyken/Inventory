@@ -56,6 +56,8 @@ class SalesController extends AdminBaseController
         }
         $this->data['schemes'] = Schemes::all();
         $this->data['sold'] = $this->inventoryRepository->getSales();
+        $this->data['is_pharmacy'] = true;
+
         return view('inventory::shop.shop', ['data' => $this->data]);
     }
 
@@ -71,6 +73,8 @@ class SalesController extends AdminBaseController
         $this->data['sold'] = $this->inventoryRepository->getSales(true);
         $this->data['schemes'] = Schemes::all();
         $this->data['is_shop'] = true;
+        $this->data['is_pharmacy'] = false;
+
         return view('inventory::shop.shop', ['data' => $this->data]);
     }
 
