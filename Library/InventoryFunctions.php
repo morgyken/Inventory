@@ -358,7 +358,6 @@ class InventoryFunctions implements InventoryRepository
 
             $sales->visit = $visit['id'];
 
-
             if (isset($this->request->scheme)) {
                 //save scheme
                 $sales->insurance = $this->request->scheme;
@@ -381,12 +380,6 @@ class InventoryFunctions implements InventoryRepository
                 $discount = 'dis' . $index;
                 $store = 'store_' . $index;
 
-//                http_response_code(500);
-//
-//                dd($item, $price, $batch, $quantity, $discount, $storeId);
-
-
-
                 if ($this->request->has($item) && $this->request->has($price) && $this->request->has($quantity)) {
                     $sale = new InventoryDispensing;
                     $sale->batch = $sales->id;
@@ -407,14 +400,16 @@ class InventoryFunctions implements InventoryRepository
                     }
                     $sale->save();
 
-                    $storeProduct = StoreProducts::where('product_id', $this->request->$item)->where('store_id', $storeId);
+                    $storeProduct = StoreProducts::where('product_id', $this->request->$item)->where('store_id', $storeId)->first();
 
-                    if ($storeProduct->quantity < $this->request->$quantity) {
+                    if ($storeProduct->quantity < $sale->quantity) {
                         \DB::rollback();
                         flash()->error('An item you tried to sell is unfortunately out of stock...');
                         redirect()->back();
                     }else{
-                        $storeProduct->quantity = $storeProduct->quantity - $this->request->$quantity;
+                        $storeProduct->quantity = $storeProduct->quantity - $sale->quantity;
+
+                        $storeProduct->save();
                     }
                 }
             }
