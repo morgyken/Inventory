@@ -46,6 +46,7 @@ use Ignite\Inventory\Entities\InventoryUnits;
 use Ignite\Inventory\Entities\OrderToCollabmed;
 use Ignite\Inventory\Entities\Requisition;
 use Ignite\Inventory\Entities\RequisitionDetails;
+use Ignite\Inventory\Entities\StoreProducts;
 use Ignite\Inventory\Events\MarkupWasAdjusted;
 use Ignite\Inventory\Events\OrderReceived;
 use Ignite\Inventory\Repositories\InventoryRepository;
@@ -378,6 +379,14 @@ class InventoryFunctions implements InventoryRepository
                 $batch = 'batch' . $index;
                 $quantity = 'qty' . $index;
                 $discount = 'dis' . $index;
+                $store = 'store_' . $index;
+
+//                http_response_code(500);
+//
+//                dd($item, $price, $batch, $quantity, $discount, $storeId);
+
+
+
                 if ($this->request->has($item) && $this->request->has($price) && $this->request->has($quantity)) {
                     $sale = new InventoryDispensing;
                     $sale->batch = $sales->id;
@@ -385,17 +394,28 @@ class InventoryFunctions implements InventoryRepository
                     $sale->price = $this->request->$price;
                     $sale->quantity = $this->request->$quantity;
                     $sale->discount = $this->request->$discount;
+                    $storeId = $this->request->$store;
 //move items in queue
                     $stock = InventoryStock::where('product', '=', $this->request->$item)->first();
-                    if ($stock->quantity < $this->request->$quantity) {
-                        \DB::rollback();
-                        flash()->error('An item you tried to sell is unfortunately out of stock...');
-                        redirect()->back();
-                    }
+//                    if ($stock->quantity < $this->request->$quantity) {
+//                        \DB::rollback();
+//                        flash()->error('An item you tried to sell is unfortunately out of stock...');
+//                        redirect()->back();
+//                    }
                     if ($this->request->$batch > 0) {
                         $this->update_queue($sale->product, $this->request->$batch, $sale->quantity);
                     }
                     $sale->save();
+
+                    $storeProduct = StoreProducts::where('product_id', $this->request->$item)->where('store_id', $storeId);
+
+                    if ($storeProduct->quantity < $this->request->$quantity) {
+                        \DB::rollback();
+                        flash()->error('An item you tried to sell is unfortunately out of stock...');
+                        redirect()->back();
+                    }else{
+                        $storeProduct->quantity = $storeProduct->quantity - $this->request->$quantity;
+                    }
                 }
             }
             $this->take_products($sales); //notify stock
