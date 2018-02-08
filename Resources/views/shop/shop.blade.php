@@ -53,7 +53,7 @@ extract($data);
                                 <input type="hidden" id="is_shop" value="1">
                                 <input type="hidden" name="is_shop" value="1">
                             @else
-                                <input type="hidden" id="is_shop" value="0">
+                                <input type="hidden" name="is_shop" id="is_shop" value="0">
                             @endif
 
                             @if(!$is_shop)
