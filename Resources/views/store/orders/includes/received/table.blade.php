@@ -18,7 +18,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $order->users->profile->fullName }}</td>
-                            <td>{{ $order->requestingStore->name }}</td>
+                            <td>{{ $order->requestingStore ? $order->requestingStore->name : '' }}</td>
                             <td>{{ $order->created_at }}</td>
                             <td>
                                 <a href="{{ route('inventory.dispatch.index',  ['storeId' => $order->dispatching_store, 'orderId' => $order->id]) }}"

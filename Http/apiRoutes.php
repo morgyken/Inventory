@@ -30,6 +30,6 @@ $router->get('get/store/products', ['uses' => 'ApiStoreController@products', 'as
 
 $router->get('get/order/products', ['uses' => 'ApiStoreController@orderProducts', 'as' => 'get.orderproducts']);
 
-$router->get('get/shop/products', ['uses' => 'ApiStoreController@products', 'as' => 'get.shopproducts']);
+$router->get('get/shop/products', ['uses' => 'ApiStoreController@shopProducts', 'as' => 'get.shopproducts']);
 
 $router->get('get/receive/products', ['uses' => 'ApiStoreController@orderProducts', 'as' => 'get.receiveproducts']);

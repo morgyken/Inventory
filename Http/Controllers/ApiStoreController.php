@@ -86,7 +86,6 @@ class ApiStoreController extends Controller
             }
         }
 
-//        return response()->json(['results' => $build]);
     }
 
     public function orderProducts()
@@ -116,5 +115,65 @@ class ApiStoreController extends Controller
         }
         return response()->json(['results' => $new_array]);
 
+    }
+
+    /*
+     * Get the different shop items
+     */
+    public function shopProducts()
+    {
+        $found = collect();
+
+        $term = request('term')['term'];
+
+        $stores = StoreDepartment::with(['stores'])->where('id',  request('shop'))
+            ->get()->pluck('stores')->flatten()->pluck('id');
+
+        http_response_code(500);
+
+        dd($stores);
+
+
+
+//        $term = $this->request->term['term'];
+//        if (!empty($term)) {
+//            if ($this->request->shop == 1) {
+//                //Get for shop only
+//                $found = InventoryProducts::with(['prices' => function ($query) {
+//                }])->with(['stocks' => function ($query) {
+//                }])->where('name', 'like', "%$term%")->whereHas('categories', function ($qc) {
+//                    $qc->whereName('Shop');
+//                })->get();
+//            }
+//        }
+//        $build = [];
+//        foreach ($found as $item) {
+//            $batchp = InventoryBatchPurchases::whereProduct($item->id)
+//                ->whereActive(TRUE)
+//                ->first();
+//            $this->data['item_prices'] = InventoryProductPrice::query()
+//                ->where('product', '=', $item->id)->get();
+//            $active_price = 0.00;
+//            foreach ($this->data['item_prices'] as $product) {
+//                if ($product->price > $active_price) {
+//                    $active_price = $product->price;
+//                }
+//            }
+//            $expiry = empty($batchp->expiry_date) ? '' : ' |expiry: ' . $batchp->expiry_date;
+//            $stock_text = (empty($item->stocks) || empty($item->stocks->quantity)) ?
+//                '  Out of stock' : $item->stocks->quantity . ' in stock';
+//            $strngth_text = empty($item->strength) ? '' : ' | ' . $item->strength . $item->units->name;
+//            $build[] = [
+//                'text' => $item->name . '  - ' . $stock_text . $strngth_text . $expiry,
+//                'id' => $item->id,
+//                'batch' => empty($batchp->batch) ? 0 : $batchp->batch,
+//                'cash_price' => ($item->categories->cash_markup + 100) / 100 * $active_price, //$item->prices->credit_price
+//                'credit_price' => ($item->categories->credit_markup + 100) / 100 * $active_price,
+//                'o_price' => $active_price,
+//                'available' => empty($item->stocks) ? 0 : $item->stocks->quantity,
+//                'disabled' => empty($item->stocks) || empty($item->stocks->quantity),
+//            ];
+//        }
+//        return response()->json(['results' => $build]);
     }
 }
