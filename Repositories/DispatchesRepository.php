@@ -26,6 +26,11 @@ class DispatchesRepository
 
             $product = StoreProducts::firstOrCreate(['product_id' => $productId, 'store_id' => $storeId]);
 
+            if($product->quantity < $dispatch['dispatched'])
+            {
+                break;
+            }
+
             $product->quantity = $product->quantity - $dispatch['dispatched'];
 
             $product->save();
