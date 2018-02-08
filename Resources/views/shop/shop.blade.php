@@ -84,9 +84,10 @@ extract($data);
                                 </thead>
                                 <tbody>
                                 <tr id='addr0'>
-                                    <td><select name="item0" id="item_0" class="select2-single" style="width: 100%"
+                                    <td><select name="item0" id="item_0" class="select2-single item-select" style="width: 100%"
                                                 required=""></select></td>
                                     <td>
+                                        <input type="hidden" name="store_0" id="store_0"/>
                                         <input type="text" id="item_qty_0" autocomplete="off" name='qty0'
                                                placeholder='Quantity' value="0"
                                                class="quantities"/>
@@ -103,9 +104,10 @@ extract($data);
                                     </td>
                                 </tr>
                                 <tr id='addr1'>
-                                    <td><select name="item1" id="item_1" class=" select2-single"
+                                    <td><select name="item1" id="item_1" class=" select2-single item-select"
                                                 style="width: 100%"></select></td>
                                     <td>
+                                        <input type="hidden" name="store_1" id="store_1"/>
                                         <input type="text" name='qty1' id="item_qty_1" autocomplete="off"
                                                placeholder='Quantity' value="0"
                                                class="quantities"/>
@@ -122,9 +124,10 @@ extract($data);
                                     </td>
                                 </tr>
                                 <tr id='addr2'>
-                                    <td><select name="item2" id="item_2" class=" select2-single"
+                                    <td><select name="item2" id="item_2" class=" select2-single item-select"
                                                 style="width: 100%"></select></td>
                                     <td>
+                                        <input type="hidden" name="store_2" id="store_2"/>
                                         <input type="text" name='qty2' id="item_qty_2" autocomplete="off"
                                                placeholder='Quantity' value="0" class="quantities"/>
                                         <span id="fb2"></span>
@@ -238,6 +241,14 @@ extract($data);
                 }
             });
         }
+
+        $(".item-select").on("select2:select", function (event) {
+
+            var num = this.id.split("_")[1];
+
+            $("#store_" + num).val(event.params.data.store);
+
+        });
     </script>
     <script src="{!! m_asset('inventory:js/shopfront.js') !!}"></script>
     <script src="{{m_asset('reception:js/appointments.min.js')}}"></script>
