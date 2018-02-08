@@ -64,7 +64,7 @@ extract($data);
                                             <select name="patient" id="patient_select" class="form-control"
                                                     style="width:100%;"
                                                     data-placeholder="Search Patient Name, ID Number or Roll Number"
-                                                    required></select>
+                                                    ></select>
                                             {!! $errors->first('patient', '<span class="help-block">:message</span>') !!}
                                         </div>
                                     </div>
