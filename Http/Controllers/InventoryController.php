@@ -478,7 +478,7 @@ class InventoryController extends AdminBaseController
 
     public function uploadExcel()
     {
-        Excel::load('price_list.xlsx', function($reader) {
+        Excel::load('shoplist.xlsx', function($reader) {
 
             $reader->each(function($sheet) {
 
@@ -488,7 +488,7 @@ class InventoryController extends AdminBaseController
                     $product = InventoryProducts::create([
                         'name' => $row->item_name,
 
-                        'category' => InventoryCategories::where('name', 'Drugs')->first()->id,
+                        'category' => InventoryCategories::where('name', 'Shop')->first()->id,
 
                         'unit' => InventoryUnits::where('name', 'g')->first()->id,
                     ]);
@@ -497,11 +497,7 @@ class InventoryController extends AdminBaseController
 
                         'product' => $product->id,
 
-                        'price' => $row->regular,
-
-                        'selling' => $row->regular,
-
-                        'ins_price' => $row->insurance,
+                        'price' => $row->price,
 
                     ]);
 
