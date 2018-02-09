@@ -87,7 +87,8 @@ $(document).ready(function () {
                 "cache": true,
                 "data": function (term) {
                     return {
-                        term: term
+                        term: term,
+                        store_id: $("#dispatching-store").val()
                     };
                 },
                 "results": function (data) {
