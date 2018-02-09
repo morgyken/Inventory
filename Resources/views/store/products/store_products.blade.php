@@ -149,12 +149,13 @@
                     });
                 });
 
-                $('.adjust').click(function(event){
+                $("body").on('click', '.adjust', function(event){
+
+                    $("#productName").html('');
+
                     var productId = event.target.id.split("-")[1];
 
                     var productName = event.target.id.split("-")[2];
-
-                    $("#productName").html('');
 
                     $("#productName").html(productName);
 
