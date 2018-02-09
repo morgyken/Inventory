@@ -12,7 +12,7 @@
                         {!! Form::label('dispatching_store', 'Dispatching Store',['class'=>'col-md-4']) !!}
 
                         <div class="col-md-8">
-                            {!! Form::select('dispatching_store', $dispatchingStores, null, ['class'=>'form-control']) !!}
+                            {!! Form::select('dispatching_store', $dispatchingStores, null, ['class'=>'form-control', 'id' => 'dispatching-store']) !!}
                         </div>
                     </div>
                 </div>

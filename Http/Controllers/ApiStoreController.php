@@ -90,9 +90,9 @@ class ApiStoreController extends Controller
 
     public function orderProducts()
     {
-
         $term = request('term')['term'];
         $new_array = [];
+
         if (!empty($term)) {
             /** @var InventoryProducts[] $found */
             $found = InventoryProducts::with(['prices' => function ($query) {
@@ -102,8 +102,19 @@ class ApiStoreController extends Controller
             foreach ($found as $item) {
                 if($item->created_at >= Carbon::parse("6th February 2018"))
                 {
+                    $product = StoreProducts::where('product_id', $item->id)->where('store_id', request('store_id'))->first();
+
+                    if($product)
+                    {
+                        $stock = $product->quantity . " available";
+                    }
+                    else
+                    {
+                        $stock = "Item not available";
+                    }
+
                     $str = $item->strength ? '(' . $item->strength . ' ' . $item->units->name . ')' : '';
-                    $text = $item->name . ' ' . $str;
+                    $text = $item->name . ' ' . $str . "( $stock )";
                     $new_array[] = [
                         'text' => $text,
                         'id' => $item->id,
