@@ -242,12 +242,10 @@ extract($data);
             });
         }
 
-        $(".item-select").on("select2:select", function (event) {
-
+        $('body').on("select2:select", ".item-select", function(event){
             var num = this.id.split("_")[1];
 
             $("#store_" + num).val(event.params.data.store);
-
         });
     </script>
     <script src="{!! m_asset('inventory:js/shopfront.js') !!}"></script>

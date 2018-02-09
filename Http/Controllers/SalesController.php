@@ -64,6 +64,7 @@ class SalesController extends AdminBaseController
     public function shop($id = null)
     {
         if ($this->request->isMethod('post')) {
+
             if ($this->inventoryRepository->record_sales($id)) {
                 $receipt = session('receipt_id');
                 flash('Transaction completed');
