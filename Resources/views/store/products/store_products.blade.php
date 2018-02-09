@@ -21,6 +21,7 @@
                                     <th>Quantity</th>
                                     <th style="text-align: right">Cash Price</th>
                                     <th style="text-align: right">Insurance Price</th>
+                                    <th style="text-align: right">Stock Adjustmets</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,6 +43,12 @@
                                                        value="{{ number_format($product->pivot->insurance_price, 2) }}"
                                                        {{ $store->delivery_store ?: 'disabled' }} />
                                             </td>
+
+                                            {{-- Ensure only authorised people can do this --}}
+                                            <td style="text-align: right">
+                                                <a href="#" id="adjust-{{ $product->id }}-{{ $product->name }}" class="btn btn-primary btn-sm adjust" data-toggle="modal" data-target="#adjustStock">Adjust Stock</a>
+                                            </td>
+                                            {{-- End of authorization --}}
                                         </tr>
                                     @endif
                                 @empty
@@ -61,6 +68,41 @@
 
                     {!! Form::close() !!}
                 </div>
+
+                {{--Adjust Stock Modal--}}
+                <div id="adjustStock" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Adjust stock for <span id="productName"></span></h4>
+                            </div>
+                            <div class="modal-body">
+                                <form id="adjust-form" action="{{ url('inventory/stores/adjust-stock') }}" method="post">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" id="product_id" name="product_id" />
+                                    <input type="hidden" name="store_id" value="{{ $store->id }}">
+                                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+
+                                    <div class="form-group">
+                                        <label for="">Enter New Quantity</label>
+                                        <input type="text" name="quantity" class="form-control" required />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="">Enter Reason for Adjusting Stock</label>
+                                        <textarea cols="30" rows="10" class="form-control" name="reason" required></textarea>
+                                    </div>
+
+                                    <button class="btn btn-success">Adjust Stock</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <script type="text/javascript">
@@ -105,6 +147,19 @@
                             alertify.error("An error occurred");
                         }
                     });
+                });
+
+                $('.adjust').click(function(event){
+                    var productId = event.target.id.split("-")[1];
+
+                    var productName = event.target.id.split("-")[2];
+
+                    $("#productName").html('');
+
+                    $("#productName").html(productName);
+
+                    $("#product_id").val(productId);
+
                 });
             });
         </script>
