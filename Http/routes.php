@@ -104,6 +104,8 @@ $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $route
 
     $router->get('/delete/{id}', ['uses' => 'StoreController@delete', 'as' => 'delete']);
 
+    $router->post('/adjust-stock', ['uses' => 'StockAdjustmentController@create']);
+
     /*
      * Order routes
      */
