@@ -30,8 +30,15 @@ class StoreProductController extends AdminBaseController
     {
         $store = $this->storeRepo->find($id);
 
-        $store->load(['products']);
+        if(request()->has('search'))
+        {
+            $products = $store->products()->where('name', 'LIKE', '%' . strtolower(request('search')) . '%')->get();
+        }
+        else
+        {
+            $products = $store->products()->paginate(50);
+        }
 
-        return view('inventory::store.products.store_products', compact('store'));
+        return view('inventory::store.products.store_products', compact('store', 'products'));
     }
 }
