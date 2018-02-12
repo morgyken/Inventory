@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($store->orders->sortByDesc('created_at') as $order)
+                    @forelse($orders as $order)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $order->users->profile->fullName }}</td>
@@ -35,6 +35,15 @@
                                 <a href="{{route('inventory.dispatch.receive-order', ['storeId' => $store->id, 'orderId' => $order->id])}}"
                                    class="btn btn-success btn-xs"> Receive
                                 </a>
+
+                                @if($order->cancelled)
+                                    <a href="#" class="btn btn-default btn-xs">Cancelled</a>
+                                @else
+                                    <a href="#" id="{{ $order->id }}"
+                                            class="btn btn-danger btn-xs cancel-order" data-toggle="modal" data-target="#cancelOrder">
+                                        Cancel
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @empty
@@ -42,13 +51,54 @@
                     @endforelse
                     </tbody>
                 </table>
+
+                <div class="pull-right">
+                    {{ $orders->links() }}
+                </div>
             </div>
         </div>
     </div>
+
+    {{--Cancel Order Modal--}}
+    <div id="cancelOrder" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Cancel Order Made<span id="productName"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <form id="adjust-form" action="{{ url('inventory/orders/delete') }}" method="post">
+                        {{ csrf_field() }}
+                        <input type="hidden" id="order_id" name="order_id" />
+
+                        <div class="form-group">
+                            <label for="">Enter Reason for Cancelling Order</label>
+                            <textarea cols="30" rows="10" class="form-control" name="cancel_reason" required></textarea>
+                        </div>
+
+                        <button class="btn btn-success">Cancel Order</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $("body").on('click', '.cancel-order', function(event){
+
+                var orderId = event.target.id;
+
+                $("#order_id").val(orderId);
+
+            });
+
+        });
+    </script>
+
 </div>
 
-<script type="text/javascript">
-// $(document).ready(function(){
-//     $('.table').dataTable();
-// });
-</script>
