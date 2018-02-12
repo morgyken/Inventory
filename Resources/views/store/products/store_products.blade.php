@@ -11,8 +11,27 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-12">
-                    {!! Form::open() !!}
+                    {{-- Search Form --}}
+                    <form method="post" style="margin: 10px 0 30px 0">
 
+                        {{ csrf_field() }}
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" name="search" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-5">
+                                <button type="submit" class="btn btn-primary btn-md">Search</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    {!! Form::close() !!}
+                    {{-- End of Search Form --}}
+
+                    {!! Form::open() !!}
                         <table class="table table-striped" id="datatable">
                             <thead>
                                 <tr>
@@ -25,7 +44,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($store->products as $product)
+                                @forelse($products as $product)
                                     @if($product->created_at >= \Carbon\Carbon::parse("6th February 2018"))
                                         <tr>
                                             <td>{{ $product->product_code }}</td>
@@ -58,6 +77,13 @@
                                 @endforelse
                             </tbody>
                         </table>
+
+                        <div class="pull-right">
+                            @if(method_exists($products, 'links'))
+                                {{ $products->links() }}
+                            @endif
+                        </div>
+
 
                         @if($store->delivery_store)
                             <button type="button" class="btn btn-primary" id="save">
@@ -116,10 +142,10 @@
                         arrIndex[object.product] = index;
                     }
                     data[index] = object;
-                    console.log(data);
                 }
 
-                $('#datatable').dataTable();
+                // $('#datatable').dataTable();
+
                 $(document).on('keyup', 'input[type=text]', function () {
                     var product = $(this).attr('pid');
                     var update = {
