@@ -90,6 +90,8 @@ $router->get('goods/delivered/{batch}', ['uses' => 'InventoryController@purchase
 /*
  * Store routes
  */
+$router->post('/orders/delete', ['uses' => 'OrderController@delete']);
+
 $router->group(['as' => 'store.', 'prefix' => 'stores'], function (Router $router) {
 
     $router->get('/', ['uses' => 'StoreController@index', 'as' => 'index']);

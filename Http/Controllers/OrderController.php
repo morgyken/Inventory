@@ -6,6 +6,7 @@ use Ignite\Core\Http\Controllers\AdminBaseController;
 use Ignite\Inventory\Repositories\OrdersRepository;
 use Ignite\Inventory\Repositories\StoresRepository;
 use Ignite\Inventory\Library\OrderTrail;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends AdminBaseController
 {
@@ -32,7 +33,9 @@ class OrderController extends AdminBaseController
 
         $dispatchingStores = $this->repo->getDispatchingStores($store);
 
-        $data = compact('store', 'dispatchingStores');
+        $orders = $store->orders()->latest()->paginate(10);
+
+        $data = compact('store', 'dispatchingStores', 'orders');
 
         return view('inventory::store.orders.orders_made', $data);
     }
@@ -58,7 +61,9 @@ class OrderController extends AdminBaseController
     {
         $store = $this->storeRepo->find($storeId);
 
-        return view('inventory::store.orders.orders_received', compact('store'));
+        $orders = $store->orders()->where('cancelled', false)->orderBy('created_at')->paginate(15);
+
+        return view('inventory::store.orders.orders_received', compact('store', 'orders'));
     }
 
     /*
@@ -95,5 +100,23 @@ class OrderController extends AdminBaseController
         });
 
         return view('inventory::store.orders.order_details', compact('order', 'details', 'store'));
+    }
+
+    /*
+     * Delete an order from the system
+     */
+    public function delete()
+    {
+        $order = $this->repo->find(request('order_id'));
+
+        $order->update([
+            'cancelled' => true,
+            'cancelled_by' => Auth::id(),
+            'cancellation_reason' => request('cancel_reason')
+        ]);
+
+        flash('Your order has been cancelled successfully', 'success');
+
+        return redirect()->back();
     }
 }
