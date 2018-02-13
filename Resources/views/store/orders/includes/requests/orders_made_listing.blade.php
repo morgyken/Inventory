@@ -18,6 +18,7 @@
                             <th>Ordered By</th>
                             <th>Dispatching Store</th>
                             <th>Ordered date</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -25,21 +26,22 @@
                     @forelse($orders as $order)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $order->users->profile->fullName }}</td>
-                            <td>{{ $order->dispatchingStore->name }}</td>
-                            <td>{{ $order->created_at }}</td>
+                            <td>{{ $order['name'] }}</td>
+                            <td>{{ $order['dispatching'] }}</td>
+                            <td>{{ $order['created_at'] }}</td>
+                            <td>{{ $order['status'] }}</td>
                             <td>
-                                <a href="{{route('inventory.store.show-order', ['storeId' => $store->id, 'orderId' => $order->id])}}"
+                                <a href="{{route('inventory.store.show-order', ['storeId' => $store->id, 'orderId' => $order['id']]) }}"
                                    class="btn btn-info btn-xs"> View
                                 </a>
-                                <a href="{{route('inventory.dispatch.receive-order', ['storeId' => $store->id, 'orderId' => $order->id])}}"
+                                <a href="{{route('inventory.dispatch.receive-order', ['storeId' => $store->id, 'orderId' => $order['id']]) }}"
                                    class="btn btn-success btn-xs"> Receive
                                 </a>
 
-                                @if($order->cancelled)
+                                @if($order['cancelled'])
                                     <a href="#" class="btn btn-default btn-xs">Cancelled</a>
                                 @else
-                                    <a href="#" id="{{ $order->id }}"
+                                    <a href="#" id="{{ $order['id'] }}"
                                             class="btn btn-danger btn-xs cancel-order" data-toggle="modal" data-target="#cancelOrder">
                                         Cancel
                                     </a>
@@ -52,9 +54,9 @@
                     </tbody>
                 </table>
 
-                <div class="pull-right">
-                    {{ $orders->links() }}
-                </div>
+                {{--<div class="pull-right">--}}
+                    {{--{{ $orders->links() }}--}}
+                {{--</div>--}}
             </div>
         </div>
     </div>

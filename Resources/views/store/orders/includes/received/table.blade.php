@@ -1,5 +1,5 @@
 <div class="panel panel-info">
-    <div class="panel-heading">Orders Made</div>
+    <div class="panel-heading">Orders Received</div>
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">

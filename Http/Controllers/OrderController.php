@@ -33,7 +33,18 @@ class OrderController extends AdminBaseController
 
         $dispatchingStores = $this->repo->getDispatchingStores($store);
 
-        $orders = $store->orders()->latest()->paginate(10);
+        $orders = $store->orders()->latest()->get();
+
+        $orders = $orders->map(function($order){
+            return [
+                'id' => $order->id,
+                'name' => $order->users->profile->fullName,
+                'dispatching' => $order->dispatchingStore->name,
+                'status' => $this->isDispatched($order),
+                'created_at' => $order->created_at,
+                'cancelled' => $order->cancelled,
+            ];
+        });
 
         $data = compact('store', 'dispatchingStores', 'orders');
 
@@ -61,7 +72,7 @@ class OrderController extends AdminBaseController
     {
         $store = $this->storeRepo->find($storeId);
 
-        $orders = $store->orders()->where('cancelled', false)->orderBy('created_at')->paginate(15);
+        $orders = $store->received()->where('cancelled', false)->orderBy('created_at')->get();
 
         return view('inventory::store.orders.orders_received', compact('store', 'orders'));
     }
@@ -118,5 +129,26 @@ class OrderController extends AdminBaseController
         flash('Your order has been cancelled successfully', 'success');
 
         return redirect()->back();
+    }
+
+    /*
+     * Checks if an item has been completely dispatched
+     */
+    public function isDispatched($order)
+    {
+        if($order->cancelled)
+        {
+            return "Cancelled";
+        }
+        
+        foreach($order->details as $detail)
+        {
+            if($detail->quantity != $detail->dispatched)
+            {
+                return "Pending";
+            }
+        }
+
+        return "Dispatch Completed";
     }
 }
