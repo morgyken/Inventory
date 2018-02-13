@@ -91,6 +91,8 @@
     <script type="text/javascript">
         $(document).ready(function(){
 
+            $('table').dataTable();
+
             $("body").on('click', '.cancel-order', function(event){
 
                 var orderId = event.target.id;

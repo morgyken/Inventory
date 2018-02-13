@@ -74,6 +74,18 @@ class OrderController extends AdminBaseController
 
         $orders = $store->received()->where('cancelled', false)->orderBy('created_at')->get();
 
+        $orders = $orders->map(function($order){
+            return [
+                'id' => $order->id,
+                'name' => $order->users->profile->fullName,
+                'requesting' => $order->requestingStore ? $order->requestingStore->name : '',
+                'dispatching' => $order->dispatching_store,
+                'status' => $this->isDispatched($order),
+                'created_at' => $order->created_at,
+                'cancelled' => $order->cancelled,
+            ];
+        });
+
         return view('inventory::store.orders.orders_received', compact('store', 'orders'));
     }
 
@@ -140,7 +152,7 @@ class OrderController extends AdminBaseController
         {
             return "Cancelled";
         }
-        
+
         foreach($order->details as $detail)
         {
             if($detail->quantity != $detail->dispatched)
