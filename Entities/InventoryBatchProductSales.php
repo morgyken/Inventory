@@ -8,6 +8,7 @@ use Ignite\Reception\Entities\PatientInsurance;
 use Ignite\Users\Entities\User;
 use Illuminate\Database\Eloquent\Model;
 use Ignite\Reception\Entities\Patients;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Ignite\Inventory\Entities\InventoryBatchProductSales
@@ -48,8 +49,10 @@ use Ignite\Reception\Entities\Patients;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\InventoryBatchProductSales whereVisit($value)
  * @mixin \Eloquent
  */
-class InventoryBatchProductSales extends Model
+class InventoryBatchProductSales extends Model implements Auditable
 {
+
+    use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [];
     public $table = 'inventory_batch_sales';

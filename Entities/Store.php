@@ -3,6 +3,7 @@
 namespace Ignite\Inventory\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Ignite\Inventory\Entities\Store
@@ -22,12 +23,20 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Ignite\Inventory\Entities\Store whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Store extends Model
+class Store extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
+
     public $table = 'inventory_stores';
+
+
 
     protected $fillable = [
         'name', 'description', 'clinic', 'parent_store_id', 'main_store', 'delivery_store'
+    ];
+
+    protected $auditEvents = [
+        'created', 'updated', 'deleted', 'restored'
     ];
 
     /*

@@ -28,6 +28,7 @@
                         <tr>
                             <th>#</th>
                             <th>Item</th>
+                            <th>Patient</th>
                             <th>Opening Stock</th>
                             <th style="text-align: center">Change</th>
                             <th>Closing Stock</th>
@@ -41,6 +42,7 @@
                         @foreach($data['adjustments'] as $adj)
                         <tr id="category{{$adj->id}}">
                             <td>{{$n+=1}}</td>
+                            <td>{{$adj->products->name}}</td>
                             <td>{{$adj->products->name}}</td>
                             <td>{{$adj->opening_qty}}</td>
                             <td style="text-align: center">

@@ -22,6 +22,7 @@ use Ignite\Inventory\Entities\InventorySupplier;
 use Ignite\Inventory\Entities\InventoryTaxCategory;
 use Ignite\Inventory\Entities\InventoryUnits;
 use Ignite\Inventory\Entities\InventoryBatch;
+use Ignite\Inventory\Entities\StoreProducts;
 use Ignite\Inventory\Http\Requests\AddSupplierRequest;
 use Ignite\Inventory\Http\Requests\AdjustStockRequest;
 use Ignite\Inventory\Repositories\InventoryRepository;
@@ -480,33 +481,78 @@ class InventoryController extends AdminBaseController
     {
         ini_set('memory_limit', -1);
 
-        Excel::load('shoplist.xlsx', function($reader) {
+        ini_set('max_execution_time', 180);
 
-            $reader->each(function($sheet) {
+        set_time_limit(0);
 
-                if($sheet->item_name)
-                {
-                    $product = InventoryProducts::create([
-                        'name' => $sheet->item_name,
+        $data = \Excel::load('druglist.xlsx', function ($reader) {
+            $reader->ignoreEmpty();
+        })->get()->toArray();
 
-                        'category' => InventoryCategories::where('name', 'Shop')->first()->id,
+        # remove empty rows
+        $data = array_filter($data);
 
-                        'unit' => InventoryUnits::where('name', 'g')->first()->id,
-                    ]);
+        foreach($data as $item)
+        {
+            $product = InventoryProducts::create([
+                'name' => $item['drug_name'],
 
-                    InventoryProductPrice::create([
+                'category' => InventoryCategories::where('name', 'Shop')->first()->id,
 
-                        'product' => $product->id,
+                'unit' => InventoryUnits::where('name', 'g')->first()->id,
+            ]);
 
-                        'price' => $sheet->price,
+            InventoryProductPrice::create([
 
-                    ]);
-                }
+                'product' => $product->id,
 
-            });
+                'price' => $item['cash'],
 
-        });
+                'selling' => $item['cash'],
+
+                'insurance' => $item['insurance'],
+
+            ]);
+        }
 
         dd("successfully uploaded all the drugs from an excel");
+
+//        Excel::load('druglist.xlsx', function($reader) {
+//
+//            dd($reader->limit(350)->count());
+
+//            $reader->each(function($sheet) {
+//
+//                if($sheet->drug_name)
+//                {
+//                    dd($sheet->drug_name);
+//
+//
+//                    $product = InventoryProducts::create([
+//                        'name' => $sheet->drug_name,
+//
+//                        'category' => InventoryCategories::where('name', 'Shop')->first()->id,
+//
+//                        'unit' => InventoryUnits::where('name', 'g')->first()->id,
+//                    ]);
+//
+//                    InventoryProductPrice::create([
+//
+//                        'product' => $product->id,
+//
+//                        'price' => $sheet->cash,
+//
+//                        'selling' => $sheet->cash,
+//
+//                        'insurance' => $sheet->insurance,
+//
+//                    ]);
+//                }
+//
+//            });
+
+//        });
+//
+//        dd("successfully uploaded all the drugs from an excel");
     }
 }
