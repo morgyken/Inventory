@@ -12,6 +12,7 @@ use Ignite\Finance\Entities\FinanceGlAccounts;
 use Ignite\Finance\Entities\FinanceInvoicePayment;
 use Ignite\Inventory\Entities\InternalOrder;
 use Ignite\Inventory\Entities\Store;
+use Validator;
 use Ignite\Inventory\Entities\InventoryProductMarkup;
 use Ignite\Inventory\Entities\InventoryPurchaseOrders;
 use Ignite\Inventory\Entities\InventoryProductPrice;
@@ -50,6 +51,7 @@ class InventoryController extends AdminBaseController
         parent::__construct();
         $this->request = $request;
         $this->inventoryRepository = $inventoryRepository;
+
     }
 
     public function index()
@@ -144,16 +146,92 @@ class InventoryController extends AdminBaseController
         $this->data['units_of_measure'] = InventoryUnits::all();
         return view('inventory::units_of_measure', ['data' => $this->data]);
     }
+     //check for validate produts
+
+    public function doValidation(Request $request)
+    {
+      $rules = 
+        [
+        'category'       =>  'required',
+        'name'  =>  'required|max:200|alpha_num',
+        //'middle_name' => 'required',
+        'unit'   =>  'required',  
+        'tax'      => 'required',
+
+        'strength'   => 'required|alpha_num|max:100',
+        'formulation'       => 'required|alpha_num',
+
+        'description'  =>  'nullable|max:100|alpha_num',
+        //'middle_name' => 'required',
+        'reorder_level'   =>  'digits:10',  
+        'label_type'    => 'requied|'
+             
+        ];
+
+        //define messages 
+        $messages =
+        [
+                     
+            'category.required'    => 'Opps! You must include Categry!',             
+            'category.alpha_num'   => 'Opps! You entered invalid characters for Category!',
+            'category.max:60'      => 'Error: The number entered is too large',
+
+            'name.required'         =>  'Error: Name must be entered',           
+            'name.max:100'          =>  'Error: The Name is too long',
+            'name.alpha_num'        =>  'Error: You Entered invalid characters',
+            
+            'unit.required'         =>  'Error: Unit contains invalid String, Try again',
+            'unit.alpha_num'        =>  'Error: Unit contains invalid String, Try again.',
+            'unit.max:100'          =>  'Error: Unit contains invalid String, Try again',
+           
+            'tax.required'           => 'Error: Enter data for tax',
+            'tax.date'              => 'Error: The date format is not valid',
+        
+            'strength.required'     => 'Error: You must enter the strength of the drug',
+            'strength.alpha_num'    => 'Error: You must entered valid characters', 
+            'strength.max:100'      => 'Error: the data entered is too long, check again', 
+ 
+            'description.alpha_num'   => 'Error: You must entered invalid characters',
+           
+
+            'reorder_level.required'   => 'Error: You must entered invalid characters',  
+            'reorder_level.digits:10'   => 'Error: You must entered invalid characters',
+            
+
+           ];    
+      
+
+       $this->validator = Validator::make($request->all(), $rules, $messages);
+            if ($this->validator->fails()) {  
+                return false ;                
+              }  
+
+          return true;    
+           
+    }
+
+
 
     public function add_product($id = null)
     {
+
         if ($this->request->isMethod('post')) {
+
+            if($this-> doValidation($this->request) ==true)
+            {
             // //$this->validate(Validation::add_product());
             if ($this->inventoryRepository->add_product($this->request->id)) {
                 flash('Product Saved');
                 return redirect()->route('inventory.products');
             }
         }
+        else {
+                flash("ERROR: Check the following fields need correction.", 'error');
+
+                return redirect()->back()->withErrors($this->validator);
+            }
+        }
+
         $this->data['product'] = InventoryProducts::findOrNew($id);
         $this->data['category'] = InventoryCategories::all();
         return view('inventory::products.add_product', ['data' => $this->data]);
