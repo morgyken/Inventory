@@ -45,6 +45,12 @@ class InventoryController extends AdminBaseController
      * @var InventoryRepository
      */
     protected $inventoryRepository;
+       /**
+     * @var Validator 
+     */
+
+    protected $validator;
+
 
     public function __construct(Request $request, InventoryRepository $inventoryRepository)
     {
@@ -154,39 +160,47 @@ class InventoryController extends AdminBaseController
         [
         'category'       =>  'required',
         'name'  =>  'required|max:200|alpha_num',
+       
+     
         //'middle_name' => 'required',
         'unit'   =>  'required',  
+
         'tax'      => 'required',
 
-        'strength'   => 'required|alpha_num|max:100',
-        'formulation'       => 'required|alpha_num',
+        // the strength of a woman
+
+        'strength'   => 'required|alpha|max:100',
+
+      
+        'formulation'       => 'required',
 
         'description'  =>  'nullable|max:100|alpha_num',
         //'middle_name' => 'required',
         'reorder_level'   =>  'digits:10',  
-        'label_type'    => 'requied|'
+        'label_type'    => 'required|'
+
+        
              
         ];
 
         //define messages 
         $messages =
-        [
-                     
-            'category.required'    => 'Opps! You must include Categry!',             
-            'category.alpha_num'   => 'Opps! You entered invalid characters for Category!',
-            'category.max:60'      => 'Error: The number entered is too large',
-
+        [                     
+            'category.required'     => 'Opps! You must include Categry!',             
+            
             'name.required'         =>  'Error: Name must be entered',           
             'name.max:100'          =>  'Error: The Name is too long',
-            'name.alpha_num'        =>  'Error: You Entered invalid characters',
-            
+            'name.regrex'            =>  'Error: You Entered invalid characters',
+
+            //required and home 
             'unit.required'         =>  'Error: Unit contains invalid String, Try again',
-            'unit.alpha_num'        =>  'Error: Unit contains invalid String, Try again.',
-            'unit.max:100'          =>  'Error: Unit contains invalid String, Try again',
-           
+            //'unit.alpha_num'        =>  'Error: Unit contains invalid String, Try again.',
+            
+            'formulation.required'  => 'Error: Formulation must be entered',             
+    
             'tax.required'           => 'Error: Enter data for tax',
-            'tax.date'              => 'Error: The date format is not valid',
-        
+            //'tax.date'              => 'Error: The date format is not valid',
+
             'strength.required'     => 'Error: You must enter the strength of the drug',
             'strength.alpha_num'    => 'Error: You must entered valid characters', 
             'strength.max:100'      => 'Error: the data entered is too long, check again', 
@@ -210,10 +224,9 @@ class InventoryController extends AdminBaseController
            
     }
 
-
-
     public function add_product($id = null)
     {
+
 
         if ($this->request->isMethod('post')) {
 
